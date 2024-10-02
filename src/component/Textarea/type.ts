@@ -1,8 +1,10 @@
 import React from "react";
 interface IBaseTextarea {
   value?: string;
-  onChange?: () => void;
-  disabled?: false;
+  onChange?: (s: string) => void;
+  disabled?: boolean;
+  resizable?: boolean;
+  showClear?: boolean;
 }
 
 interface IStructureTextarea extends IBaseTextarea {

@@ -5,7 +5,7 @@ const Button = ({ title, onClick, className, children }: IButton) => {
       type="button"
       onClick={onClick}
       title={title}
-      className={className}
+      className={`px-3 py-1 text-base font-semibold ${className}`}
     >
       {children}
     </button>

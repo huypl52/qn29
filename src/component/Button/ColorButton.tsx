@@ -11,7 +11,7 @@ const ColorButton = ({ title, onClick, children, active }: IColorButton) => {
     <Button
       onClick={onClick}
       title={title}
-      className="rounded px-3 py-1 border border-blue-200 text-base font-semibold focus:outline-none focus:ring-1 focus:ring-blue-600"
+      className="rounded border border-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-600"
     >
       {children}
     </Button>
