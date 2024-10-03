@@ -6,3 +6,10 @@ export const DSourceLang = {
 
 import translations from "../../i18n.json";
 export const DLang: { [k: string]: string } = translations;
+
+export const toastMsg = {
+  success: "Operation successful",
+  error: "An error occurred",
+  warning: "Please be cautious",
+  info: "Additional information",
+};

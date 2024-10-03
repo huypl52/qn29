@@ -1,14 +1,14 @@
 import React from "react";
-import Translator from "./feature/translator";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthContainer from "./auth";
 
 const App: React.FC = () => {
   return (
-    <div>
-      <Translator />
+    <>
+      <AuthContainer />
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

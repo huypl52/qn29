@@ -1,8 +1,10 @@
-import { CSSProperties, HTMLAttributes, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, CSSProperties, PropsWithChildren } from "react";
 
-interface IButton extends PropsWithChildren, HTMLAttributes<HTMLButtonElement> {
-  title: string;
-  onClick: () => void;
+interface IButton
+  extends PropsWithChildren,
+    ButtonHTMLAttributes<HTMLButtonElement> {
+  title?: string;
+  onClick?: () => void;
 }
 
 interface IActiveButton extends IButton {
