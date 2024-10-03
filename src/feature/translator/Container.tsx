@@ -2,6 +2,7 @@ import { TranslatorContextProvider } from "./context";
 import LangBar from "./LangBar";
 import SourceTextBox from "./SourceTextBox";
 import TargetTextBox from "./TargetTextBox";
+
 const Container = () => {
   return (
     <TranslatorContextProvider>

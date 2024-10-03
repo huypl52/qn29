@@ -1,4 +1,4 @@
-import { StructureTextarea } from "../../component/Textarea";
+import { StructureTextarea } from "~/component/Textarea";
 import { useTranslatorContext } from "./context";
 
 const TextBoxFooter = () => {
