@@ -1,7 +1,7 @@
 import { useAuth } from "./context";
 import { Card, CardContent, CardHeader, CardTitle } from "~/component/Card";
 import { Input } from "~/component/Input";
-import { Button } from "~/component/Button";
+import { ColorButton } from "~/component/Button";
 import { Alert, AlertDescription } from "~/component/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -33,7 +33,7 @@ const LoginForm = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Đăng nhập</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -67,9 +67,18 @@ const LoginForm = () => {
                 <AlertDescription>{formik.errors.password}</AlertDescription>
               </Alert>
             )}
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
+            <div className="flex justify-end">
+              <ColorButton
+                type="submit"
+                className="w-full"
+                active={
+                  formik.values.password.length > 0 &&
+                  formik.values.username.length > 0
+                }
+              >
+                Xác nhận
+              </ColorButton>
+            </div>
           </form>
         </CardContent>
       </Card>
