@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createContext, PropsWithChildren, useContext } from "react";
-import { ITranslatorContext } from "./type";
+import { EStatus, ITranslatorContext } from "./type";
 
 const TranslatorContext = createContext<ITranslatorContext>({
   srcText: "",
@@ -12,15 +12,18 @@ const TranslatorContext = createContext<ITranslatorContext>({
   updateSrcLang: () => {},
   updateTargetLang: () => {},
   maxInputLeng: 5000,
+  status: EStatus.idle,
+  setStatus: () => {},
 });
 
 const TranslatorContextProvider = ({ children }: PropsWithChildren) => {
   const [srcText, setSrcText] = useState("");
 
-  const [targetText, setTargetText] = useState("target text");
+  const [targetText, setTargetText] = useState("");
   const [srcLang, setSrcLang] = useState("");
 
   const [targetLang, setTargetLang] = useState("");
+  const [status, setStatus] = useState<EStatus>(EStatus.idle);
   return (
     <TranslatorContext.Provider
       value={{
@@ -33,6 +36,8 @@ const TranslatorContextProvider = ({ children }: PropsWithChildren) => {
         updateSrcLang: setSrcLang,
         updateTargetLang: setTargetLang,
         maxInputLeng: 5000,
+        status,
+        setStatus,
       }}
     >
       {children}

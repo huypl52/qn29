@@ -26,7 +26,7 @@ const LoginForm = () => {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       const result = await login(values.username, values.password);
-      if (result) navigate(AuthRoutePath.TRANSLATE);
+      if (result) navigate(AuthRoutePath.DASHBOARD);
     },
   });
 

@@ -1,4 +1,9 @@
 interface ITranslator {}
+export enum EStatus {
+  idle,
+  waiting,
+  sending,
+}
 
 interface ITranslatorContext {
   srcText?: string;
@@ -10,6 +15,8 @@ interface ITranslatorContext {
   updateSrcLang: (s: string) => void;
   updateTargetLang: (s: string) => void;
   maxInputLeng: number;
+  status: EStatus;
+  setStatus: (s: EStatus) => void;
 }
 
 export { type ITranslator, type ITranslatorContext };

@@ -2,6 +2,7 @@ import { StructureTextarea } from "../../component/Textarea";
 import { FaRegCopy } from "react-icons/fa";
 import { useTranslatorContext } from "./context";
 import { toast } from "react-toastify";
+import { EStatus } from "./type";
 
 const TargetBoxFooter = () => {
   const { targetText } = useTranslatorContext();
@@ -17,9 +18,17 @@ const TargetBoxFooter = () => {
   );
 };
 const TargetTextBox = () => {
+  const { targetText, status } = useTranslatorContext();
+
+  const value = status === EStatus.waiting ? "Đang thực hiện..." : targetText;
   return (
     <div className="w-full">
-      <StructureTextarea resizable={false} footer={TargetBoxFooter} disabled />
+      <StructureTextarea
+        resizable={false}
+        footer={TargetBoxFooter}
+        disabled
+        value={value}
+      />
     </div>
   );
 };

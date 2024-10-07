@@ -1,5 +1,9 @@
 import { StructureTextarea } from "~/component/Textarea";
 import { useTranslatorContext } from "./context";
+import { useEffect, useState } from "react";
+import { EStatus } from "./type";
+import { translate } from "~/service/translate";
+import { ITranslation } from "~/type/translate";
 
 const TextBoxFooter = () => {
   const { srcText, maxInputLeng } = useTranslatorContext();
@@ -10,14 +14,72 @@ const TextBoxFooter = () => {
   );
 };
 
+const TIMEOUT_DURATION = 1000; // 1 second timeout
 const SourceTextBox = () => {
-  const { srcText, updateSrcText } = useTranslatorContext();
+  const { srcText, updateSrcText, setStatus, updateTargetText } =
+    useTranslatorContext();
+
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+  const handleInputChange = (text: string) => {
+    updateSrcText(text);
+    if (!text) {
+      setStatus(EStatus.idle);
+      updateTargetText("");
+      return;
+    }
+
+    setStatus(EStatus.waiting);
+
+    // Clear any existing timeout
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    // Set new timeout
+    const newTimeoutId = setTimeout(async () => {
+      setStatus(EStatus.sending);
+      try {
+        const res = await translate({ source_text: text } as ITranslation).then(
+          (res) => {
+            const { status, data } = res;
+            if (status === 200) {
+              return data;
+            }
+          },
+        );
+        // console.log({ res });
+        if (res) {
+          const { dest_text } = res;
+
+          updateTargetText(dest_text);
+        }
+        setStatus(EStatus.idle);
+      } catch (error) {
+        console.error("API call failed:", error);
+        updateTargetText("");
+        setStatus(EStatus.idle);
+      }
+    }, TIMEOUT_DURATION);
+
+    setTimeoutId(newTimeoutId);
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
+
   return (
     <div className="w-full">
       <StructureTextarea
         resizable={false}
         value={srcText}
-        onChange={updateSrcText}
+        onChange={handleInputChange}
         footer={TextBoxFooter}
         showClear
       />

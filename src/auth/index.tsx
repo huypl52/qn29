@@ -10,18 +10,23 @@ import { IRouteWrapper } from "./type";
 import LoginForm from "./Login";
 import Translator from "~/feature/translator";
 import { AuthRoutePath } from "~/routes";
+import Dashboard from "~/page/Dashboard";
+import Layout from "~/feature/layout";
+import { getUser } from "~/storage/auth";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }: IRouteWrapper) => {
-  const { user } = useAuth();
+  const user = getUser();
+  console.log({ ProtectedRoute: user });
 
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/unauthorized" replace />;
-  }
+  // TODO: add user role
+  // if (allowedRoles && !allowedRoles.includes(user.role)) {
+  //   return <Navigate to="/unauthorized" replace />;
+  // }
 
   return children;
 };
@@ -76,14 +81,18 @@ const AuthContainer = () => {
             element={
               <ProtectedRoute allowedRoles={["admin", "user"]}>
                 <Routes>
-                  <Route
-                    path={AuthRoutePath.DASHBOARD}
-                    element={<UserDashboard />}
-                  />
-                  <Route
-                    path={AuthRoutePath.TRANSLATE}
-                    element={<Translator />}
-                  />
+                  {[
+                    <Route
+                      path={AuthRoutePath.DASHBOARD}
+                      element={<Dashboard />}
+                    />,
+                    <Route
+                      path={AuthRoutePath.TRANSLATE}
+                      element={<Translator />}
+                    />,
+                  ].map((r) => {
+                    return <Route element={<Layout />}>{r}</Route>;
+                  })}
                 </Routes>
               </ProtectedRoute>
             }
