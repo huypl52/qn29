@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { AuthRoutePath } from "~/routes";
+import { saveUser } from "~/storage/auth";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Required"),

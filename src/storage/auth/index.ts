@@ -1,10 +1,10 @@
-import { AuthUser } from "./type";
+import { IUserLogin } from "~/type/user";
 
 const LOCAL_USER = "LOCAL_USER";
 const TOKEN = "TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
 
-export const saveUser = (user: AuthUser) => {
+export const saveUser = (user: IUserLogin) => {
   window.localStorage.setItem(LOCAL_USER, JSON.stringify(user));
 };
 
@@ -20,7 +20,7 @@ export const getUser = () => {
   try {
     const user = JSON.parse(
       window.localStorage.getItem(LOCAL_USER) || "",
-    ) as AuthUser;
+    ) as IUserLogin;
     if (user?.token) return user;
     return null;
   } catch (error) {
