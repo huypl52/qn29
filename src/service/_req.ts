@@ -1,4 +1,5 @@
 import axios, {
+  AxiosInstance,
   AxiosRequestConfig,
   AxiosRequestTransformer,
   AxiosResponse,
@@ -37,107 +38,90 @@ const instance = axios.create({
   ],
 });
 
-instance.interceptors.request.use(
-  function (config) {
-    const authorization = getUserToken();
-    const refreshToken = getUserRefreshToken();
+const instance2nd = axios.create({
+  baseURL: import.meta.env.VITE_PUBLIC_API2 || "",
+  transformRequest: [
+    dateTransformer,
+    ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
+  ],
+});
 
-    // console.log('auth toke', authorization)
-    // console.log('refresh', refreshToken)
+const instanceList: AxiosInstance[] = [instance, instance2nd];
 
-    if (authorization && refreshToken) {
-      config.headers.setAuthorization(authorization);
-      config.headers.set("refreshtoken", refreshToken);
+instanceList.forEach((ins) => {
+  ins.interceptors.request.use(
+    function (config) {
+      const authorization = getUserToken();
+      const refreshToken = getUserRefreshToken();
+
+      if (authorization && refreshToken) {
+        config.headers.setAuthorization(authorization);
+        config.headers.set("refreshtoken", refreshToken);
+      }
+      return config;
+    },
+    function (error) {
+      return Promise.reject(error);
+    },
+  );
+
+  ins.interceptors.response.use(
+    function (config) {
+      const headers = config.headers;
+      const authorization = headers.authorization;
+      const refreshtoken = headers.refreshtoken;
+
+      // console.log('override token', authorization, refreshtoken)
+      if (authorization && refreshtoken) {
+        saveUserToken(authorization);
+        saveUserRefreshToken(refreshtoken);
+      }
+      return config;
+    },
+    function (error) {
+      const { response } = error;
+      if (response && response.status === 401) {
+        clearUser();
+        setTimeout(() => (window.location.href = "/sign-in"), 2000);
+        return;
+      }
+      const { stack, ...error_info } = error;
+      console.log({ intercept_error: error_info });
+      return Promise.reject(response);
+    },
+  );
+});
+
+const _httpPost =
+  (req: AxiosInstance) =>
+  <T = any, R = AxiosResponse<T, any>, D = any>(
+    url: string,
+    data?: D | undefined,
+    config?: AxiosRequestConfig<D> | undefined,
+  ) => {
+    const interceptData = data as D & {
+      columns: string[] | string;
+      filter: string[] | string;
+      take: number | undefined;
+    };
+    if (
+      Object.prototype.hasOwnProperty.call(interceptData, "columns") &&
+      !!interceptData
+    ) {
+      const columns = interceptData["columns"];
+      if (Array.isArray(columns)) {
+        interceptData["columns"] = columns.join(",");
+      }
     }
-    return config;
-  },
-  function (error) {
-    return Promise.reject(error);
-  },
-);
-
-instance.interceptors.response.use(
-  function (config) {
-    const headers = config.headers;
-    const authorization = headers.authorization;
-    const refreshtoken = headers.refreshtoken;
-
-    // console.log('override token', authorization, refreshtoken)
-    if (authorization && refreshtoken) {
-      saveUserToken(authorization);
-      saveUserRefreshToken(refreshtoken);
-      // console.log('override done')
+    if (
+      !Object.prototype.hasOwnProperty.call(interceptData, "take") &&
+      !!interceptData
+    ) {
+      // interceptData["take"] = 10000000;
     }
-    return config;
-  },
-  function (error) {
-    const { response } = error;
-    if (response && response.status === 401) {
-      // if (isSessionExpired()) {
-      //   messageError("Your session is expired. Please login again !");
-      //   clearAllGoalieToken();
-      //   window.location.href = "/sign-in";
-      //   return;
-      // }
-      clearUser();
-      setTimeout(() => (window.location.href = "/sign-in"), 2000);
-      return;
 
-      // window.location.href = '/sign-out';
-
-      // console.log('href', pathname)
-      // if (pathname.includes('/sign-in') || pathname.includes('/sign-up')) {
-      //   return;
-      // }
-      // window.location.href = `/sign-in?redirectUrl=${window.location.pathname}`;
-    }
-    const { stack, ...error_info } = error;
-    console.log({ intercept_error: error_info });
-    return Promise.reject(response);
-  },
-);
-
-const httpPost: <T = any, R = AxiosResponse<T, any>, D = any>(
-  url: string,
-  data?: D | undefined,
-  config?: AxiosRequestConfig<D> | undefined,
-) => Promise<R> = <T = any, R = AxiosResponse<T, any>, D = any>(
-  url: string,
-  data?: D | undefined,
-  config?: AxiosRequestConfig<D> | undefined,
-) => {
-  const interceptData = data as D & {
-    columns: string[] | string;
-    filter: string[] | string;
-    take: number | undefined;
+    return req.post(url, interceptData, config) as Promise<R>;
   };
-  if (
-    Object.prototype.hasOwnProperty.call(interceptData, "columns") &&
-    !!interceptData
-  ) {
-    const columns = interceptData["columns"];
-    if (Array.isArray(columns)) {
-      interceptData["columns"] = columns.join(",");
-    }
-  }
-  // if (
-  //   Object.prototype.hasOwnProperty.call(interceptData, "filter") &&
-  //   !!interceptData
-  // ) {
-  //   const filter = interceptData["filter"];
-  //   if (typeof filter !== "string") {
-  //     interceptData["filter"] = `[${filter.join(",")}]`;
-  //   }
-  // }
-  if (
-    !Object.prototype.hasOwnProperty.call(interceptData, "take") &&
-    !!interceptData
-  ) {
-    interceptData["take"] = 10000000;
-  }
-
-  return req.post(url, interceptData, config) as Promise<R>;
-};
 
 const parseDateObject = (a: any) => {
   if (a instanceof Date) {
@@ -175,10 +159,11 @@ const httpFormWrapper = (reqFunction: any) =>
   };
 
 export const req = instance;
-export const httpGet = req.get;
-export const httpPatch = req.patch;
-// export const httpPost = req.post;
-export { httpPost };
-export const httpPostForm = httpFormWrapper(req.postForm);
-export const httpPut = req.put;
-export const httpDel = req.delete;
+export const httpGet = (i = 0) => instanceList[i].get;
+export const httpPatch = (i = 0) => instanceList[i].patch;
+export const httpPost = (i = 0) => _httpPost(instanceList[i]);
+export const httpPostForm = httpFormWrapper(
+  (i = 0) => instanceList[i].postForm,
+);
+export const httpPut = (i = 0) => instanceList[i].put;
+export const httpDel = (i = 0) => instanceList[i].delete;

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { EStatus } from "./type";
 import { translate } from "~/service/translate";
 import { ITranslation } from "~/type/translate";
+import { toastMsg } from "~/type";
+import { toast } from "react-toastify";
 
 const TextBoxFooter = () => {
   const { srcText, maxInputLeng } = useTranslatorContext();
@@ -14,7 +16,7 @@ const TextBoxFooter = () => {
   );
 };
 
-const TIMEOUT_DURATION = 1000; // 1 second timeout
+const TIMEOUT_DURATION = 500;
 const SourceTextBox = () => {
   const { srcText, updateSrcText, setStatus, updateTargetText } =
     useTranslatorContext();
@@ -48,17 +50,17 @@ const SourceTextBox = () => {
             }
           },
         );
-        // console.log({ res });
         if (res) {
-          const { dest_text } = res;
+          const { translation } = res;
 
-          updateTargetText(dest_text);
+          updateTargetText(translation);
         }
         setStatus(EStatus.idle);
       } catch (error) {
         console.error("API call failed:", error);
         updateTargetText("");
         setStatus(EStatus.idle);
+        toast.error(toastMsg.error);
       }
     }, TIMEOUT_DURATION);
 

@@ -3,6 +3,7 @@ import { FaRegCopy } from "react-icons/fa";
 import { useTranslatorContext } from "./context";
 import { toast } from "react-toastify";
 import { EStatus } from "./type";
+import { useEffect, useState } from "react";
 
 const TargetBoxFooter = () => {
   const { targetText } = useTranslatorContext();
@@ -20,7 +21,14 @@ const TargetBoxFooter = () => {
 const TargetTextBox = () => {
   const { targetText, status } = useTranslatorContext();
 
-  const value = status === EStatus.waiting ? "Đang thực hiện..." : targetText;
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    const newValue =
+      status === EStatus.sending ? "Đang thực hiện..." : targetText;
+    setValue(newValue || "");
+  }, [status, targetText]);
+
   return (
     <div className="w-full">
       <StructureTextarea
