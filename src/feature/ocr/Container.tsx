@@ -5,12 +5,33 @@ import drag2dropImg from "~/assets/drag_and_drop.png";
 import DragDropArea from "~/component/Drag&Drop";
 import { useDragDropContext } from "~/component/Drag&Drop/context";
 import { MdClose } from "react-icons/md";
-import { useEffect } from "react";
 import { BaseTextarea } from "~/component/Textarea";
+import { toast } from "react-toastify";
 
 const Container = () => {
   const { isEmpty, translations, clearInput } = useOcrContext();
   const { files, updateFiles } = useDragDropContext();
+
+  const handlePasteFromClipboard = async () => {
+    try {
+      const clipboardItems = await navigator.clipboard.read();
+      for (const clipboardItem of clipboardItems) {
+        if (clipboardItem.types.includes("image/png")) {
+          const blob = await clipboardItem.getType("image/png");
+
+          const file = new File([blob], "pasted-image.png", {
+            type: "image/png",
+          });
+          updateFiles([file]);
+        } else {
+          console.log("No image found in clipboard.");
+          toast.info("Vui lòng chọn dán đúng định dạng ảnh");
+        }
+      }
+    } catch (error) {
+      toast.info("Vui lòng chọn dán đúng định dạng ảnh");
+    }
+  };
 
   return (
     <div className="w-full h-full max-w-screen-2xl mx-auto">
@@ -31,7 +52,9 @@ const Container = () => {
               <ColorButton active className="w-48">
                 Tải tệp lên
               </ColorButton>
-              <ColorButton className="w-48">Dán ảnh từ clipboard</ColorButton>
+              <ColorButton className="w-48" onClick={handlePasteFromClipboard}>
+                Dán ảnh từ clipboard
+              </ColorButton>
             </div>
           </div>
         </DragDropArea>
