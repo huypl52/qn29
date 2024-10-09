@@ -3,12 +3,17 @@ export enum DLang {
   en = "en", // = "Tiếng Anh",
   vi = "vi", // = "Tiếng Việt",
   zh = "zh",
+  lo = "lo",
+  km = "km",
 }
 
 export const DLangMap = {
   cn: "Tiếng Trung",
   en: "Tiếng Anh",
   vi: "Tiếng Việt",
+  zh: "Tiếng Trung",
+  lo: "Lào",
+  km: "Khmer",
 };
 
 // import translations from "../../i18n.json";

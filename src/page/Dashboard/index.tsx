@@ -1,4 +1,5 @@
-import Tabs from "~/component/Tab";
+import { TabWithContent } from "~/component/Tab/TabWithContent";
+import { LangContextProvider } from "~/feature/languageSelect/context";
 import Ocr from "~/feature/ocr";
 import Translator from "~/feature/translator";
 
@@ -10,7 +11,9 @@ const tabs = [
 const Dashboard = () => {
   return (
     <div>
-      <Tabs tabs={tabs} />
+      <LangContextProvider>
+        <TabWithContent tabs={tabs} />
+      </LangContextProvider>
     </div>
   );
 };

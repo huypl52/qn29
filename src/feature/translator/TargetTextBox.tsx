@@ -4,7 +4,26 @@ import { useTranslatorContext } from "./context";
 import { toast } from "react-toastify";
 import { EStatus } from "./type";
 import { useEffect, useState } from "react";
+import { stat } from "fs";
 
+const DynamicDots = () => {
+  const [dots, setDots] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+    }, 400);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div>
+      Đang thực hiện{dots}
+      <span className="invisible">...</span>
+    </div>
+  );
+};
 const TargetBoxFooter = () => {
   const { targetText } = useTranslatorContext();
   const onCopyClick = () => {
@@ -18,16 +37,15 @@ const TargetBoxFooter = () => {
     </div>
   );
 };
+
 const TargetTextBox = () => {
   const { targetText, status } = useTranslatorContext();
 
-  const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(status === EStatus.sending);
 
   useEffect(() => {
-    const newValue =
-      status === EStatus.sending ? "Đang thực hiện..." : targetText;
-    setValue(newValue || "");
-  }, [status, targetText]);
+    setLoading(status === EStatus.sending);
+  }, [status]);
 
   return (
     <div className="w-full">
@@ -35,7 +53,8 @@ const TargetTextBox = () => {
         resizable={false}
         footer={TargetBoxFooter}
         disabled
-        value={value}
+        value={targetText}
+        loading={loading}
       />
     </div>
   );

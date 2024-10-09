@@ -1,5 +1,7 @@
+import Container from "./Container";
+
 const Ocr = () => {
-  return <div>OCR</div>;
+  return <Container />;
 };
 
 export default Ocr;

@@ -4,6 +4,6 @@ export interface ILangContext {
   sourceLang: DLang;
   targetLang: DLang;
 
-  setSourceLang: (lang: DLang) => void;
-  setTargetLang: (lang: DLang) => void;
+  updateSourceLang: (lang: DLang) => void;
+  updateTargetLang: (lang: DLang) => void;
 }

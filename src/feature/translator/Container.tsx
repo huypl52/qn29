@@ -1,5 +1,5 @@
+import LangBar from "../languageSelect/LangBar";
 import { TranslatorContextProvider } from "./context";
-import LangBar from "./LangBar";
 import SourceTextBox from "./SourceTextBox";
 import TargetTextBox from "./TargetTextBox";
 

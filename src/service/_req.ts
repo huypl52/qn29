@@ -162,8 +162,7 @@ export const req = instance;
 export const httpGet = (i = 0) => instanceList[i].get;
 export const httpPatch = (i = 0) => instanceList[i].patch;
 export const httpPost = (i = 0) => _httpPost(instanceList[i]);
-export const httpPostForm = httpFormWrapper(
-  (i = 0) => instanceList[i].postForm,
-);
+export const httpPostForm = (i = 0) =>
+  httpFormWrapper(instanceList[i].postForm);
 export const httpPut = (i = 0) => instanceList[i].put;
 export const httpDel = (i = 0) => instanceList[i].delete;
