@@ -31,10 +31,10 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     (async () => {
-      // if (!files.length) {
-      //   clearInput();
-      //   return;
-      // }
+      if (!files.length) {
+        // clearInput();
+        return;
+      }
       const { data } = await toast.promise(
         getOcr({ lang: sourceLang, files }),
         {

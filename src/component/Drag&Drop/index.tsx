@@ -16,7 +16,7 @@ export default function DragDropArea(
   { className, children, onlyShownInDrag = false }: IDragDropArea,
 ) {
   const [isDragging, setIsDragging] = useState(false);
-  const { files, updateFiles: setFiles } = useDragDropContext();
+  const { updateFiles: setFiles } = useDragDropContext();
   const dragCounter = useRef(0);
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -67,27 +67,25 @@ export default function DragDropArea(
   }, [isDragging, className]);
 
   return (
-    <div className="p-4">
-      <div
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        className="relative w-full"
-      >
-        {isDragging
-          ? (
-            <div className={dragDropClassname}>
-              <div className="text-center p-4 ">
-                <p className="text-blue-700 text-5xl">
-                  Thả tệp ở đây
-                </p>
-              </div>
+    <div
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className="relative w-full"
+    >
+      {isDragging
+        ? (
+          <div className={dragDropClassname}>
+            <div className="text-center p-4 ">
+              <p className="text-blue-700 text-5xl">
+                Thả tệp ở đây
+              </p>
             </div>
-          )
-          : null}
-        {children}
-      </div>
+          </div>
+        )
+        : null}
+      {children}
     </div>
   );
 }

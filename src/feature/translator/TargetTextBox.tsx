@@ -32,7 +32,10 @@ const TargetBoxFooter = () => {
     toast.success("Text is copied to clipboard");
   };
   return (
-    <div className="text-gray-400 h-10 flex items-center" onClick={onCopyClick}>
+    <div
+      className="text-gray-400 h-10 flex items-center cursor-pointer"
+      onClick={onCopyClick}
+    >
       <FaRegCopy />
     </div>
   );
