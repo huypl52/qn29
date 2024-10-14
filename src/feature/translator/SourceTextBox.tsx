@@ -41,6 +41,7 @@ const SourceTextBox = () => {
     // Set new timeout
     const newTimeoutId = setTimeout(async () => {
       setStatus(EStatus.sending);
+      // updateTargetText("");
       try {
         const res = await translate({ source_text: text } as ITranslation).then(
           (res) => {

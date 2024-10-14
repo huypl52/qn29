@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { IBaseTextarea } from "./type";
 import { MdClose } from "react-icons/md";
 
@@ -36,7 +37,7 @@ const BaseTextarea = ({
         rows={5}
         spellCheck={false}
         placeholder={loading ? "" : "Xin mời nhập..."}
-        value={value}
+        value={loading ? "" : value}
         onChange={handleTextChange}
         disabled={disabled}
       ></textarea>
