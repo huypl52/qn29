@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { IBaseTextarea } from "./type";
 import { MdClose } from "react-icons/md";
 
@@ -11,7 +10,7 @@ const BaseTextarea = ({
   loading,
 }: IBaseTextarea) => {
   let className =
-    "w-full h-full focus:outline-none text-base lg:text-2xl text-black custom-scrollbar p-4";
+    "w-full h-full focus:outline-none text-base lg:text-2xl text-black custom-scrollbar p-4 rounded-lg";
 
   if (!resizable) {
     className += " resize-none";
@@ -31,7 +30,7 @@ const BaseTextarea = ({
   };
 
   return (
-    <div className="flex flex-row relative">
+    <div className="flex flex-row relative h-full">
       <textarea
         className={className}
         rows={5}

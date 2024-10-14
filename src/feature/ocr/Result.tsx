@@ -11,7 +11,7 @@ const Result = () => {
   const [doTranslate, setDoTranslate] = useState(false);
 
   return (
-    <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 bg-stone-100 rounded-lg">
+    <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg">
       <div className="flex items-center gap-3">
         <button
           className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
@@ -44,7 +44,7 @@ const Result = () => {
                 />
               </div>
 
-              <div className="w-full">
+              <div className="w-1/2 pl-2">
                 <BaseTextarea value={description} disabled />
               </div>
             </div>

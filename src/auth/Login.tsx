@@ -32,7 +32,7 @@ const LoginForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-[400px]">
+      <Card className="w-[400px] bg-white rounded-lg shadow-md p-6">
         <CardHeader>
           <CardTitle>Đăng nhập</CardTitle>
         </CardHeader>

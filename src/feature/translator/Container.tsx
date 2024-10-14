@@ -6,9 +6,9 @@ import TargetTextBox from "./TargetTextBox";
 const Container = () => {
   return (
     <TranslatorContextProvider>
-      <div className="w-full h-full max-w-screen-2xl mx-auto">
-        <LangBar />
-        <div className="flex">
+      <div className="w-full h-full">
+        <LangBar/>
+        <div className="flex gap-2">
           <SourceTextBox />
           <TargetTextBox />
         </div>

@@ -1,20 +1,29 @@
 import { useState } from "react";
 import { TabsProps } from "./type";
 
+
 export function TabWithContent({ tabs, defaultTabId }: TabsProps) {
   const [selectedId, setSelectedId] = useState(
     defaultTabId || tabs[0]?.id || "",
   );
 
   return (
-    <div className="">
-      <div className="flex m-5">
+    <div className="max-w-screen-2xl mx-auto">
+      <div className="flex gap-2">
+
         {tabs.map((tab) => (
+
+            // <ColorButton
+            //     active={selectedId === tab.id}
+            //     onClick={ () => setSelectedId(tab.id) }
+            // >
+            //     {tab.label}
+            // </ColorButton>
           <button
             key={tab.id}
             onClick={() => setSelectedId(tab.id)}
             className={`
-              px-4 py-2 font-medium text-sm border-b-2 
+              px-4 py-2 font-medium text-sm border-b-2
               ${
                 selectedId === tab.id
                   ? "border-blue-500 text-blue-600"
