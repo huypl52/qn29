@@ -8,6 +8,7 @@ const BaseTextarea = ({
   showClear,
   resizable = true,
   loading,
+                        text,
 }: IBaseTextarea) => {
   let className =
     "w-full h-full focus:outline-none text-base lg:text-2xl text-black custom-scrollbar p-4 rounded-lg";
@@ -35,7 +36,7 @@ const BaseTextarea = ({
         className={className}
         rows={5}
         spellCheck={false}
-        placeholder={loading ? "" : "Xin mời nhập..."}
+        placeholder={loading ? "Đang dịch" : text}
         value={loading ? "" : value}
         onChange={handleTextChange}
         disabled={disabled}

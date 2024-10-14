@@ -6,6 +6,7 @@ interface IBaseTextarea {
   resizable?: boolean;
   showClear?: boolean;
   loading?: boolean;
+  text?: string;
 }
 
 interface IStructureTextarea extends IBaseTextarea {

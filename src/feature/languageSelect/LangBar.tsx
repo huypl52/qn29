@@ -25,33 +25,35 @@ const LangBar = () => {
     [setTargetLang],
   );
 
+
+
   return (
-    <div className="flex w-full h-full justify-evenly my-2 gap-2">
-      <div className="flex w-full gap-2">
+    <div className="flex w-full h-full justify-evenly mt-2 gap-2">
+      <div className="flex w-full gap-2 ml-2">
         <ColorButton
-          active={sourceLang === DLang.zh}
-          onClick={updateSrcLang.bind(null, DLang.zh)}
+            active={sourceLang === DLang.zh}
+            onClick={updateSrcLang.bind(null, DLang.zh)}
         >
           {DLangMap[DLang.zh]}
         </ColorButton>
         <ColorButton
-          active={sourceLang === DLang.lo}
-          onClick={updateSrcLang.bind(null, DLang.lo)}
+            active={sourceLang === DLang.lo}
+            onClick={updateSrcLang.bind(null, DLang.lo)}
         >
           {DLangMap[DLang.lo]}
         </ColorButton>
         <ColorButton
-          active={sourceLang === DLang.km}
-          onClick={updateSrcLang.bind(null, DLang.km)}
+            active={sourceLang === DLang.km}
+            onClick={updateSrcLang.bind(null, DLang.km)}
         >
           {DLangMap[DLang.km]}
         </ColorButton>
       </div>
-      <div className="flex w-full gap-2">
+      <div className="flex w-full gap-2 ml-2">
         {/* <IoMdSwap size={24} /> */}
         <ColorButton
-          active={targetLang === DLang.vi}
-          onClick={updateTargetLang.bind(null, DLang.vi)}
+            active={targetLang === DLang.vi}
+            onClick={updateTargetLang.bind(null, DLang.vi)}
         >
           {DLangMap[DLang.vi]}
         </ColorButton>

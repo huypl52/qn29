@@ -85,6 +85,7 @@ const SourceTextBox = () => {
         onChange={handleInputChange}
         footer={TextBoxFooter}
         showClear
+        text={"Nhập văn bản ..."}
       />
     </div>
   );

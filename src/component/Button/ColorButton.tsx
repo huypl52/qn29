@@ -1,5 +1,6 @@
 import Button from "./BaseButton";
 import { IColorButton } from "./type";
+import {DLang} from "~/type";
 
 const ColorButton = ({
   title,
@@ -8,17 +9,14 @@ const ColorButton = ({
   active,
   className,
 }: IColorButton) => {
-  className +=
-    " rounded border border-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-600";
-  if (active) className += " text-blue-700 bg-blue-100";
-  else {
-    className += " text-blue-600";
-  }
+
   return (
     <Button
       onClick={onClick}
       title={title}
-      className={className}
+      className={`border-b-4 text-sm px-4 py-2  ${
+          active ? 'border-blue-500 text-blue-500 bg-white' : 'border-transparent hover:border-gray-300 hover:bg-gray-300'
+      }`}
       // disabled={!active}
     >
       {children}

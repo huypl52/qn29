@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TabsProps } from "./type";
+import ColorOptionButton from "~/component/Button/ColorOptionButton.tsx";
 
 
 export function TabWithContent({ tabs, defaultTabId }: TabsProps) {
@@ -9,32 +10,31 @@ export function TabWithContent({ tabs, defaultTabId }: TabsProps) {
 
   return (
     <div className="max-w-screen-2xl mx-auto">
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-4">
 
         {tabs.map((tab) => (
-
-            // <ColorButton
-            //     active={selectedId === tab.id}
-            //     onClick={ () => setSelectedId(tab.id) }
-            // >
-            //     {tab.label}
-            // </ColorButton>
-          <button
-            key={tab.id}
-            onClick={() => setSelectedId(tab.id)}
-            className={`
-              px-4 py-2 font-medium text-sm border-b-2
-              ${
-                selectedId === tab.id
-                  ? "border-blue-500 text-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }
-            `}
-            aria-selected={selectedId === tab.id}
-            role="tab"
-          >
-            {tab.label}
-          </button>
+            <ColorOptionButton
+                active={selectedId === tab.id}
+                onClick={ () => setSelectedId(tab.id) }
+            >
+                {tab.label}
+            </ColorOptionButton>
+          // <button
+          //   key={tab.id}
+          //   onClick={() => setSelectedId(tab.id)}
+          //   className={`
+          //     px-4 py-2 font-medium text-sm border-b-2
+          //     ${
+          //       selectedId === tab.id
+          //         ? "border-blue-500 text-blue-600"
+          //         : "text-gray-500 hover:text-gray-700"
+          //     }
+          //   `}
+          //   aria-selected={selectedId === tab.id}
+          //   role="tab"
+          // >
+          //   {tab.label}
+          // </button>
         ))}
       </div>
       <div className="mt-4">
