@@ -3,11 +3,12 @@ import Container from './Container';
 import { OcrContextProvider } from './context';
 import React from "react";
 
-const Ocr: React.FC<{ updateViewHistory: (status: boolean) => void }> = ({ updateViewHistory }) => {
-  return (
+const Ocr: React.FC<{ updateViewHistory: (status: boolean) => void, updateSavedText: (status:boolean)=> void }> = ({ updateViewHistory,updateSavedText}) => {
+
+    return (
     <DragDropContextProvider>
       <OcrContextProvider>
-        <Container updateViewHistory={updateViewHistory}/>
+        <Container updateViewHistory={updateViewHistory} updateSavedText={updateSavedText} />
       </OcrContextProvider>
     </DragDropContextProvider>
   );

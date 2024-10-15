@@ -4,4 +4,5 @@ export const AuthRoutePath = {
   HOME: '/home',
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
+  STATISTICAL: '/statistical',
 };
