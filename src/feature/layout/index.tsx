@@ -14,7 +14,7 @@ const Header = () => {
           </button>
 
           <div className="ml-2 my-auto text-3xl font-semibold text-gray-700">
-            Dịch ngôn ngữ 86
+            Phần mềm dịch ngôn ngữ phục vụ trinh sát, giám sát trên KGM
           </div>
         </div>
       </div>
