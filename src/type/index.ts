@@ -1,1 +1,1 @@
-export * from "./vocab";
+export * from './vocab';

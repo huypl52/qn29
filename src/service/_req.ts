@@ -3,16 +3,16 @@ import axios, {
   AxiosRequestConfig,
   AxiosRequestTransformer,
   AxiosResponse,
-} from "axios";
-import { isPlainObject } from "lodash";
+} from 'axios';
+import { isPlainObject } from 'lodash';
 import {
   clearUser,
   getUserRefreshToken,
   getUserToken,
   saveUserRefreshToken,
   saveUserToken,
-} from "~/storage/auth";
-import { convertToDateType2 } from "~/utils/date";
+} from '~/storage/auth';
+import { convertToDateType2 } from '~/utils/date';
 
 const dateTransformer: (data: any) => AxiosRequestTransformer = (data) => {
   if (data instanceof Date) {
@@ -24,14 +24,14 @@ const dateTransformer: (data: any) => AxiosRequestTransformer = (data) => {
   }
   if (isPlainObject(data)) {
     return Object.fromEntries(
-      Object.entries(data).map(([k, v]) => [k, dateTransformer(v)]),
+      Object.entries(data).map(([k, v]) => [k, dateTransformer(v)])
     );
   }
   return data;
 };
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API || "",
+  baseURL: import.meta.env.VITE_PUBLIC_API || '',
   transformRequest: [
     dateTransformer,
     ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
@@ -39,7 +39,7 @@ const instance = axios.create({
 });
 
 const instance2nd = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API2 || "",
+  baseURL: import.meta.env.VITE_PUBLIC_API2 || '',
   transformRequest: [
     dateTransformer,
     ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
@@ -56,13 +56,13 @@ instanceList.forEach((ins) => {
 
       if (authorization && refreshToken) {
         config.headers.setAuthorization(authorization);
-        config.headers.set("refreshtoken", refreshToken);
+        config.headers.set('refreshtoken', refreshToken);
       }
       return config;
     },
     function (error) {
       return Promise.reject(error);
-    },
+    }
   );
 
   ins.interceptors.response.use(
@@ -82,13 +82,13 @@ instanceList.forEach((ins) => {
       const { response } = error;
       if (response && response.status === 401) {
         clearUser();
-        setTimeout(() => (window.location.href = "/sign-in"), 2000);
+        setTimeout(() => (window.location.href = '/sign-in'), 2000);
         return;
       }
       const { stack, ...error_info } = error;
       console.log({ intercept_error: error_info });
       return Promise.reject(response);
-    },
+    }
   );
 });
 
@@ -97,7 +97,7 @@ const _httpPost =
   <T = any, R = AxiosResponse<T, any>, D = any>(
     url: string,
     data?: D | undefined,
-    config?: AxiosRequestConfig<D> | undefined,
+    config?: AxiosRequestConfig<D> | undefined
   ) => {
     const interceptData = data as D & {
       columns: string[] | string;
@@ -105,16 +105,16 @@ const _httpPost =
       take: number | undefined;
     };
     if (
-      Object.prototype.hasOwnProperty.call(interceptData, "columns") &&
+      Object.prototype.hasOwnProperty.call(interceptData, 'columns') &&
       !!interceptData
     ) {
-      const columns = interceptData["columns"];
+      const columns = interceptData['columns'];
       if (Array.isArray(columns)) {
-        interceptData["columns"] = columns.join(",");
+        interceptData['columns'] = columns.join(',');
       }
     }
     if (
-      !Object.prototype.hasOwnProperty.call(interceptData, "take") &&
+      !Object.prototype.hasOwnProperty.call(interceptData, 'take') &&
       !!interceptData
     ) {
       // interceptData["take"] = 10000000;
@@ -134,7 +134,7 @@ const httpFormWrapper = (reqFunction: any) =>
   function <T = any, R = AxiosResponse<T, any>, D = any>(
     url: string,
     data?: D | undefined,
-    config?: AxiosRequestConfig<FormData> | undefined,
+    config?: AxiosRequestConfig<FormData> | undefined
   ): Promise<R> {
     const formData = new FormData();
     if (!data) return reqFunction(url, formData, config);
@@ -145,10 +145,10 @@ const httpFormWrapper = (reqFunction: any) =>
           formData.append(arrKey, parseDateObject(subValue));
         });
       } else {
-        if (value instanceof Blob || typeof value === "string") {
+        if (value instanceof Blob || typeof value === 'string') {
           formData.append(key, value);
         } else {
-          if (value == null) formData.append(key, "");
+          if (value == null) formData.append(key, '');
           else {
             formData.append(key, parseDateObject(value));
           }

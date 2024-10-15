@@ -1,17 +1,17 @@
-import { useAuth } from "./context";
-import { Card, CardContent, CardHeader, CardTitle } from "~/component/Card";
-import { Input } from "~/component/Input";
-import { ColorButton } from "~/component/Button";
-import { Alert, AlertDescription } from "~/component/Alert";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { AuthRoutePath } from "~/routes";
-import { saveUser } from "~/storage/auth";
+import { useAuth } from './context';
+import { Card, CardContent, CardHeader, CardTitle } from '~/component/Card';
+import { Input } from '~/component/Input';
+import { ColorButton } from '~/component/Button';
+import { Alert, AlertDescription } from '~/component/Alert';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { AuthRoutePath } from '~/routes';
+import { saveUser } from '~/storage/auth';
 
 const LoginSchema = Yup.object().shape({
-  username: Yup.string().required("Required"),
-  password: Yup.string().required("Required"),
+  username: Yup.string().required('Required'),
+  password: Yup.string().required('Required'),
 });
 
 const LoginForm = () => {
@@ -20,8 +20,8 @@ const LoginForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
@@ -44,7 +44,7 @@ const LoginForm = () => {
                 placeholder="Username"
                 value={formik.values.username}
                 onChange={(e) =>
-                  formik.setFieldValue("username", e.target.value)
+                  formik.setFieldValue('username', e.target.value)
                 }
               />
             </div>
@@ -59,7 +59,7 @@ const LoginForm = () => {
                 placeholder="Password"
                 value={formik.values.password}
                 onChange={(e) =>
-                  formik.setFieldValue("password", e.target.value)
+                  formik.setFieldValue('password', e.target.value)
                 }
               />
             </div>

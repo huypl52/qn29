@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useOcrContext } from "./context";
-import { MdClose } from "react-icons/md";
-import { useDragDropContext } from "~/component/Drag&Drop/context";
-import TextSwitch from "~/component/Switch";
-import { BaseTextarea } from "~/component/Textarea";
+import { useState } from 'react';
+import { useOcrContext } from './context';
+import { MdClose } from 'react-icons/md';
+import { useDragDropContext } from '~/component/Drag&Drop/context';
+import TextSwitch from '~/component/Switch';
+import { BaseTextarea } from '~/component/Textarea';
 
 const Result = () => {
   const { translations, clearInput } = useOcrContext();
@@ -29,7 +29,7 @@ const Result = () => {
       </div>
       <div className="w-full h-full p-4 divide-y divide-stone-400">
         {files.map((f, i) => {
-          const description = translations[i] || "";
+          const description = translations[i] || '';
           return (
             <div
               className="flex w-full divide-x divide-stone-400 gap-4 py-2"

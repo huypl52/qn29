@@ -1,4 +1,4 @@
-import { DLang } from "./vocab";
+import { DLang } from './vocab';
 
 export interface ITranslation {
   source_language: DLang;

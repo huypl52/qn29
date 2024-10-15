@@ -1,11 +1,11 @@
-import { StructureTextarea } from "~/component/Textarea";
-import { useTranslatorContext } from "./context";
-import { useEffect, useState } from "react";
-import { EStatus } from "./type";
-import { translate } from "~/service/translate";
-import { ITranslation } from "~/type/translate";
-import { toastMsg } from "~/type";
-import { toast } from "react-toastify";
+import { StructureTextarea } from '~/component/Textarea';
+import { useTranslatorContext } from './context';
+import { useEffect, useState } from 'react';
+import { EStatus } from './type';
+import { translate } from '~/service/translate';
+import { ITranslation } from '~/type/translate';
+import { toastMsg } from '~/type';
+import { toast } from 'react-toastify';
 
 const TextBoxFooter = () => {
   const { srcText, maxInputLeng } = useTranslatorContext();
@@ -27,7 +27,7 @@ const SourceTextBox = () => {
     updateSrcText(text);
     if (!text) {
       setStatus(EStatus.idle);
-      updateTargetText("");
+      updateTargetText('');
       return;
     }
 
@@ -49,7 +49,7 @@ const SourceTextBox = () => {
             if (status === 200) {
               return data;
             }
-          },
+          }
         );
         if (res) {
           const { translation } = res;
@@ -58,8 +58,8 @@ const SourceTextBox = () => {
         }
         setStatus(EStatus.idle);
       } catch (error) {
-        console.error("API call failed:", error);
-        updateTargetText("");
+        console.error('API call failed:', error);
+        updateTargetText('');
         setStatus(EStatus.idle);
         toast.error(toastMsg.error);
       }
@@ -85,7 +85,7 @@ const SourceTextBox = () => {
         onChange={handleInputChange}
         footer={TextBoxFooter}
         showClear
-        text={"Nhập văn bản ..."}
+        text={'Nhập văn bản ...'}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { DLang } from "./vocab";
+import { DLang } from './vocab';
 
 export interface IOcrResult {
   ocred_text: string;

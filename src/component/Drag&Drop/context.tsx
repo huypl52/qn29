@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
-import { IDragDropContext } from "./type";
+import { IDragDropContext } from './type';
 
 const DragDropContext = createContext<IDragDropContext>({
   files: [],
@@ -9,9 +9,11 @@ const DragDropContext = createContext<IDragDropContext>({
   clear: () => {},
 });
 
-const DragDropContextProvider = (
-  { children }: { children: React.ReactNode },
-) => {
+const DragDropContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const insertFiles = (files: File[]) => {

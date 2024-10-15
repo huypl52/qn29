@@ -1,34 +1,34 @@
-import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "~/lib/utils";
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '~/lib/utils';
 import {
   IoCheckmarkCircle,
   IoClose,
   IoCloseCircle,
   IoInformationCircle,
   IoWarning,
-} from "react-icons/io5";
-import type { IconType } from "react-icons";
+} from 'react-icons/io5';
+import type { IconType } from 'react-icons';
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
+  'relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
   {
     variants: {
       variant: {
-        default: "bg-background text-foreground",
+        default: 'bg-background text-foreground',
         destructive:
-          "border-red-500/50 text-red-600 dark:border-red-500 [&>svg]:text-red-600 bg-red-50 dark:bg-red-900/10",
+          'border-red-500/50 text-red-600 dark:border-red-500 [&>svg]:text-red-600 bg-red-50 dark:bg-red-900/10',
         success:
-          "border-green-500/50 text-green-600 dark:border-green-500 [&>svg]:text-green-600 bg-green-50 dark:bg-green-900/10",
+          'border-green-500/50 text-green-600 dark:border-green-500 [&>svg]:text-green-600 bg-green-50 dark:bg-green-900/10',
         warning:
-          "border-yellow-500/50 text-yellow-600 dark:border-yellow-500 [&>svg]:text-yellow-600 bg-yellow-50 dark:bg-yellow-900/10",
-        info: "border-blue-500/50 text-blue-600 dark:border-blue-500 [&>svg]:text-blue-600 bg-blue-50 dark:bg-blue-900/10",
+          'border-yellow-500/50 text-yellow-600 dark:border-yellow-500 [&>svg]:text-yellow-600 bg-yellow-50 dark:bg-yellow-900/10',
+        info: 'border-blue-500/50 text-blue-600 dark:border-blue-500 [&>svg]:text-blue-600 bg-blue-50 dark:bg-blue-900/10',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
     },
-  },
+  }
 );
 
 const iconMap: Record<string, IconType> = {
@@ -51,16 +51,16 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   (
     {
       className,
-      variant = "default",
+      variant = 'default',
       icon,
       onClose,
       showIcon = true,
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const Icon = icon || iconMap[variant || "default"];
+    const Icon = icon || iconMap[variant || 'default'];
 
     return (
       <div
@@ -72,8 +72,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         {showIcon && <Icon className="h-4 w-4" />}
         <div
           className={cn(
-            "flex flex-1 justify-between gap-x-2",
-            !showIcon && "pl-0",
+            'flex flex-1 justify-between gap-x-2',
+            !showIcon && 'pl-0'
           )}
         >
           <div className="flex-1">{children}</div>
@@ -89,9 +89,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         </div>
       </div>
     );
-  },
+  }
 );
 
-Alert.displayName = "Alert";
+Alert.displayName = 'Alert';
 
 export { Alert };

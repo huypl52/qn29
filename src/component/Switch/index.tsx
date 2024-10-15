@@ -1,20 +1,20 @@
-import * as Switch from "@radix-ui/react-switch";
-import { useState } from "react";
+import * as Switch from '@radix-ui/react-switch';
+import { useState } from 'react';
 
 interface TextSwitchProps {
   onText?: string;
   offText?: string;
   onChange?: (checked: boolean) => void;
   defaultChecked?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const TextSwitch = ({
-  onText = "ON",
-  offText = "OFF",
+  onText = 'ON',
+  offText = 'OFF',
   onChange,
   defaultChecked = false,
-  size = "md",
+  size = 'md',
 }: TextSwitchProps) => {
   const [checked, setChecked] = useState(defaultChecked);
 
@@ -27,22 +27,22 @@ const TextSwitch = ({
   // Size variants
   const sizes = {
     sm: {
-      root: "w-14 h-6",
-      thumb: "w-5 h-5",
-      text: "text-[10px]",
-      translateX: "translate-x-[28px]",
+      root: 'w-14 h-6',
+      thumb: 'w-5 h-5',
+      text: 'text-[10px]',
+      translateX: 'translate-x-[28px]',
     },
     md: {
-      root: "w-16 h-7",
-      thumb: "w-6 h-6",
-      text: "text-xs",
-      translateX: "translate-x-[36px]",
+      root: 'w-16 h-7',
+      thumb: 'w-6 h-6',
+      text: 'text-xs',
+      translateX: 'translate-x-[36px]',
     },
     lg: {
-      root: "w-18 h-8",
-      thumb: "w-7 h-7",
-      text: "text-sm",
-      translateX: "translate-x-[38px]",
+      root: 'w-18 h-8',
+      thumb: 'w-7 h-7',
+      text: 'text-sm',
+      translateX: 'translate-x-[38px]',
     },
   };
 
@@ -53,7 +53,7 @@ const TextSwitch = ({
       className={`
         relative rounded-full outline-none
         ${sizes[size].root}
-        ${checked ? "bg-green-500" : "bg-gray-200"} 
+        ${checked ? 'bg-green-500' : 'bg-gray-200'} 
         transition-colors duration-200
       `}
     >
@@ -63,7 +63,7 @@ const TextSwitch = ({
           ${sizes[size].text}
           font-medium text-black
           transition-opacity duration-200
-          ${checked ? "opacity-0" : "opacity-100"}
+          ${checked ? 'opacity-0' : 'opacity-100'}
         `}
       >
         {offText}
@@ -75,7 +75,7 @@ const TextSwitch = ({
           ${sizes[size].text}
           font-medium text-black
           transition-opacity duration-200
-          ${checked ? "opacity-100" : "opacity-0"}
+          ${checked ? 'opacity-100' : 'opacity-0'}
         `}
       >
         {onText}
@@ -87,7 +87,7 @@ const TextSwitch = ({
           ${sizes[size].thumb}
           shadow-lg
           transition-transform duration-200
-          ${checked ? sizes[size].translateX : "translate-x-[2px]"}
+          ${checked ? sizes[size].translateX : 'translate-x-[2px]'}
           transform
         `}
       />

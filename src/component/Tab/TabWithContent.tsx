@@ -1,24 +1,22 @@
-import { useState } from "react";
-import { TabsProps } from "./type";
-import ColorOptionButton from "~/component/Button/ColorOptionButton.tsx";
-
+import { useState } from 'react';
+import { TabsProps } from './type';
+import ColorOptionButton from '~/component/Button/ColorOptionButton.tsx';
 
 export function TabWithContent({ tabs, defaultTabId }: TabsProps) {
   const [selectedId, setSelectedId] = useState(
-    defaultTabId || tabs[0]?.id || "",
+    defaultTabId || tabs[0]?.id || ''
   );
 
   return (
     <div className="max-w-screen-2xl mx-auto">
       <div className="flex gap-2 mt-4">
-
         {tabs.map((tab) => (
-            <ColorOptionButton
-                active={selectedId === tab.id}
-                onClick={ () => setSelectedId(tab.id) }
-            >
-                {tab.label}
-            </ColorOptionButton>
+          <ColorOptionButton
+            active={selectedId === tab.id}
+            onClick={() => setSelectedId(tab.id)}
+          >
+            {tab.label}
+          </ColorOptionButton>
           // <button
           //   key={tab.id}
           //   onClick={() => setSelectedId(tab.id)}
@@ -41,7 +39,7 @@ export function TabWithContent({ tabs, defaultTabId }: TabsProps) {
         {tabs.map((tab) => (
           <div
             key={tab.id}
-            className={tab.id === selectedId ? "block" : "hidden"}
+            className={tab.id === selectedId ? 'block' : 'hidden'}
             role="tabpanel"
           >
             {tab.content}

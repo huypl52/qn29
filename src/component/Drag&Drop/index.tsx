@@ -4,17 +4,20 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
-import { useDragDropContext } from "./context";
+} from 'react';
+import { useDragDropContext } from './context';
 
 interface IDragDropArea
-  extends React.HTMLAttributes<HTMLDivElement>, PropsWithChildren {
+  extends React.HTMLAttributes<HTMLDivElement>,
+    PropsWithChildren {
   onlyShownInDrag?: boolean;
 }
 
-export default function DragDropArea(
-  { className, children, onlyShownInDrag = false }: IDragDropArea,
-) {
+export default function DragDropArea({
+  className,
+  children,
+  onlyShownInDrag = false,
+}: IDragDropArea) {
   const [isDragging, setIsDragging] = useState(false);
   const { updateFiles: setFiles } = useDragDropContext();
   const dragCounter = useRef(0);
@@ -52,10 +55,9 @@ export default function DragDropArea(
   }, []);
 
   const dragDropClassname = useMemo(() => {
-    let clsName =
-      `rounded-lg border-2 border-dashed flex items-center justify-center absolute top-0 bottom-0 left-0 right-0 z-10 duration-300 ease-in-out transition-all bg-blue-300 ${
-        isDragging ? "opacity-85" : "opacity-0"
-      } `;
+    let clsName = `rounded-lg border-2 border-dashed flex items-center justify-center absolute top-0 bottom-0 left-0 right-0 z-10 duration-300 ease-in-out transition-all bg-blue-300 ${
+      isDragging ? 'opacity-85' : 'opacity-0'
+    } `;
     // if (isDragging) {
     //   dragDropClassname += " border-blue-500 bg-blue-50";
     // } else {
@@ -74,17 +76,13 @@ export default function DragDropArea(
       onDrop={handleDrop}
       className="relative w-full"
     >
-      {isDragging
-        ? (
-          <div className={dragDropClassname}>
-            <div className="text-center p-4 ">
-              <p className="text-blue-700 text-5xl">
-                Thả tệp ở đây
-              </p>
-            </div>
+      {isDragging ? (
+        <div className={dragDropClassname}>
+          <div className="text-center p-4 ">
+            <p className="text-blue-700 text-5xl">Thả tệp ở đây</p>
           </div>
-        )
-        : null}
+        </div>
+      ) : null}
       {children}
     </div>
   );

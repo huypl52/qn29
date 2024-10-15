@@ -1,3 +1,3 @@
-import { TabWithContent } from "./TabWithContent";
+import { TabWithContent } from './TabWithContent';
 
 export { TabWithContent };

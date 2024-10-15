@@ -1,5 +1,5 @@
-import React from "react";
-import { cn } from "~/lib/utils";
+import React from 'react';
+import { cn } from '~/lib/utils';
 
 // Alert Title Component
 const AlertTitle = React.forwardRef<
@@ -8,13 +8,13 @@ const AlertTitle = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <h5
     ref={ref}
-    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+    className={cn('mb-1 font-medium leading-none tracking-tight', className)}
     {...props}
   >
     {children}
   </h5>
 ));
 
-AlertTitle.displayName = "AlertTitle";
+AlertTitle.displayName = 'AlertTitle';
 
 export { AlertTitle };

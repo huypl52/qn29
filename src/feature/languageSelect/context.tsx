@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
-import { DLang } from "~/type";
-import { ILangContext } from "~/type/ctxLang";
+import { createContext, useContext, useState } from 'react';
+import { DLang } from '~/type';
+import { ILangContext } from '~/type/ctxLang';
 
 export const LangContext = createContext<ILangContext>({
   sourceLang: DLang.zh,

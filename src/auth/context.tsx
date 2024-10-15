@@ -1,10 +1,10 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
-import { IAuthContext } from "./type";
-import { toast } from "react-toastify";
-import { toastMsg } from "~/type";
-import { loginUser } from "~/service/auth";
-import { IUser, IUserLogin } from "~/type/user";
-import { saveUser } from "~/storage/auth";
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { IAuthContext } from './type';
+import { toast } from 'react-toastify';
+import { toastMsg } from '~/type';
+import { loginUser } from '~/service/auth';
+import { IUser, IUserLogin } from '~/type/user';
+import { saveUser } from '~/storage/auth';
 
 // Auth Context
 const AuthContext = createContext<IAuthContext>({
@@ -32,10 +32,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       .then((res) => {
         const { data: foundUser, status } = res;
         if (status !== 200) {
-          return Promise.reject("Login failed!");
+          return Promise.reject('Login failed!');
         }
         saveUser(foundUser);
-        setUser({ ...foundUser, username, password, role: "admin" });
+        setUser({ ...foundUser, username, password, role: 'admin' });
         return true;
       })
       .catch((err) => {
@@ -49,20 +49,20 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         new Promise((resolve) =>
           setTimeout(() => {
             resolve(true);
-          }, 2000),
+          }, 2000)
         ),
       ]).then((res) => {
         return res[0];
       }),
       {
-        pending: "Đang đăng nhập...",
+        pending: 'Đang đăng nhập...',
         success: toastMsg.success,
         error: {
           render: (err) => {
             return <>{err?.data ? err.data : toastMsg.error}</>;
           },
         },
-      },
+      }
     );
   };
 

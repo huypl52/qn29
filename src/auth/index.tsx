@@ -3,16 +3,16 @@ import {
   Navigate,
   Route,
   Routes,
-} from "react-router-dom";
-import { Button } from "~/component/Button";
-import { AuthProvider, useAuth } from "./context";
-import { IRouteWrapper } from "./type";
-import LoginForm from "./Login";
-import Translator from "~/feature/translator";
-import { AuthRoutePath } from "~/routes";
-import Dashboard from "~/page/Dashboard";
-import Layout from "~/feature/layout";
-import { getUser } from "~/storage/auth";
+} from 'react-router-dom';
+import { Button } from '~/component/Button';
+import { AuthProvider, useAuth } from './context';
+import { IRouteWrapper } from './type';
+import LoginForm from './Login';
+import Translator from '~/feature/translator';
+import { AuthRoutePath } from '~/routes';
+import Dashboard from '~/page/Dashboard';
+import Layout from '~/feature/layout';
+import { getUser } from '~/storage/auth';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }: IRouteWrapper) => {
@@ -71,7 +71,7 @@ const AuthContainer = () => {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute allowedRoles={["admin"]}>
+              <ProtectedRoute allowedRoles={['admin']}>
                 <AdminDashboard />
               </ProtectedRoute>
             }
@@ -79,7 +79,7 @@ const AuthContainer = () => {
           <Route
             path="/*"
             element={
-              <ProtectedRoute allowedRoles={["admin", "user"]}>
+              <ProtectedRoute allowedRoles={['admin', 'user']}>
                 <Routes>
                   {[
                     <Route

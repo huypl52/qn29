@@ -1,17 +1,17 @@
-import { StructureTextarea } from "../../component/Textarea";
-import { FaRegCopy } from "react-icons/fa";
-import { useTranslatorContext } from "./context";
-import { toast } from "react-toastify";
-import { EStatus } from "./type";
-import { useEffect, useState } from "react";
-import { stat } from "fs";
+import { StructureTextarea } from '../../component/Textarea';
+import { FaRegCopy } from 'react-icons/fa';
+import { useTranslatorContext } from './context';
+import { toast } from 'react-toastify';
+import { EStatus } from './type';
+import { useEffect, useState } from 'react';
+import { stat } from 'fs';
 
 const DynamicDots = () => {
-  const [dots, setDots] = useState("");
+  const [dots, setDots] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+      setDots((prev) => (prev.length >= 3 ? '' : prev + '.'));
     }, 400);
 
     return () => clearInterval(interval);
@@ -29,7 +29,7 @@ const TargetBoxFooter = () => {
   const onCopyClick = () => {
     if (!targetText) return;
     navigator.clipboard.writeText(targetText);
-    toast.success("Text is copied to clipboard");
+    toast.success('Text is copied to clipboard');
   };
   return (
     <div
@@ -58,7 +58,7 @@ const TargetTextBox = () => {
         disabled
         value={targetText}
         loading={loading}
-        text={"Bản dịch"}
+        text={'Bản dịch'}
       />
     </div>
   );

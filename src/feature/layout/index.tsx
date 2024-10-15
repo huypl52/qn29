@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
-import { MdOutlineStorage } from "react-icons/md";
-import { RiTranslate2 } from "react-icons/ri";
+import { Outlet } from 'react-router-dom';
+import { MdOutlineStorage } from 'react-icons/md';
+import { RiTranslate2 } from 'react-icons/ri';
 const Header = () => {
   return (
     <header className="flex flex-grow px-5 py-2 border-b border-gray-200 w-full h-[20vh] max-h-16">

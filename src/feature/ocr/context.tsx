@@ -5,12 +5,12 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
-import { useDragDropContext } from "~/component/Drag&Drop/context";
-import { getOcr } from "~/service/ocr";
-import { useLangContext } from "../languageSelect/context";
-import { toast } from "react-toastify";
-import { toastMsg } from "~/type";
+} from 'react';
+import { useDragDropContext } from '~/component/Drag&Drop/context';
+import { getOcr } from '~/service/ocr';
+import { useLangContext } from '../languageSelect/context';
+import { toast } from 'react-toastify';
+import { toastMsg } from '~/type';
 
 const OcrContext = createContext<IOcrContext>({
   clearInput: () => {},
@@ -38,14 +38,14 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
       const { data } = await toast.promise(
         getOcr({ lang: sourceLang, files }),
         {
-          pending: "Đang thực hiện...",
+          pending: 'Đang thực hiện...',
           success: toastMsg.success,
           // error: {
           //   render: (err) => {
           //     return <>{err?.data ? err.data : toastMsg.error}</>;
           //   },
           // },
-        },
+        }
       );
       console.log({ data });
       if (data?.ocred_text) {
@@ -56,7 +56,7 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const isEmpty = useMemo(
     () => translations.length === 0 && files.length === 0,
-    [translations],
+    [translations]
   );
 
   return (

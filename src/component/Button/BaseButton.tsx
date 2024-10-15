@@ -1,4 +1,4 @@
-import { IButton } from "./type";
+import { IButton } from './type';
 const Button = ({
   title,
   onClick,

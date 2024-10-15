@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, CSSProperties, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, CSSProperties, PropsWithChildren } from 'react';
 
 interface IButton
   extends PropsWithChildren,
@@ -13,7 +13,7 @@ interface IActiveButton extends IButton {
 interface IColorButton extends IActiveButton {}
 
 interface IUnderlineButton extends IActiveButton {
-  color: CSSProperties["color"];
+  color: CSSProperties['color'];
 }
 
 export { type IButton, type IColorButton, type IUnderlineButton };

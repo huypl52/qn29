@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
-import { IUser } from "~/type/user";
+import { PropsWithChildren } from 'react';
+import { IUser } from '~/type/user';
 
 interface IRouteWrapper extends PropsWithChildren {
   allowedRoles: string[];
