@@ -1,10 +1,10 @@
 import { StructureTextarea } from '../../component/Textarea';
 import { FaRegCopy } from 'react-icons/fa';
-import { useTranslatorContext } from './context';
 import { toast } from 'react-toastify';
 import { EStatus } from './type';
 import { useEffect, useState } from 'react';
 import { stat } from 'fs';
+import { useTranslateStore } from '~/store/translate';
 
 const DynamicDots = () => {
   const [dots, setDots] = useState('');
@@ -25,7 +25,7 @@ const DynamicDots = () => {
   );
 };
 const TargetBoxFooter = () => {
-  const { targetText } = useTranslatorContext();
+  const { targetText } = useTranslateStore();
   const onCopyClick = () => {
     if (!targetText) return;
     navigator.clipboard.writeText(targetText);
@@ -42,7 +42,7 @@ const TargetBoxFooter = () => {
 };
 
 const TargetTextBox = () => {
-  const { targetText, status } = useTranslatorContext();
+  const { targetText, status } = useTranslateStore();
 
   const [loading, setLoading] = useState(status === EStatus.sending);
 

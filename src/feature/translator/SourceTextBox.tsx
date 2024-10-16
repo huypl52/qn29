@@ -1,14 +1,14 @@
 import { StructureTextarea } from '~/component/Textarea';
-import { useTranslatorContext } from './context';
 import { useEffect, useState } from 'react';
 import { EStatus } from './type';
 import { translate } from '~/service/translate';
 import { ITranslation } from '~/type/translate';
 import { toastMsg } from '~/type';
 import { toast } from 'react-toastify';
+import { useTranslateStore } from '~/store/translate';
 
 const TextBoxFooter = () => {
-  const { srcText, maxInputLeng } = useTranslatorContext();
+  const { srcText, maxInputLeng } = useTranslateStore();
   return (
     <div className="text-gray-400 h-10 flex items-center ">
       {`${srcText?.length || 0}/${maxInputLeng}`}
@@ -19,7 +19,7 @@ const TextBoxFooter = () => {
 const TIMEOUT_DURATION = 500;
 const SourceTextBox = () => {
   const { srcText, updateSrcText, setStatus, updateTargetText } =
-    useTranslatorContext();
+    useTranslateStore();
 
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
