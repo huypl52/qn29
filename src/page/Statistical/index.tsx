@@ -184,6 +184,8 @@ const Statistical: React.FC = () => {
 	const [timeScale, setTimeScale] = useState('day'); // Default to 'day'
 	const [dataType, setDataType] = useState('text'); // Default to 'text' data
 
+	const [timeScaleTLC, setTimeScaleTLC] = useState('day'); // Default to 'day' for second chart
+
 	// Dummy data for each time scale (Text data example)
 	const dataByDayText = {
 		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
@@ -195,12 +197,24 @@ const Statistical: React.FC = () => {
 				borderColor: 'rgba(75, 192, 192, 1)',
 				borderWidth: 1,
 			},
-
 		],
 	};
 
 	const dataByMonthText = {
-		labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+		labels: [
+			'Tháng 1',
+			'Tháng 2',
+			'Tháng 3',
+			'Tháng 4',
+			'Tháng 5',
+			'Tháng 6',
+			'Tháng 7',
+			'Tháng 8',
+			'Tháng 9',
+			'Tháng 10',
+			'Tháng 11',
+			'Tháng 12',
+		],
 		datasets: [
 			{
 				label: 'Số lần sử dụng theo tháng (Văn bản)',
@@ -240,7 +254,20 @@ const Statistical: React.FC = () => {
 	};
 
 	const dataByMonthImage = {
-		labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+		labels: [
+			'Tháng 1',
+			'Tháng 2',
+			'Tháng 3',
+			'Tháng 4',
+			'Tháng 5',
+			'Tháng 6',
+			'Tháng 7',
+			'Tháng 8',
+			'Tháng 9',
+			'Tháng 10',
+			'Tháng 11',
+			'Tháng 12',
+		],
 		datasets: [
 			{
 				label: 'Số lần sử dụng theo tháng (Hình ảnh)',
@@ -265,6 +292,87 @@ const Statistical: React.FC = () => {
 		],
 	};
 
+	const dataByDayTLC = {
+		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+		datasets: [
+			{
+				label: 'Số bản dịch theo tuần (T)',
+				data: [8, 10, 5, 7, 9, 3, 6],
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+			},
+			{
+				label: 'Số bản dịch theo tuần (L)',
+				data: [6, 12, 4, 8, 10, 5, 7],
+				backgroundColor: 'rgba(54, 162, 235, 0.5)',
+				borderColor: 'rgba(54, 162, 235, 1)',
+				borderWidth: 1,
+			},
+			{
+				label: 'Số bản dịch theo tuần (C)',
+				data: [9, 11, 6, 5, 12, 7, 8],
+				backgroundColor: 'rgba(255, 206, 86, 0.5)',
+				borderColor: 'rgba(255, 206, 86, 1)',
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const dataByMonthTLC = {
+		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+		datasets: [
+			{
+				label: 'Số bản dịch theo tuần (T)',
+				data: [8, 10, 5, 7, 9, 3, 6],
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+			},
+			{
+				label: 'Số bản dịch theo tuần (L)',
+				data: [6, 12, 4, 8, 10, 5, 7],
+				backgroundColor: 'rgba(54, 162, 235, 0.5)',
+				borderColor: 'rgba(54, 162, 235, 1)',
+				borderWidth: 1,
+			},
+			{
+				label: 'Số bản dịch theo tuần (C)',
+				data: [9, 11, 6, 5, 12, 7, 8],
+				backgroundColor: 'rgba(255, 206, 86, 0.5)',
+				borderColor: 'rgba(255, 206, 86, 1)',
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const dataByYearTLC = {
+		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+		datasets: [
+			{
+				label: 'Tiếng Trung',
+				data: [8, 10, 5, 7, 9, 3, 6],
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+			},
+			{
+				label: 'Tiếng Lào',
+				data: [6, 12, 4, 8, 10, 5, 7],
+				backgroundColor: 'rgba(54, 162, 235, 0.5)',
+				borderColor: 'rgba(54, 162, 235, 1)',
+				borderWidth: 1,
+			},
+			{
+				label: 'Tiếng Khmer',
+				data: [9, 11, 6, 5, 12, 7, 8],
+				backgroundColor: 'rgba(255, 206, 86, 0.5)',
+				borderColor: 'rgba(255, 206, 86, 1)',
+				borderWidth: 1,
+			},
+		],
+	};
+
 	// Determine which data to show based on the selected time scale and data type
 	const chartData =
 		timeScale === 'day'
@@ -279,68 +387,126 @@ const Statistical: React.FC = () => {
 		    ? dataByYearText
 		    : dataByYearImage;
 
-	return (
-		<div className="w-full max-w-4xl mx-auto mt-4">
-			<h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng</h2>
+	const chartDataTLC =
+		timeScaleTLC === 'day'
+		? dataByDayTLC
+		: timeScaleTLC === 'month'
+		  ? dataByMonthTLC
+		  : dataByYearTLC;
 
-			{/* Radio Buttons for Time Scale Selection */}
-			<div className="flex justify-between">
-				<div className="flex gap-4 mb-4 items-center">
-					<label>
-						<input
-							type="radio"
-							value="day"
-							checked={timeScale === 'day'}
-							onChange={() => setTimeScale('day')}
-							className="mr-2"
-						/>
-						Tuần
-					</label>
-					<label>
-						<input
-							type="radio"
-							value="month"
-							checked={timeScale === 'month'}
-							onChange={() => setTimeScale('month')}
-							className="mr-2"
-						/>
-						Tháng
-					</label>
-					<label>
-						<input
-							type="radio"
-							value="year"
-							checked={timeScale === 'year'}
-							onChange={() => setTimeScale('year')}
-							className="mr-2"
-						/>
-						Năm
-					</label>
+	return (
+		<div className="flex">
+			<div className="w-full max-w-4xl mx-auto mt-4">
+				<h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng</h2>
+
+				{/* Radio Buttons for Time Scale Selection */}
+				<div className="flex justify-between h-[5vh]">
+					<div className="flex gap-4 mb-4 items-center">
+						<label>
+							<input
+								type="radio"
+								value="day"
+								checked={timeScale === 'day'}
+								onChange={() => setTimeScale('day')}
+								className="mr-2"
+							/>
+							Tuần
+						</label>
+						<label>
+							<input
+								type="radio"
+								value="month"
+								checked={timeScale === 'month'}
+								onChange={() => setTimeScale('month')}
+								className="mr-2"
+							/>
+							Tháng
+						</label>
+						<label>
+							<input
+								type="radio"
+								value="year"
+								checked={timeScale === 'year'}
+								onChange={() => setTimeScale('year')}
+								className="mr-2"
+							/>
+							Năm
+						</label>
+					</div>
+
+					<div className="mb-4">
+						<label htmlFor="dataType" className="mr-2">
+							Chọn kiểu dữ liệu:
+						</label>
+						<select
+							id="dataType"
+							value={dataType}
+							onChange={(e) => setDataType(e.target.value)}
+							className="border rounded px-2 py-1"
+						>
+							<option value="text">Văn bản</option>
+							<option value="image">Hình ảnh</option>
+						</select>
+					</div>
 				</div>
 
-				<div className="mb-4">
-					<label htmlFor="dataType" className="mr-2">Chọn kiểu dữ liệu:</label>
-					<select
-						id="dataType"
-						value={dataType}
-						onChange={(e) => setDataType(e.target.value)}
-						className="border rounded px-2 py-1"
-					>
-						<option value="text">Văn bản</option>
-						<option value="image">Hình ảnh</option>
-					</select>
+				<div className="bg-gray-100 p-4 shadow-md rounded-lg mt-4">
+					<Bar
+						data={chartData}
+						options={{
+							responsive: true,
+							maintainAspectRatio: false,
+						}}
+						height={400}
+					/>
 				</div>
 			</div>
+			<div className="w-full max-w-4xl mx-auto mt-4">
+				<h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng dịch văn bản</h2>
 
-			<div className="bg-gray-100 p-4 shadow-md rounded-lg mt-4">
-				<Bar
-					data={chartData}
-					options={{
-						responsive: true,
-						maintainAspectRatio: false,
-					}}
-					height={400}
-				/>
+				{/* Radio Buttons for Time Scale Selection */}
+				<div className="flex justify-between mb-4 h-[5vh]">
+					<div className="flex gap-4 items-center">
+						<label>
+							<input
+								type="radio"
+								value="day"
+								checked={timeScaleTLC === 'day'}
+								onChange={() => setTimeScaleTLC('day')}
+								className="mr-2"
+							/>
+							Tuần
+						</label>
+						<label>
+							<input
+								type="radio"
+								value="month"
+								checked={timeScaleTLC === 'month'}
+								onChange={() => setTimeScaleTLC('month')}
+								className="mr-2"
+							/>
+							Tháng
+						</label>
+						<label>
+							<input
+								type="radio"
+								value="year"
+								checked={timeScaleTLC === 'year'}
+								onChange={() => setTimeScaleTLC('year')}
+								className="mr-2"
+							/>
+							Năm
+						</label>
+					</div>
+				</div>
+
+				<div className="bg-gray-100 p-4 shadow-md rounded-lg">
+					<Bar
+						data={chartDataTLC}
+						options={{responsive: true, maintainAspectRatio: false}}
+						height={400}
+					/>
+				</div>
 			</div>
 		</div>
 	);
