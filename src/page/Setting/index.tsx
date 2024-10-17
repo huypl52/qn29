@@ -5,6 +5,7 @@ const Setting: React.FC = () => {
   const [minImageSize, setMinImageSize] = React.useState('');
   const [textSize, setTextSize] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false); // Trạng thái hiển thị mật khẩu
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,14 +79,25 @@ const Setting: React.FC = () => {
           <label className="block mb-2" htmlFor="password">
             Đổi mật khẩu:
           </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder=""
-            className="border rounded px-3 py-2 w-full"
-            required
-          />
+          <div className="flex items-center">
+            <input
+              type={showPassword ? 'text' : 'password'} // Thay đổi type dựa trên trạng thái
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Đổi mật khẩu"
+              className="border rounded px-3 py-2 flex-1"
+              required
+            />
+            <label className="ml-2">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+                className="mr-1"
+              />
+              Xem mật khẩu
+            </label>
+          </div>
         </div>
         <button
           type="submit"
