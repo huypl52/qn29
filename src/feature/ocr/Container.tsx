@@ -5,13 +5,22 @@ import drag2dropImg from '~/assets/drag_and_drop.png';
 import DragDropArea from '~/component/Drag&Drop';
 import { useDragDropContext } from '~/component/Drag&Drop/context';
 import { toast } from 'react-toastify';
-import { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import Result from './Result';
 import ColorOptionButton from '~/component/Button/ColorOptionButton.tsx';
+import { DLang, DLangMap } from '~/type';
+import { useLangContext } from '~/feature/languageSelect/context.tsx';
+import TextSwitch from '~/component/Switch';
+import { MdClose } from 'react-icons/md';
 
-const Container = () => {
+const Container: React.FC<{
+  updateViewHistory: (status: boolean) => void;
+  updateSavedText: (status: boolean) => void;
+}> = ({ updateViewHistory, updateSavedText }) => {
   const { isEmpty } = useOcrContext();
   const { files, updateFiles } = useDragDropContext();
+  const { needTranslate, toggleNeedTranslate } = useOcrContext();
+  const { clearInput } = useOcrContext();
 
   const handlePasteFromClipboard = async () => {
     try {
@@ -40,11 +49,66 @@ const Container = () => {
     updateFiles(files);
   };
 
+  const {
+    updateSourceLang: setSourceLang,
+    updateTargetLang: setTargetLang,
+    sourceLang,
+    targetLang,
+  } = useLangContext();
+
+  const updateSrcLang = useCallback(
+    (key: DLang) => {
+      setSourceLang(key);
+    },
+    [setSourceLang]
+  );
+
+  const updateTargetLang = useCallback(
+    (key: DLang) => {
+      setTargetLang(key);
+    },
+    [setTargetLang]
+  );
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="w-full h-full max-w-screen-2xl mx-auto">
-      <LangBar />
+    <div className="w-full h-full max-w-screen-xl mx-auto">
+      <div className="flex max-w-screen-xl h-full justify-around mt-2 gap-2 mx-auto">
+        <div className="flex w-full gap-2 ml-2">
+          <ColorButton
+            active={sourceLang === DLang.zh}
+            onClick={updateSrcLang.bind(null, DLang.zh)}
+          >
+            {DLangMap[DLang.zh]}
+          </ColorButton>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
+            title="Clear"
+            onClick={clearInput}
+          >
+            <MdClose size={20} />
+          </button>
+          <TextSwitch
+            onText="Dịch"
+            offText="Dịch"
+            defaultChecked={needTranslate}
+            onChange={toggleNeedTranslate}
+          />
+        </div>
+
+        <div className="flex w-full gap-2 ml-2">
+          {/* <IoMdSwap size={24} /> */}
+          <ColorButton
+            active={targetLang === DLang.vi}
+            onClick={updateTargetLang.bind(null, DLang.vi)}
+          >
+            {DLangMap[DLang.vi]}
+          </ColorButton>
+        </div>
+      </div>
       {isEmpty ? (
         <DragDropArea>
           <div className="flex w-full h-[50vh] min-h-[360px] border border-gray-200 rounded-xl">
@@ -102,6 +166,27 @@ const Container = () => {
       ) : (
         <Result />
       )}
+
+      <div className="flex justify-center space-x-12 mt-4">
+        <button
+          className="flex flex-col items-center w-48 text-gray-700"
+          onClick={() => updateViewHistory(true)}
+        >
+          <span className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+            ↻
+          </span>
+          <span className="text-xs mt-1">Các bản dịch đã thực hiện</span>
+        </button>
+        <button
+          className="flex flex-col items-center w-48 text-gray-700"
+          onClick={() => updateSavedText(true)}
+        >
+          <span className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+            ★
+          </span>
+          <span className="text-xs mt-1">Đã lưu</span>
+        </button>
+      </div>
     </div>
   );
 };

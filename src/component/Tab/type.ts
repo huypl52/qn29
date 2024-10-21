@@ -7,4 +7,5 @@ export type ITab = {
 export type TabsProps = {
   tabs: ITab[];
   defaultTabId?: string;
+  onTabChange: () => void;
 };

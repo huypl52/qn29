@@ -7,61 +7,120 @@ import {
   useState,
 } from 'react';
 import { useDragDropContext } from '~/component/Drag&Drop/context';
-import { getOcr } from '~/service/ocr';
-import { useLangContext } from '../languageSelect/context';
+import { uploadOcrFiles } from '~/service/ocr';
 import { toast } from 'react-toastify';
-import { toastMsg } from '~/type';
+import { DLang, toastMsg } from '~/type';
+import { useTaskStore } from '~/store/task';
+import { ETaskType } from '~/type/task';
+import { getTaskDetails } from '~/service/task';
+import { useOcrTaskStore } from '~/store/taskOcr';
 
 const OcrContext = createContext<IOcrContext>({
   clearInput: () => {},
   translations: [],
   updateTranslations: () => {},
   isEmpty: true,
+  // updateFiles: () => {},
+  needTranslate: false,
+  toggleNeedTranslate: () => {},
 });
 
 const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const { files, updateFiles } = useDragDropContext();
-  const { sourceLang } = useLangContext();
+  const { files: dragFiles, updateFiles } = useDragDropContext();
   const [translations, setTranslations] = useState<string[]>([]);
+  const [needTranslate, setNeedTranslate] = useState(false);
+  // const { addOcrTasks } = useOcrTaskStore();
+  const { addSelectedOcrIds } = useOcrTaskStore();
+  const { selectTaskId } = useTaskStore();
+  const [isEmpty, setEmpty] = useState(true);
+
+  const toggleNeedTranslate = useCallback(() => {
+    setNeedTranslate((prev) => !prev);
+  }, []);
+  const { selectedTaskId: selectedTask } = useTaskStore();
+
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    setFiles(dragFiles);
+  }, [dragFiles]);
 
   const clearInput = useCallback(() => {
     setTranslations([]);
     updateFiles([]);
   }, [updateFiles, setTranslations]);
 
-  useEffect(() => {
-    (async () => {
-      if (!files.length) {
-        // clearInput();
+  const handleUploadFiles = useCallback(
+    async (ocrFiles: File[]) => {
+      let targetLang = undefined;
+      if (needTranslate) {
+        targetLang = DLang.vi;
+      }
+      console.log({ ocrFiles, targetLang });
+      const ocrResponses = await uploadOcrFiles(true, ocrFiles, targetLang)
+        .then((res) => {
+          const { status, data } = res;
+          if (status === 200) {
+            return data;
+          }
+        })
+        .catch((err) => {
+          toast.error(err?.data ? err.data : toastMsg.error);
+        });
+      if (!ocrResponses) {
         return;
       }
-      const { data } = await toast.promise(
-        getOcr({ lang: sourceLang, files }),
+      console.log({ ocrResponses });
+      const taskId = ocrResponses[0].refid;
+      if (!taskId) {
+        console.log('No task id found');
+        return;
+      }
+      selectTaskId(taskId);
+      addSelectedOcrIds(ocrResponses.map((r) => r.ocr_id));
+      return true;
+    },
+    [needTranslate]
+  );
+
+  useEffect(() => {
+    (async () => {
+      console.log({ dragFiles });
+      if (!dragFiles.length) {
+        setFiles([]);
+        setTranslations([]);
+        setEmpty(true);
+        return;
+      }
+      toast.promise(
+        // getOcr({ lang: sourceLang, files: dragFiles }),
+        handleUploadFiles(dragFiles).then((res) => {
+          if (!res) throw new Error('No ocr found');
+          setEmpty(false);
+        }),
         {
           pending: 'Đang thực hiện...',
           success: toastMsg.success,
-          // error: {
-          //   render: (err) => {
-          //     return <>{err?.data ? err.data : toastMsg.error}</>;
-          //   },
-          // },
+          error: toastMsg.error,
         }
       );
-      console.log({ data });
-      if (data?.ocred_text) {
-        setTranslations([data.ocred_text]);
-      }
     })();
-  }, [files]);
+  }, [dragFiles]);
 
-  const isEmpty = useMemo(
-    () => translations.length === 0 && files.length === 0,
-    [translations]
-  );
+  useEffect(() => {
+    if (selectedTask?.type !== ETaskType.OCR) return;
+  }, [selectedTask]);
+
+  // const isEmpty = useMemo(
+  //   () => translations.length === 0 && files.length === 0,
+  //   [translations]
+  // );
 
   return (
     <OcrContext.Provider
       value={{
+        needTranslate,
+        toggleNeedTranslate,
         clearInput,
         translations,
         updateTranslations: setTranslations,

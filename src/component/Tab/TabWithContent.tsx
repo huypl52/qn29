@@ -2,18 +2,23 @@ import { useState } from 'react';
 import { TabsProps } from './type';
 import ColorOptionButton from '~/component/Button/ColorOptionButton.tsx';
 
-export function TabWithContent({ tabs, defaultTabId }: TabsProps) {
+export function TabWithContent({ tabs, defaultTabId, onTabChange }: TabsProps) {
   const [selectedId, setSelectedId] = useState(
     defaultTabId || tabs[0]?.id || ''
   );
 
+  const handleChangeTab = (id:string) =>{
+      setSelectedId(id);
+      onTabChange();
+  }
+
   return (
-    <div className="max-w-screen-2xl mx-auto">
-      <div className="flex gap-2 mt-4">
+    <div className="w-full h-full mx-auto">
+      <div className="flex gap-2 mt-4 max-w-screen-xl mx-auto">
         {tabs.map((tab) => (
           <ColorOptionButton
             active={selectedId === tab.id}
-            onClick={() => setSelectedId(tab.id)}
+            onClick={()=>handleChangeTab(tab.id)}
           >
             {tab.label}
           </ColorOptionButton>

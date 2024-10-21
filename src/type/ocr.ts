@@ -1,3 +1,4 @@
+import { ETaskType } from './task';
 import { DLang } from './vocab';
 
 export interface IOcrResult {
@@ -14,4 +15,29 @@ export interface IOcrTranslateResult {
   translation: string;
   status: number;
   message: string;
+}
+
+export interface IOcrResponse {
+  type: ETaskType.OCR;
+  id: string;
+  name: string;
+  size: number;
+  refid: string;
+  created_time: string;
+  ocr_id: string;
+}
+
+export enum EProcessStatus {
+  pending = 1,
+  success = 2,
+  failed = 3,
+}
+export interface IOcrDetail {
+  id: string;
+  status: EProcessStatus;
+  created_userid: string;
+  created_time: string;
+  detected_language: DLang;
+  detected_time: string;
+  detected_text: string;
 }

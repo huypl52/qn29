@@ -38,15 +38,15 @@ const instance = axios.create({
   ],
 });
 
-const instance2nd = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API2 || '',
+const instance_manual = axios.create({
+  baseURL: import.meta.env.VITE_PUBLIC_API_MANUAL || '',
   transformRequest: [
     dateTransformer,
     ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
   ],
 });
 
-const instanceList: AxiosInstance[] = [instance, instance2nd];
+const instanceList: AxiosInstance[] = [instance, instance_manual];
 
 instanceList.forEach((ins) => {
   ins.interceptors.request.use(

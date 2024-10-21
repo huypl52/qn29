@@ -3,4 +3,7 @@ interface IOcrContext {
   translations: string[];
   updateTranslations: (translations: string[]) => void;
   isEmpty: boolean;
+  // updateFiles: (files: File[]) => void;
+  needTranslate?: boolean;
+  toggleNeedTranslate: () => void;
 }
