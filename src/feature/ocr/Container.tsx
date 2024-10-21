@@ -6,12 +6,13 @@ import DragDropArea from '~/component/Drag&Drop';
 import { useDragDropContext } from '~/component/Drag&Drop/context';
 import { toast } from 'react-toastify';
 import React, { useCallback, useRef } from 'react';
-import Result from './Result';
+import OcrResult from './Result';
 import ColorOptionButton from '~/component/Button/ColorOptionButton.tsx';
 import { DLang, DLangMap } from '~/type';
 import { useLangContext } from '~/feature/languageSelect/context.tsx';
 import TextSwitch from '~/component/Switch';
 import { MdClose } from 'react-icons/md';
+import { useOcrTaskStore } from '~/store/taskOcr';
 
 const Container: React.FC<{
   updateViewHistory: (status: boolean) => void;
@@ -70,6 +71,7 @@ const Container: React.FC<{
     [setTargetLang]
   );
 
+  const { selectedOcrIds } = useOcrTaskStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -141,30 +143,11 @@ const Container: React.FC<{
               </ColorOptionButton>
             </div>
             <div className="h-5/6 w-[2px] bg-gray-300 my-auto"></div>
-            <div className="w-full h-full flex flex-col gap-3 justify-center items-center">
-              {/*<span className="mb-4 text-xl font-semibold">Hoặc chọn tệp</span>*/}
-              {/*<input*/}
-              {/*    ref={fileInputRef}*/}
-              {/*    type="file"*/}
-              {/*    multiple={false}*/}
-              {/*    onChange={uploadFile}*/}
-              {/*    className="hidden"*/}
-              {/*/>*/}
-              {/*<ColorButton*/}
-              {/*    active*/}
-              {/*    className="w-48"*/}
-              {/*    onClick={() => fileInputRef.current?.click()}*/}
-              {/*>*/}
-              {/*  Tải tệp lên*/}
-              {/*</ColorButton>*/}
-              {/*<ColorButton className="w-48" onClick={handlePasteFromClipboard}>*/}
-              {/*  Dán ảnh từ clipboard*/}
-              {/*</ColorButton>*/}
-            </div>
+            <div className="w-full h-full flex flex-col gap-3 justify-center items-center"></div>
           </div>
         </DragDropArea>
       ) : (
-        <Result />
+        <OcrResult ocrResults={selectedOcrIds.map((id) => ({ id }))} />
       )}
 
       <div className="flex justify-center space-x-12 mt-4">

@@ -3,7 +3,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { useDragDropContext } from '~/component/Drag&Drop/context';
@@ -12,7 +11,6 @@ import { toast } from 'react-toastify';
 import { DLang, toastMsg } from '~/type';
 import { useTaskStore } from '~/store/task';
 import { ETaskType } from '~/type/task';
-import { getTaskDetails } from '~/service/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
 
 const OcrContext = createContext<IOcrContext>({
@@ -39,11 +37,11 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
   const { selectedTaskId: selectedTask } = useTaskStore();
 
-  const [files, setFiles] = useState<File[]>([]);
+  // const [files, setFiles] = useState<File[]>([]);
 
-  useEffect(() => {
-    setFiles(dragFiles);
-  }, [dragFiles]);
+  // useEffect(() => {
+  //   setFiles(dragFiles);
+  // }, [dragFiles]);
 
   const clearInput = useCallback(() => {
     setTranslations([]);
@@ -87,7 +85,7 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
     (async () => {
       console.log({ dragFiles });
       if (!dragFiles.length) {
-        setFiles([]);
+        // setFiles([]);
         setTranslations([]);
         setEmpty(true);
         return;

@@ -66,26 +66,33 @@ const OcrItem = (ocrTask: IOcrTask) => {
             const ocr = data.find(({ ocrid }) => ocrid === ocrTask.id);
             if (ocr) {
               setOcrResult(ocr);
-              if (ocr.fileid) {
-                getImage(ocr.fileid).then((res) => {
-                  const { status, data } = res;
-                  if (status === 200) {
-                    const binaryString = String.fromCharCode(
-                      ...new Uint8Array(data)
-                    );
-                    const base64Image = btoa(binaryString);
-                    const imageUrl = `data:image/png;base64,${base64Image}`;
-                    setImg(imageUrl);
-                  }
-                });
-              }
             }
           });
         }
       };
-      setTimeout(fetchTask, 5000);
+      if (result) {
+        fetchTask();
+      } else {
+        setTimeout(fetchTask, 5000);
+      }
     }
   }, [ocrStatus, ocrTask.id]);
+
+  useEffect(() => {
+    const ocr = ocrResult;
+    if (!ocr) return;
+    if (ocr.fileid) {
+      getImage(ocr.fileid).then((res) => {
+        const { status, data } = res;
+        if (status === 200) {
+          const binaryString = String.fromCharCode(...new Uint8Array(data));
+          const base64Image = btoa(binaryString);
+          const imageUrl = `data:image/png;base64,${base64Image}`;
+          setImg(imageUrl);
+        }
+      });
+    }
+  }, [ocrResult]);
 
   return (
     <div className="flex w-full divide-x divide-stone-400 gap-4 py-2">
@@ -118,44 +125,22 @@ const OcrItem = (ocrTask: IOcrTask) => {
   );
 };
 
-const Result = () => {
-  const { translations, clearInput } = useOcrContext();
-  const { files } = useDragDropContext();
-  // const [doTranslate, setDoTranslate] = useState(false);
-  const { selectedOcrIds } = useOcrTaskStore();
-  console.log({ selectedOcrIds });
+interface IResult {
+  ocrResults: IOcrTask[];
+}
+
+const OcrResult = (props: IResult) => {
+  const { ocrResults } = props;
 
   return (
     <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg">
-      {/* <div className="flex items-center gap-3"> */}
-      {/*   <button */}
-      {/*     className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center" */}
-      {/*     title="Clear" */}
-      {/*     onClick={clearInput} */}
-      {/*   > */}
-      {/*     <MdClose size={20} /> */}
-      {/*   </button> */}
-      {/*   <TextSwitch */}
-      {/*     onText="Dịch" */}
-      {/*     offText="Dịch" */}
-      {/*     defaultChecked={false} */}
-      {/*     onChange={() => setDoTranslate((prev) => !prev)} */}
-      {/*   /> */}
-      {/* </div> */}
       <div className="w-full h-full p-4 divide-y divide-stone-400">
-        {/* {files.map((f, i) => { */}
-        {/*   const description = translations[i] || ''; */}
-        {/*   return ; */}
-        {/* })} */}
-        {/* {ocrTasks.map((task) => ( */}
-        {/*   <OcrItem {...task} key={task.id} /> */}
-        {/* ))} */}
-        {selectedOcrIds.map((id) => {
-          return <OcrItem id={id} />;
+        {ocrResults.map(({ id, result }) => {
+          return <OcrItem id={id} result={result} />;
         })}
       </div>
     </div>
   );
 };
 
-export default Result;
+export default OcrResult;
