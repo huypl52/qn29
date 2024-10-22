@@ -5,4 +5,5 @@ export const AuthRoutePath = {
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
   STATISTICAL: '/statistical',
+  SETTING:'/setting',
 };

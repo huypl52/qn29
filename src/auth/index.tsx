@@ -14,6 +14,7 @@ import Dashboard from '~/page/Dashboard';
 import Layout from '~/feature/layout';
 import { getUser } from '~/storage/auth';
 import Statistical from '~/page/Statistical';
+import Setting from '~/page/Setting';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }: IRouteWrapper) => {
@@ -90,6 +91,10 @@ const AuthContainer = () => {
                     <Route
                       path={AuthRoutePath.TRANSLATE}
                       element={<Translator />}
+                    />,
+                    <Route
+                      path={AuthRoutePath.SETTING}
+                      element={<Setting />}
                     />,
                     <Route
                       path={AuthRoutePath.STATISTICAL}

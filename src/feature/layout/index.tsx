@@ -5,8 +5,6 @@ import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
 import { AuthRoutePath } from '~/routes';
 
-import backgroundImage from '/src/assets/background.jpeg';
-
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate(); // Initialize the useNavigate hook
@@ -69,6 +67,14 @@ const Header = () => {
                     onClick={() => handleNavigation('/statistical')}
                   >
                     Thống kê
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleNavigation('/setting')}
+                  >
+                    Cài đặt
                   </button>
                 </li>
                 <li>
