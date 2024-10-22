@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { ColorButton } from '~/component/Button';
 import { DLang, DLangMap } from '~/type';
 import { useLangContext } from './context';
-import { IoMdSwap } from 'react-icons/io';
+
 const LangBar = () => {
   const {
     updateSourceLang: setSourceLang,
@@ -47,7 +47,7 @@ const LangBar = () => {
           {DLangMap[DLang.km]}
         </ColorButton>
       </div>
-      <div className="flex w-full gap-2 ml-2">
+      <div className="flex flex-row-reverse w-full gap-2 ml-2">
         {/* <IoMdSwap size={24} /> */}
         <ColorButton
           active={targetLang === DLang.vi}

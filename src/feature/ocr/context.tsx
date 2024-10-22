@@ -27,7 +27,6 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { files: dragFiles, updateFiles } = useDragDropContext();
   const [translations, setTranslations] = useState<string[]>([]);
   const [needTranslate, setNeedTranslate] = useState(false);
-  // const { addOcrTasks } = useOcrTaskStore();
   const { addSelectedOcrIds } = useOcrTaskStore();
   const { selectTaskId } = useTaskStore();
   const [isEmpty, setEmpty] = useState(true);
@@ -38,12 +37,6 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const { selectedTaskId: selectedTask } = useTaskStore();
   const { updateRecentAdded } = useOcrTaskStore();
-
-  // const [files, setFiles] = useState<File[]>([]);
-
-  // useEffect(() => {
-  //   setFiles(dragFiles);
-  // }, [dragFiles]);
 
   const clearInput = useCallback(() => {
     setTranslations([]);
@@ -70,7 +63,6 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
       if (!ocrResponses) {
         return;
       }
-      console.log({ ocrResponses });
       const taskId = ocrResponses[0].refid;
       if (!taskId) {
         console.log('No task id found');
@@ -110,11 +102,6 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (selectedTask?.type !== ETaskType.OCR) return;
   }, [selectedTask]);
-
-  // const isEmpty = useMemo(
-  //   () => translations.length === 0 && files.length === 0,
-  //   [translations]
-  // );
 
   return (
     <OcrContext.Provider

@@ -7,6 +7,8 @@ interface IBaseTextarea {
   showClear?: boolean;
   loading?: boolean;
   text?: string;
+  rows?: number;
+
 }
 
 interface IStructureTextarea extends IBaseTextarea {

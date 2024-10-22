@@ -3,27 +3,10 @@ import { FaRegCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { EStatus } from './type';
 import { useEffect, useState } from 'react';
-import { stat } from 'fs';
+import { IoSaveOutline } from 'react-icons/io5';
 import { useTranslateStore } from '~/store/translate';
+import { FaRegSave } from 'react-icons/fa';
 
-const DynamicDots = () => {
-  const [dots, setDots] = useState('');
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? '' : prev + '.'));
-    }, 400);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div>
-      Đang thực hiện{dots}
-      <span className="invisible">...</span>
-    </div>
-  );
-};
 const TargetBoxFooter = () => {
   const { targetText } = useTranslateStore();
   const onCopyClick = () => {
@@ -32,11 +15,15 @@ const TargetBoxFooter = () => {
     toast.success('Text is copied to clipboard');
   };
   return (
-    <div
-      className="text-gray-400 h-10 flex items-center cursor-pointer"
-      onClick={onCopyClick}
-    >
-      <FaRegCopy />
+    <div className="text-gray-600 h-10 flex gap-4 px-3 items-center ">
+      <div onClick={onCopyClick} className="cursor-pointer">
+        <FaRegCopy size={24} />
+      </div>
+      {targetText ? (
+        <div onClick={onCopyClick} className="cursor-pointer">
+          <FaRegSave size={24} />
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -51,7 +38,7 @@ const TargetTextBox = () => {
   }, [status]);
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <StructureTextarea
         resizable={false}
         footer={TargetBoxFooter}
@@ -59,6 +46,7 @@ const TargetTextBox = () => {
         value={targetText}
         loading={loading}
         text={'Bản dịch'}
+        rows={15}
       />
     </div>
   );

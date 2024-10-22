@@ -86,6 +86,7 @@ const SourceTextBox = () => {
         footer={TextBoxFooter}
         showClear
         text={'Nhập văn bản ...'}
+        rows={15}
       />
     </div>
   );

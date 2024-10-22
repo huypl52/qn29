@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FaEllipsisV, FaStar, FaTrashAlt } from 'react-icons/fa'; // Import icons
-import OcrResult from '~/feature/ocr/Result';
+import ListResult from '~/feature/ocr/Result';
 import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
@@ -95,7 +95,7 @@ const ItemHistory = (props: IItemHistory) => {
       </div>
 
       {ocrTasks?.length ? (
-        <OcrResult
+        <ListResult
           ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
         />
       ) : null}

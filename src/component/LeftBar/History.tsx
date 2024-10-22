@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import ItemHistory from '~/component/LeftBar/ItemHistory'; // Import icons
 import { getTaskHistory } from '~/service/task';
+import { useTaskStore } from '~/store/task';
 import { ETaskType, ITaskHistory } from '~/type/task';
 
 const History: React.FC<{
   updateViewHistory: (status: boolean) => void;
 }> = ({ updateViewHistory }) => {
-  const taskType = ETaskType.OCR;
-  // const {tasks,} = useTaskStore()
   const [taskHistories, setTaskHistories] = useState<ITaskHistory[]>([]);
 
+  const { type } = useTaskStore();
+
+  let taskType = type;
+  // TODO: fix task type null is OCR
+  if (type === ETaskType.OCR) {
+    taskType = null;
+  }
+
   useEffect(() => {
-    getTaskHistory()
+    getTaskHistory(undefined, undefined, taskType)
       .then((res) => {
         const { status, data } = res;
         if (status === 200) {
@@ -21,7 +28,7 @@ const History: React.FC<{
       .catch((err) => {
         console.log({ err });
       });
-  }, []);
+  }, [taskType]);
 
   return (
     <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-lg max-w-lg">
@@ -41,11 +48,10 @@ const History: React.FC<{
       </div>
       <div className="h-[80vh] overflow-y-scroll">
         {taskHistories
-          // TODO: fix task type null is OCR
-          .filter((t) => t.type === null)
-          .slice(0, 2)
+          .filter((t) => t.type === taskType)
+          // .slice(0, 2)
           .map((t) => (
-            <ItemHistory taskType={ETaskType.OCR} taskHistory={t} />
+            <ItemHistory taskType={taskType} taskHistory={t} />
           ))}
       </div>
     </div>

@@ -1,24 +1,41 @@
 import { useEffect, useState } from 'react';
 import { useOcrContext } from './context';
-import { BaseTextarea } from '~/component/Textarea';
+import { BaseTextarea, StructureTextarea } from '~/component/Textarea';
 import { ITaskDetail } from '~/type/task';
 import { useTaskStore } from '~/store/task';
 import { getOcrDetail } from '~/service/ocr';
 import { EProcessStatus } from '~/type/ocr';
 import { getImage, getTaskDetails } from '~/service/task';
+import { toast } from 'react-toastify';
+import { FaRegCopy } from 'react-icons/fa';
 
 interface IOcrTask {
   id: string;
   result?: ITaskDetail;
 }
 
-const OcrItem = (ocrTask: IOcrTask) => {
+const TextBoxFooter = ({ text }: { text: string }) => {
+  const onCopyClick = () => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    toast.success('Text is copied to clipboard');
+  };
+  return (
+    <div
+      className="text-gray-400 h-10 flex items-center cursor-pointer"
+      onClick={onCopyClick}
+    >
+      <FaRegCopy />
+    </div>
+  );
+};
+
+const Item = (ocrTask: IOcrTask) => {
   const { result } = ocrTask;
   const { selectedTaskId } = useTaskStore();
-  const [ocrStatus, setOcrStatus] = useState(
+  const [taskDetailStatus, setTaskDetailStatus] = useState(
     result ? EProcessStatus.success : EProcessStatus.pending
   );
-  console.log({ result });
   const { needTranslate } = useOcrContext();
 
   const [img, setImg] = useState<string>();
@@ -26,7 +43,14 @@ const OcrItem = (ocrTask: IOcrTask) => {
   const [ocrResult, setOcrResult] = useState<ITaskDetail | undefined>(result);
 
   useEffect(() => {
-    if (ocrStatus !== EProcessStatus.pending) {
+    if (result) {
+      setOcrResult(result);
+      setTaskDetailStatus(EProcessStatus.success);
+    }
+  }, [result]);
+
+  useEffect(() => {
+    if (taskDetailStatus !== EProcessStatus.pending) {
       return;
     }
     const intervalRef = setInterval(() => {
@@ -36,8 +60,7 @@ const OcrItem = (ocrTask: IOcrTask) => {
           return;
         }
         const { status: success } = data;
-        console.log({ success, data });
-        setOcrStatus(success);
+        setTaskDetailStatus(success);
       });
     }, 1000);
 
@@ -49,10 +72,10 @@ const OcrItem = (ocrTask: IOcrTask) => {
   }, [ocrTask.id]);
 
   useEffect(() => {
-    if (ocrStatus === EProcessStatus.pending) {
+    if (taskDetailStatus === EProcessStatus.pending) {
       return;
     }
-    if (ocrStatus === EProcessStatus.success) {
+    if (taskDetailStatus === EProcessStatus.success) {
       const fetchTask = async () => {
         if (selectedTaskId) {
           getTaskDetails(selectedTaskId).then((res) => {
@@ -75,7 +98,7 @@ const OcrItem = (ocrTask: IOcrTask) => {
         setTimeout(fetchTask, 5000);
       }
     }
-  }, [ocrStatus, ocrTask.id]);
+  }, [taskDetailStatus, ocrTask.id]);
 
   useEffect(() => {
     const ocr = ocrResult;
@@ -104,18 +127,32 @@ const OcrItem = (ocrTask: IOcrTask) => {
         />
       </div>
 
-      {ocrStatus === EProcessStatus.pending ? (
+      {taskDetailStatus === EProcessStatus.pending ? (
         'processing...'
-      ) : ocrStatus === EProcessStatus.failed ? (
+      ) : taskDetailStatus === EProcessStatus.failed ? (
         'failed!!!'
       ) : (
         <div className="w-1/2 pl-2">
           <div>
-            <BaseTextarea value={ocrResult?.detected_text} disabled />
+            <StructureTextarea
+              resizable={false}
+              footer={() => (
+                <TextBoxFooter text={ocrResult?.detected_text || ''} />
+              )}
+              disabled
+              value={ocrResult?.detected_text}
+            />
           </div>
           {needTranslate ? (
-            <div className="border-t border-gray-400 px-2 mt-2">
-              <BaseTextarea value={ocrResult?.dest_text} disabled />
+            <div className="border-t mt-2">
+              <StructureTextarea
+                resizable={false}
+                footer={() => (
+                  <TextBoxFooter text={ocrResult?.dest_text || ''} />
+                )}
+                disabled
+                value={ocrResult?.dest_text}
+              />
             </div>
           ) : null}
         </div>
@@ -128,18 +165,18 @@ interface IResult {
   ocrResults: IOcrTask[];
 }
 
-const OcrResult = (props: IResult) => {
+const ListResult = (props: IResult) => {
   const { ocrResults } = props;
 
   return (
     <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg">
       <div className="w-full h-full p-4 divide-y divide-stone-400">
         {ocrResults.map(({ id, result }) => {
-          return <OcrItem id={id} result={result} />;
+          return <Item id={id} result={result} />;
         })}
       </div>
     </div>
   );
 };
 
-export default OcrResult;
+export default ListResult;

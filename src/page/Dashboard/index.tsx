@@ -7,6 +7,8 @@ import History from '~/component/LeftBar/History';
 import HistoryImageOcr from '~/component/LeftBar/HistoryImageOcr.tsx';
 import SavedText from '~/component/LeftBar/SavedText.tsx';
 import SavedImage from '~/component/LeftBar/SavedImage.tsx';
+import { useTaskStore } from '~/store/task';
+import { ETaskType } from '~/type/task';
 
 const Dashboard = () => {
   const [viewHistory, setViewHistory] = React.useState(false);
@@ -28,6 +30,8 @@ const Dashboard = () => {
   const updateSavedImage = (status: boolean) => {
     setSavedImage(status);
   };
+
+  const { changeTaskType } = useTaskStore();
 
   const tabs = [
     {
@@ -57,7 +61,17 @@ const Dashboard = () => {
       <LangContextProvider>
         <TabWithContent
           tabs={tabs}
-          onTabChange={() => updateViewHistory(false)}
+          onTabChange={(id) => {
+            updateViewHistory(false);
+            switch (id) {
+              case '1':
+                changeTaskType(ETaskType.TRANSLATE);
+                break;
+              case '2':
+                changeTaskType(ETaskType.OCR);
+                break;
+            }
+          }}
         />
       </LangContextProvider>
       {viewHistory && <History updateViewHistory={updateViewHistory} />}

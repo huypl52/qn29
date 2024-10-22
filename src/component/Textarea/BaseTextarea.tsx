@@ -1,5 +1,5 @@
-import { IBaseTextarea } from "./type";
-import { MdClose } from "react-icons/md";
+import { IBaseTextarea } from './type';
+import { MdClose } from 'react-icons/md';
 
 const BaseTextarea = ({
   value,
@@ -9,32 +9,33 @@ const BaseTextarea = ({
   resizable = true,
   loading,
   text,
+  rows = 5,
 }: IBaseTextarea) => {
   let className =
-    "w-full h-full focus:outline-none text-base lg:text-2xl text-black custom-scrollbar p-4 rounded-lg";
+    'w-full h-full focus:outline-none text-base lg:text-2xl text-black custom-scrollbar p-4 rounded-lg';
 
   if (!resizable) {
-    className += " resize-none";
+    className += ' resize-none';
   }
 
   const showClearButton = showClear && value?.length;
 
   const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    e,
+    e
   ) => {
     const insertedText = e.target.value;
     onChange?.(insertedText);
   };
 
   const clearText = () => {
-    onChange?.("");
+    onChange?.('');
   };
 
   return (
     <div className="flex flex-row relative h-full">
       <textarea
         className={className}
-        rows={5}
+        rows={rows}
         spellCheck={false}
         placeholder={loading ? '' : text}
         value={loading ? '' : value}
