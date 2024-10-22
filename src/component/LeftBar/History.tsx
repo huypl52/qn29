@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ItemHistory from '~/component/LeftBar/ItemHistory'; // Import icons
 import { getTaskHistory } from '~/service/task';
-import { useTaskStore } from '~/store/task';
 import { ETaskType, ITaskHistory } from '~/type/task';
 
 const History: React.FC<{
@@ -40,9 +39,15 @@ const History: React.FC<{
           Xóa toàn bộ các bản dịch đã thực hiện
         </button>
       </div>
-      {taskHistories.map((t) => (
-        <ItemHistory taskType={ETaskType.OCR} taskHistory={t} />
-      ))}
+      <div className="h-[80vh] overflow-y-scroll">
+        {taskHistories
+          // TODO: fix task type null is OCR
+          .filter((t) => t.type === null)
+          .slice(0, 2)
+          .map((t) => (
+            <ItemHistory taskType={ETaskType.OCR} taskHistory={t} />
+          ))}
+      </div>
     </div>
   );
 };

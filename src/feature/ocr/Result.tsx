@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useOcrContext } from './context';
-import { useDragDropContext } from '~/component/Drag&Drop/context';
 import { BaseTextarea } from '~/component/Textarea';
 import { ITaskDetail } from '~/type/task';
-import { useOcrTaskStore } from '~/store/taskOcr';
 import { useTaskStore } from '~/store/task';
 import { getOcrDetail } from '~/service/ocr';
 import { EProcessStatus } from '~/type/ocr';
@@ -20,6 +18,7 @@ const OcrItem = (ocrTask: IOcrTask) => {
   const [ocrStatus, setOcrStatus] = useState(
     result ? EProcessStatus.success : EProcessStatus.pending
   );
+  console.log({ result });
   const { needTranslate } = useOcrContext();
 
   const [img, setImg] = useState<string>();

@@ -35,7 +35,9 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   const toggleNeedTranslate = useCallback(() => {
     setNeedTranslate((prev) => !prev);
   }, []);
+
   const { selectedTaskId: selectedTask } = useTaskStore();
+  const { updateRecentAdded } = useOcrTaskStore();
 
   // const [files, setFiles] = useState<File[]>([]);
 
@@ -84,8 +86,8 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     (async () => {
       console.log({ dragFiles });
+      updateRecentAdded(true);
       if (!dragFiles.length) {
-        // setFiles([]);
         setTranslations([]);
         setEmpty(true);
         return;

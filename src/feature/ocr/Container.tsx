@@ -1,5 +1,4 @@
 import { ColorButton } from '~/component/Button';
-import LangBar from '../languageSelect/LangBar';
 import { useOcrContext } from './context';
 import drag2dropImg from '~/assets/drag_and_drop.png';
 import DragDropArea from '~/component/Drag&Drop';
@@ -13,6 +12,7 @@ import { useLangContext } from '~/feature/languageSelect/context.tsx';
 import TextSwitch from '~/component/Switch';
 import { MdClose } from 'react-icons/md';
 import { useOcrTaskStore } from '~/store/taskOcr';
+import { useTaskStore } from '~/store/task';
 
 const Container: React.FC<{
   updateViewHistory: (status: boolean) => void;
@@ -22,6 +22,9 @@ const Container: React.FC<{
   const { files, updateFiles } = useDragDropContext();
   const { needTranslate, toggleNeedTranslate } = useOcrContext();
   const { clearInput } = useOcrContext();
+
+  const { selectedOcrIds, recentAdded } = useOcrTaskStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePasteFromClipboard = async () => {
     try {
@@ -71,8 +74,7 @@ const Container: React.FC<{
     [setTargetLang]
   );
 
-  const { selectedOcrIds } = useOcrTaskStore();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { taskDetails } = useTaskStore();
 
   return (
     <div className="w-full h-full max-w-screen-xl mx-auto">
@@ -111,7 +113,14 @@ const Container: React.FC<{
           </ColorButton>
         </div>
       </div>
-      {isEmpty ? (
+      {!recentAdded ? (
+        <OcrResult
+          ocrResults={taskDetails.map((t) => ({
+            id: t.ocrid || '',
+            result: t,
+          }))}
+        />
+      ) : isEmpty ? (
         <DragDropArea>
           <div className="flex w-full h-[50vh] min-h-[360px] border border-gray-200 rounded-xl">
             <div className="w-full h-full flex flex-col justify-center items-center">

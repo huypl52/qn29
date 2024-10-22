@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaEllipsisV, FaStar, FaTrashAlt } from 'react-icons/fa'; // Import icons
 import OcrResult from '~/feature/ocr/Result';
 import { getTaskDetails } from '~/service/task';
+import { useTaskStore } from '~/store/task';
+import { useOcrTaskStore } from '~/store/taskOcr';
 import { ETaskType, ITaskDetail, ITaskHistory } from '~/type/task';
 
 interface IItemHistory {
@@ -24,6 +26,7 @@ const ItemHistory = (props: IItemHistory) => {
     getTaskDetails(taskHistory.id).then((res) => {
       const { status, data } = res;
       if (status === 200) {
+        console.log({ setOcrTasks: data });
         setOcrTasks(data);
       }
     });
@@ -40,10 +43,24 @@ const ItemHistory = (props: IItemHistory) => {
     setIsFavorite((prev) => !prev); // Toggle the favorite state
   };
 
+  const { updateRecentAdded } = useOcrTaskStore();
+  const { putTaskDetails, changeTaskType } = useTaskStore();
+
+  const handleOpenDetail = useCallback(() => {
+    updateRecentAdded(false);
+    putTaskDetails(ocrTasks);
+    console.log({ clickTasks: ocrTasks });
+  }, [ocrTasks]);
+
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-4">
       <div className="relative flex justify-between items-center">
-        <h3 className="text-md font-semibold align-middle">Anh → Việt</h3>
+        <h3
+          className="text-md font-semibold align-middle cursor-pointer"
+          onClick={handleOpenDetail}
+        >
+          Trung → Việt
+        </h3>
         <div className="flex">
           {/* Favorite Star */}
           <button
@@ -77,18 +94,11 @@ const ItemHistory = (props: IItemHistory) => {
         </div>
       </div>
 
-      {ocrTasks?.length ? <OcrResult ocrResults={ocrTasks} /> : null}
-      {/* Paragraphs */}
-      {/* <p className="text-sm mt-2 relative z-0"> */}
-      {/*   <strong>Platform:</strong> Platform defines what platform the chatbot */}
-      {/*   works on, and the list may not include all platforms. 🖥 Website */}
-      {/*   Interfaces on a desktop and mobile website 📱 Facebook ... */}
-      {/* </p> */}
-      {/* <p className="text-sm mt-2 relative z-0"> */}
-      {/*   <strong>Nền tảng:</strong> Nền tảng xác định chatbot hoạt động trên nền */}
-      {/*   tảng nào và danh sách có thể không bao gồm tất cả các nền tảng. 🖥 Trang */}
-      {/*   web Giao diện trên máy tính để bàn và thiết bị di động 📱 Facebook... */}
-      {/* </p> */}
+      {ocrTasks?.length ? (
+        <OcrResult
+          ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
+        />
+      ) : null}
     </div>
   );
 };

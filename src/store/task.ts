@@ -1,35 +1,43 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { ITaskDetail } from '~/type/task';
+import { ETaskType, ITaskDetail } from '~/type/task';
 
 interface ITaskState {
-  tasks: ITaskDetail[];
+  type: ETaskType;
+  changeTaskType: (t: ETaskType) => void;
+  taskDetails: ITaskDetail[];
   selectedTaskId?: string;
   selectTaskId: (taskId: string) => void;
-  addTask: (task: ITaskDetail) => void;
-  putTasks: (tasks: ITaskDetail[]) => void;
-  insertTasks: (tasks: ITaskDetail[]) => void;
+  addTaskDetail: (task: ITaskDetail) => void;
+  putTaskDetails: (tasks: ITaskDetail[]) => void;
+  insertTaskDetails: (tasks: ITaskDetail[]) => void;
 }
 
 export const useTaskStore = create<ITaskState>()(
   immer((set) => ({
-    tasks: [],
+    type: ETaskType.TRANSLATE,
+    changeTaskType: (t: ETaskType) => {
+      set((state: ITaskState) => {
+        state.type = t;
+      });
+    },
+    taskDetails: [],
     selectedTaskId: undefined,
     selectTaskId: (taskId?: string) =>
       set((state: ITaskState) => {
         state.selectedTaskId = taskId;
       }),
-    addTask: (task: ITaskDetail) =>
+    addTaskDetail: (task: ITaskDetail) =>
       set((state: ITaskState) => {
-        state.tasks = [...state.tasks, task];
+        state.taskDetails = [...state.taskDetails, task];
       }),
-    putTasks: (tasks: ITaskDetail[]) =>
+    putTaskDetails: (tasks: ITaskDetail[]) =>
       set((state: ITaskState) => {
-        state.tasks = tasks;
+        state.taskDetails = tasks;
       }),
-    insertTasks: (tasks: ITaskDetail[]) =>
+    insertTaskDetails: (tasks: ITaskDetail[]) =>
       set((state: ITaskState) => {
-        state.tasks = [...tasks, ...state.tasks];
+        state.taskDetails = [...tasks, ...state.taskDetails];
       }),
   }))
 );
