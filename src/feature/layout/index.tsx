@@ -21,7 +21,10 @@ const Header = () => {
   };
 
   return (
-    <header className="flex flex-grow px-5 py-2 border-b border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat mb-5">
+    <header
+      className="flex flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat mb-5"
+      style={{ backgroundColor: 'rgb(16, 91, 91)' }}
+    >
       <div className="flex-none">
         <div
           className="flex flex-grow mt-1 cursor-pointer"
@@ -40,8 +43,8 @@ const Header = () => {
             />
           </button>
 
-          <div className="ml-2 my-auto text-3xl font-semibold text-gray-700">
-            Phần mềm dịch ngôn ngữ phục vụ trinh sát, giám sát trên KGM
+          <div className="ml-2 my-auto text-3xl font-semibold text-white">
+            PHẦN MỀM DỊCH NGÔN NGỮ PHỤC VỤ TRINH SÁT, GIÁM SÁT TRÊN KGM
           </div>
         </div>
       </div>
@@ -91,6 +94,7 @@ const Layout = () => {
         //   backgroundImage: "url('/src/assets/background.jpeg')",
         //   backgroundColor: 'rgba(0, 0, 0, 0.25)',
         // }}
+        style={{ backgroundColor: '#cfcfb6' }}
       >
         <Outlet />
       </div>

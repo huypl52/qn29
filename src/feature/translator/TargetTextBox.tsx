@@ -3,7 +3,6 @@ import { FaRegCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { EStatus } from './type';
 import { useEffect, useState } from 'react';
-import { IoSaveOutline } from 'react-icons/io5';
 import { useTranslateStore } from '~/store/translate';
 import { FaRegSave } from 'react-icons/fa';
 

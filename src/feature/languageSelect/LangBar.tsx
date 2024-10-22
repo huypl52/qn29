@@ -26,8 +26,8 @@ const LangBar = () => {
   );
 
   return (
-    <div className="flex max-w-screen-xl h-full justify-evenly mt-2 gap-2 mx-auto">
-      <div className="flex w-full gap-2 ml-2">
+    <div className="flex h-full justify-between mt-2 gap-2 mx-12">
+      <div className="flex w-full gap-2 ">
         <ColorButton
           active={sourceLang === DLang.zh}
           onClick={updateSrcLang.bind(null, DLang.zh)}

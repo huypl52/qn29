@@ -2,7 +2,6 @@ import LangBar from '../languageSelect/LangBar';
 import SourceTextBox from './SourceTextBox';
 import TargetTextBox from './TargetTextBox';
 import React from 'react';
-import History from '~/component/LeftBar/History';
 
 const Container: React.FC<{
   updateViewHistory: (status: boolean) => void;
@@ -16,7 +15,7 @@ const Container: React.FC<{
           <SourceTextBox />
           <TargetTextBox />
         </div>
-        <div className="flex justify-center space-x-12 mt-4">
+        <div className="flex justify-center space-x-12 py-24">
           <button
             className="flex flex-col items-center w-48 text-gray-700"
             onClick={() => updateViewHistory(true)}
