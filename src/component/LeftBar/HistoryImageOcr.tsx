@@ -4,7 +4,7 @@ import ItemHistoryItemOcr from "~/component/LeftBar/ItemHistoryImageOcr.tsx"; //
 
 const HistoryImageOcr : React.FC<{ updateViewHistory: (status: boolean) => void }> = ({ updateViewHistory }) => {
     return (
-        <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-lg max-w-lg">
+        <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
             <div className="mb-4 flex justify-between">
                 <h2 className="text-lg font-semibold">Các bản dịch đã thực hiện</h2>
                 <button className="text-sm hover:bg-gray-300 w-7 h-7 rounded-[50%]" onClick={() => updateViewHistory(false)}>X

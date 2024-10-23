@@ -169,7 +169,7 @@ const ListResult = (props: IResult) => {
   const { ocrResults } = props;
 
   return (
-    <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg">
+    <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-white">
       <div className="w-full h-full p-4 divide-y divide-stone-400">
         {ocrResults.map(({ id, result }) => {
           return <Item id={id} result={result} />;

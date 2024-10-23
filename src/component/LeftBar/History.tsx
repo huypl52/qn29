@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ItemHistory from '~/component/LeftBar/ItemHistory'; // Import icons
+import ItemHistory from '~/component/LeftBar/ItemHistory';
+import Pagination                     from '~/component/LeftBar/Pagination/Pagination.tsx'; // Import icons
 import { getTaskHistory } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { ETaskType, ITaskHistory } from '~/type/task';
@@ -9,6 +10,8 @@ const History: React.FC<{
 }> = ({ updateViewHistory }) => {
   const [taskHistories, setTaskHistories] = useState<ITaskHistory[]>([]);
 
+  const [choiseList, setChoiseList] = useState<ITaskHistory[]>([])
+
   const { type } = useTaskStore();
 
   let taskType = type;
@@ -16,6 +19,8 @@ const History: React.FC<{
   if (type === ETaskType.OCR) {
     taskType = null;
   }
+
+
 
   useEffect(() => {
     getTaskHistory(undefined, undefined, taskType)
@@ -30,8 +35,27 @@ const History: React.FC<{
       });
   }, [taskType]);
 
+
+  useEffect(() => {
+    console.log('Data deleted', taskHistories);
+  }, [taskHistories]);
+
+
+  const handleClickDelete = () => {
+    const newHistories = taskHistories.filter(t => !choiseList.some(itemA => t.id === itemA.id));
+    setTaskHistories(newHistories);
+    setChoiseList([]);
+
+  }
+
+  const handleClickDeleteAll = () => {
+    setTaskHistories([]);
+  }
+
+
+
   return (
-    <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-lg max-w-lg">
+    <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
       <div className="mb-4 flex justify-between">
         <h2 className="text-lg font-semibold">Các bản dịch đã thực hiện</h2>
         <button
@@ -42,8 +66,9 @@ const History: React.FC<{
         </button>
       </div>
       <div className="mb-4 flex justify-end">
-        <button className="text-blue-600 text-sm">
-          Xóa toàn bộ các bản dịch đã thực hiện
+        <button className="text-blue-600 text-sm" onDoubleClick={handleClickDelete}>Xóa</button>
+        <button className="text-blue-600 text-sm ml-2" onDoubleClick={handleClickDeleteAll}>
+         Xoá tất cả
         </button>
       </div>
       <div className="h-[80vh] overflow-y-scroll">
@@ -51,8 +76,16 @@ const History: React.FC<{
           .filter((t) => t.type === taskType)
           // .slice(0, 2)
           .map((t) => (
-            <ItemHistory taskType={taskType} taskHistory={t} />
+            <ItemHistory
+              taskType={taskType}
+              taskHistory={t}
+              taskList={choiseList}
+              setTaskList={setChoiseList}
+            />
           ))}
+      </div>
+      <div className="h-[5vh]">
+        <Pagination totalPages={5} />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@
     "types": ["node"],
     "paths": {
       "~/*": ["./src/*"]
-      }
+      },
+    "allowSyntheticDefaultImports": true
   }
 }

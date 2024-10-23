@@ -10,8 +10,8 @@ const Container: React.FC<{
   return (
     <div className="w-full h-full flex">
       <div className="w-full h-full mx-auto">
-        <LangBar />
-        <div className="flex gap-2 max-w-screen-xxl mx-8">
+        <LangBar/>
+        <div className="flex gap-2 max-w-screen-xxl mx-8 ">
           <SourceTextBox />
           <TargetTextBox />
         </div>
