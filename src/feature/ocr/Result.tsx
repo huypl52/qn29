@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useOcrContext } from './context';
 import { BaseTextarea, StructureTextarea } from '~/component/Textarea';
-import { ITaskDetail } from '~/type/task';
+import { ITaskDetail, ITaskHIstoryDetail } from '~/type/task';
 import { useTaskStore } from '~/store/task';
 import { getOcrDetail } from '~/service/ocr';
 import { EProcessStatus } from '~/type/ocr';
@@ -30,17 +30,22 @@ const TextBoxFooter = ({ text }: { text: string }) => {
   );
 };
 
-const Item = (ocrTask: IOcrTask) => {
-  const { result } = ocrTask;
+interface IItemTask {
+  subTaskId?: string;
+  ocrTask: ITaskHIstoryDetail;
+}
+
+const Item = (props: IItemTask) => {
+  const { subTaskId, ocrTask: result } = props;
   const { selectedTaskId } = useTaskStore();
   const [taskDetailStatus, setTaskDetailStatus] = useState(
     result ? EProcessStatus.success : EProcessStatus.pending
   );
   const { needTranslate } = useOcrContext();
-
   const [img, setImg] = useState<string>();
-
-  const [ocrResult, setOcrResult] = useState<ITaskDetail | undefined>(result);
+  const [ocrResult, setOcrResult] = useState<ITaskHIstoryDetail | undefined>(
+    result
+  );
 
   useEffect(() => {
     if (result) {
@@ -162,7 +167,7 @@ const Item = (ocrTask: IOcrTask) => {
 };
 
 interface IResult {
-  ocrResults: IOcrTask[];
+  ocrResults: ITaskHIstoryDetail[];
 }
 
 const ListResult = (props: IResult) => {
@@ -171,8 +176,8 @@ const ListResult = (props: IResult) => {
   return (
     <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg">
       <div className="w-full h-full p-4 divide-y divide-stone-400">
-        {ocrResults.map(({ id, result }) => {
-          return <Item id={id} result={result} />;
+        {ocrResults.map((r) => {
+          return <Item ocrTask={r} />;
         })}
       </div>
     </div>
