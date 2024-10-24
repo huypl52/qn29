@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FaEllipsisV, FaStar, FaTrashAlt } from 'react-icons/fa'; // Import icons
-import ListResult from '~/feature/ocr/History';
+import { FaEllipsisV, FaTrashAlt } from 'react-icons/fa'; // Import icons
+import ListOcrHistory from '~/component/LeftBar/OcrHistoryItem';
 import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
@@ -17,26 +17,25 @@ const ItemHistory = (props: IItemHistory) => {
   const [showDropdown, setShowDropdown] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false); // State to track favorite status
 
-  const { taskHistory } = props;
-  const { taskList } = props;
+  const { taskHistory, taskList, setTaskList, taskType } = props;
 
-  const { setTaskList } = props;
-  const [ocrTasks, setOcrTasks] = useState<ITaskDetail[]>([]);
+  // console.log({ taskHistory, taskList, setTaskList, taskType });
+  // const [ocrTasks, setOcrTasks] = useState<ITaskDetail[]>([]);
 
   // Toggle the visibility of the dropdown
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
-  useEffect(() => {
-    getTaskDetails(taskHistory.id).then((res) => {
-      const { status, data } = res;
-      if (status === 200) {
-        console.log({ setOcrTasks: data });
-        setOcrTasks(data);
-      }
-    });
-  }, [taskHistory.id]);
+  // useEffect(() => {
+  //   getTaskDetails(taskHistory.id).then((res) => {
+  //     const { status, data } = res;
+  //     if (status === 200) {
+  //       console.log({ setOcrTasks: data });
+  //       setOcrTasks(data);
+  //     }
+  //   });
+  // }, [taskHistory.id]);
 
   // Function to handle the delete action
   const handleDelete = () => {
@@ -58,14 +57,14 @@ const ItemHistory = (props: IItemHistory) => {
     }
     console.log(1, taskList);
   };
+
   const { updateRecentAdded } = useOcrTaskStore();
   const { putTaskDetails, changeTaskType } = useTaskStore();
 
   const handleOpenDetail = useCallback(() => {
     updateRecentAdded(false);
-    putTaskDetails(ocrTasks);
-    console.log({ clickTasks: ocrTasks });
-  }, [ocrTasks]);
+    // putTaskDetails(ocrTasks);
+  }, []);
 
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-4">
@@ -107,9 +106,10 @@ const ItemHistory = (props: IItemHistory) => {
         </div>
       </div>
 
-      {ocrTasks?.length ? (
-        <ListResult
-          ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
+      {taskHistory.details?.length ? (
+        <ListOcrHistory
+          ocrResults={taskHistory.details}
+          // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
         />
       ) : null}
     </div>

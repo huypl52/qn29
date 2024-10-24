@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useOcrContext } from './context';
+import { useOcrContext } from '../../feature/ocr/context';
 import { BaseTextarea, StructureTextarea } from '~/component/Textarea';
-import { ITaskDetail, ITaskHIstoryDetail } from '~/type/task';
+import { ITaskDetail, ITaskHistoryDetail } from '~/type/task';
 import { useTaskStore } from '~/store/task';
 import { getOcrDetail } from '~/service/ocr';
 import { EProcessStatus } from '~/type/ocr';
 import { getImage, getTaskDetails } from '~/service/task';
 import { toast } from 'react-toastify';
 import { FaRegCopy } from 'react-icons/fa';
-
-interface IOcrTask {
-  id: string;
-  result?: ITaskDetail;
-}
+import LoadingText from '~/component/LoadingText';
+import { MdSmsFailed } from 'react-icons/md';
 
 const TextBoxFooter = ({ text }: { text: string }) => {
   const onCopyClick = () => {
@@ -32,78 +29,17 @@ const TextBoxFooter = ({ text }: { text: string }) => {
 
 interface IItemTask {
   subTaskId?: string;
-  ocrTask: ITaskHIstoryDetail;
+  ocrTask: ITaskHistoryDetail;
 }
 
 const HistoryItem = (props: IItemTask) => {
-  const { subTaskId, ocrTask: result } = props;
+  const { subTaskId, ocrTask: ocrTask } = props;
   const { selectedTaskId } = useTaskStore();
-  const [taskDetailStatus, setTaskDetailStatus] = useState(
-    result ? EProcessStatus.success : EProcessStatus.pending
-  );
   const { needTranslate } = useOcrContext();
   const [img, setImg] = useState<string>();
-  const [ocrResult, setOcrResult] = useState<ITaskHIstoryDetail | undefined>(
-    result
+  const [ocrResult, setOcrResult] = useState<ITaskHistoryDetail | undefined>(
+    ocrTask
   );
-
-  useEffect(() => {
-    if (result) {
-      setOcrResult(result);
-      setTaskDetailStatus(EProcessStatus.success);
-    }
-  }, [result]);
-
-  useEffect(() => {
-    if (taskDetailStatus !== EProcessStatus.pending) {
-      return;
-    }
-    const intervalRef = setInterval(() => {
-      getOcrDetail(ocrTask.id).then((res) => {
-        const { status, data } = res;
-        if (status !== 200) {
-          return;
-        }
-        const { status: success } = data;
-        setTaskDetailStatus(success);
-      });
-    }, 1000);
-
-    const timeoutRef = setTimeout(() => clearInterval(intervalRef), 3000);
-    return () => {
-      clearTimeout(timeoutRef);
-      clearInterval(intervalRef);
-    };
-  }, [ocrTask.id]);
-
-  useEffect(() => {
-    if (taskDetailStatus === EProcessStatus.pending) {
-      return;
-    }
-    if (taskDetailStatus === EProcessStatus.success) {
-      const fetchTask = async () => {
-        if (selectedTaskId) {
-          getTaskDetails(selectedTaskId).then((res) => {
-            const { status, data } = res;
-            console.log({ getTaskDetails: status, data });
-            if (status !== 200) {
-              console.log(`Get task detail failed: ${selectedTaskId}`);
-              return;
-            }
-            const ocr = data.find(({ ocrid }) => ocrid === ocrTask.id);
-            if (ocr) {
-              setOcrResult(ocr);
-            }
-          });
-        }
-      };
-      if (result) {
-        fetchTask();
-      } else {
-        setTimeout(fetchTask, 5000);
-      }
-    }
-  }, [taskDetailStatus, ocrTask.id]);
 
   useEffect(() => {
     const ocr = ocrResult;
@@ -132,10 +68,15 @@ const HistoryItem = (props: IItemTask) => {
         />
       </div>
 
-      {taskDetailStatus === EProcessStatus.pending ? (
-        'processing...'
-      ) : taskDetailStatus === EProcessStatus.failed ? (
-        'failed!!!'
+      {ocrTask.status === EProcessStatus.pending ? (
+        <LoadingText />
+      ) : ocrTask.status === EProcessStatus.failed ? (
+        <div className="w-1/2 h-auto flex flex-col justify-center items-center text-red-800">
+          <div className="border border-red-600 rounded-full p-3 ">
+            <MdSmsFailed size={40} />
+          </div>
+          <span>Thất bại</span>
+        </div>
       ) : (
         <div className="w-1/2 pl-2">
           <div>
@@ -167,10 +108,10 @@ const HistoryItem = (props: IItemTask) => {
 };
 
 interface IResult {
-  ocrResults: ITaskHIstoryDetail[];
+  ocrResults: ITaskHistoryDetail[];
 }
 
-const ListHistory = (props: IResult) => {
+const ListOcrHistory = (props: IResult) => {
   const { ocrResults } = props;
 
   return (
@@ -184,4 +125,4 @@ const ListHistory = (props: IResult) => {
   );
 };
 
-export default ListHistory;
+export default ListOcrHistory;

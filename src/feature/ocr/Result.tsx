@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useOcrContext } from './context';
 import { BaseTextarea, StructureTextarea } from '~/component/Textarea';
-import { ITaskDetail, ITaskHIstoryDetail } from '~/type/task';
+import { ITaskDetail, ITaskHistoryDetail } from '~/type/task';
 import { useTaskStore } from '~/store/task';
 import { getOcrDetail } from '~/service/ocr';
 import { EProcessStatus } from '~/type/ocr';
@@ -35,7 +35,8 @@ interface IItemTask {
 }
 
 const QUERY_TIMEOUT = 10000;
-const FAILED_TIMEOUT = 13000;
+const FAILED_TIMEOUT = QUERY_TIMEOUT + 3000;
+
 const Item = (props: IItemTask) => {
   const { taskId, ocrTaskResult } = props;
   const [taskDetailStatus, setTaskDetailStatus] = useState<EProcessStatus>(

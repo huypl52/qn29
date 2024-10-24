@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { useDragDropContext } from '~/component/Drag&Drop/context';
@@ -19,7 +20,6 @@ const OcrContext = createContext<IOcrContext>({
   translations: [],
   updateTranslations: () => {},
   isEmpty: true,
-  // updateFiles: () => {},
   needTranslate: false,
   toggleNeedTranslate: () => {},
 });
@@ -27,12 +27,23 @@ const OcrContext = createContext<IOcrContext>({
 const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { files: dragFiles, updateFiles } = useDragDropContext();
   const [translations, setTranslations] = useState<string[]>([]);
-  const [needTranslate, setNeedTranslate] = useState(false);
+  const { changeTaskType, type } = useTaskStore();
+
   const [isEmpty, setEmpty] = useState(true);
 
   const toggleNeedTranslate = useCallback(() => {
-    setNeedTranslate((prev) => !prev);
-  }, []);
+    // console.log({ toggleNeedTranslate: type });
+    if (type === ETaskType.OCR_TRANSLATE) {
+      changeTaskType(ETaskType.OCR);
+    } else if (type === ETaskType.OCR) {
+      changeTaskType(ETaskType.OCR_TRANSLATE);
+    }
+  }, [type]);
+
+  const needTranslate = useMemo(() => {
+    // console.log({ needTranslate: type });
+    return type === ETaskType.OCR_TRANSLATE;
+  }, [type]);
 
   const { putTaskDetails, selectTaskId } = useTaskStore();
   const { updateRecentAdded } = useOcrTaskStore();
@@ -104,10 +115,6 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
       );
     })();
   }, [dragFiles]);
-
-  // useEffect(() => {
-  //   if (selectedTask?.type !== ETaskType.OCR) return;
-  // }, [selectedTask]);
 
   return (
     <OcrContext.Provider

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ItemHistory from '~/component/LeftBar/ItemHistory';
-import Pagination                     from '~/component/LeftBar/Pagination/Pagination.tsx'; // Import icons
+import Pagination from '~/component/LeftBar/Pagination/Pagination.tsx'; // Import icons
 import { getTaskHistory } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { ETaskType, ITaskHistory } from '~/type/task';
@@ -10,17 +10,13 @@ const History: React.FC<{
 }> = ({ updateViewHistory }) => {
   const [taskHistories, setTaskHistories] = useState<ITaskHistory[]>([]);
 
-  const [choiseList, setChoiseList] = useState<ITaskHistory[]>([])
+  const [choiseList, setChoiseList] = useState<ITaskHistory[]>([]);
 
   const { type } = useTaskStore();
 
   let taskType = type;
-  // TODO: fix task type null is OCR
-  if (type === ETaskType.OCR) {
-    taskType = null;
-  }
 
-
+  console.log({ taskType });
 
   useEffect(() => {
     getTaskHistory(undefined, undefined, taskType)
@@ -35,24 +31,21 @@ const History: React.FC<{
       });
   }, [taskType]);
 
-
   useEffect(() => {
     console.log('Data deleted', taskHistories);
   }, [taskHistories]);
 
-
   const handleClickDelete = () => {
-    const newHistories = taskHistories.filter(t => !choiseList.some(itemA => t.id === itemA.id));
+    const newHistories = taskHistories.filter(
+      (t) => !choiseList.some((itemA) => t.id === itemA.id)
+    );
     setTaskHistories(newHistories);
     setChoiseList([]);
-
-  }
+  };
 
   const handleClickDeleteAll = () => {
     setTaskHistories([]);
-  }
-
-
+  };
 
   return (
     <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
@@ -66,9 +59,17 @@ const History: React.FC<{
         </button>
       </div>
       <div className="mb-4 flex justify-end">
-        <button className="text-blue-600 text-sm" onDoubleClick={handleClickDelete}>Xóa</button>
-        <button className="text-blue-600 text-sm ml-2" onDoubleClick={handleClickDeleteAll}>
-         Xoá tất cả
+        <button
+          className="text-blue-600 text-sm"
+          onDoubleClick={handleClickDelete}
+        >
+          Xóa
+        </button>
+        <button
+          className="text-blue-600 text-sm ml-2"
+          onDoubleClick={handleClickDeleteAll}
+        >
+          Xoá tất cả
         </button>
       </div>
       <div className="h-[80vh] overflow-y-scroll">
@@ -92,4 +93,3 @@ const History: React.FC<{
 };
 
 export default History;
-
