@@ -1,5 +1,5 @@
 import * as Switch from '@radix-ui/react-switch';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface TextSwitchProps {
   onText?: string;
@@ -17,6 +17,10 @@ const TextSwitch = ({
   size = 'md',
 }: TextSwitchProps) => {
   const [checked, setChecked] = useState(defaultChecked);
+
+  useEffect(() => {
+    setChecked(defaultChecked);
+  }, [defaultChecked]);
 
   const handleChange = (checked: boolean) => {
     console.log({ handleChange: checked });

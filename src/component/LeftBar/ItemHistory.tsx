@@ -1,48 +1,37 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FaEllipsisV, FaStar, FaTrashAlt } from 'react-icons/fa'; // Import icons
-import ListResult from '~/feature/ocr/Result';
+import { FaEllipsisV, FaTrashAlt } from 'react-icons/fa'; // Import icons
+import ListOcrHistory from '~/component/LeftBar/OcrHistoryItem';
 import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { ETaskType, ITaskDetail, ITaskHistory } from '~/type/task';
+import ListTranslationHistory from './TranslationHistoryItem';
+import { useTranslateStore } from '~/store/translate';
+import { DLangMap } from '~/type';
 
 interface IItemHistory {
   taskType: ETaskType;
   taskHistory: ITaskHistory;
   taskList: ITaskHistory[];
-  setTaskList: React.Dispatch<React.SetStateAction<ITaskHistory[]>>
+  setTaskList: React.Dispatch<React.SetStateAction<ITaskHistory[]>>;
 }
 
 const ItemHistory = (props: IItemHistory) => {
   const [showDropdown, setShowDropdown] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false); // State to track favorite status
 
-  const { taskHistory } = props;
-  const { taskList } = props;
-
-  const {setTaskList} = props;
-  const [ocrTasks, setOcrTasks] = useState<ITaskDetail[]>([]);
+  const { taskHistory, taskList, setTaskList, taskType } = props;
 
   // Toggle the visibility of the dropdown
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
 
-  useEffect(() => {
-    getTaskDetails(taskHistory.id).then((res) => {
-      const { status, data } = res;
-      if (status === 200) {
-        console.log({ setOcrTasks: data });
-        setOcrTasks(data);
-      }
-    });
-  }, [taskHistory.id]);
-
   // Function to handle the delete action
   const handleDelete = () => {
     console.log('Data deleted');
+    // Implement your data deletion logic here
     setShowDropdown(false); // Close the dropdown after deleting
-
   };
 
 
@@ -54,17 +43,34 @@ const ItemHistory = (props: IItemHistory) => {
     }
     // If unchecked, remove the task from the taskList
     else {
-      setTaskList((prevList) => prevList.filter((t) => t.id !== taskHistory.id));
+      setTaskList((prevList) =>
+        prevList.filter((t) => t.id !== taskHistory.id)
+      );
     }
+    console.log(1,taskList)
   };
   const { updateRecentAdded } = useOcrTaskStore();
   const { putTaskDetails, changeTaskType } = useTaskStore();
 
   const handleOpenDetail = useCallback(() => {
     updateRecentAdded(false);
-    putTaskDetails(ocrTasks);
-    console.log({ clickTasks: ocrTasks });
-  }, [ocrTasks]);
+    // putTaskDetails(ocrTasks);
+    console.log({ handleOpenDetailTaskHistory: taskHistory });
+    getTaskDetails(taskHistory.id)
+      .then((res) => {
+        const { status, data } = res;
+        if (status !== 200) return;
+        putTaskDetails(data);
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
+  }, []);
+
+  const { srcLang, targetLang } = useTranslateStore();
+
+  const tranlationTitle =
+    `${DLangMap[srcLang]}` + '→' + `${DLangMap[targetLang]}`;
 
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-4">
@@ -73,7 +79,7 @@ const ItemHistory = (props: IItemHistory) => {
           className="text-md font-semibold align-middle cursor-pointer"
           onClick={handleOpenDetail}
         >
-          Trung → Việt
+          {taskType === ETaskType.TRANSLATE ? tranlationTitle : 'Trung → Việt'}
         </h3>
         <div className="flex">
           {/* Favorite Star */}
@@ -106,9 +112,16 @@ const ItemHistory = (props: IItemHistory) => {
         </div>
       </div>
 
-      {ocrTasks?.length ? (
-        <ListResult
-          ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
+      {taskHistory.details?.length && taskType !== ETaskType.TRANSLATE ? (
+        <ListOcrHistory
+          ocrResults={taskHistory.details}
+          // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
+        />
+      ) : null}
+      {taskHistory.details?.length && taskType === ETaskType.TRANSLATE ? (
+        <ListTranslationHistory
+          ocrResults={taskHistory.details}
+          // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
         />
       ) : null}
     </div>

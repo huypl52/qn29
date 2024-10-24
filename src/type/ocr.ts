@@ -32,6 +32,7 @@ export enum EProcessStatus {
   success = 2,
   failed = 3,
 }
+
 export interface IOcrDetail {
   id: string;
   status: EProcessStatus;

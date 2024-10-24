@@ -5,21 +5,50 @@ import { EStatus } from './type';
 import { useEffect, useState } from 'react';
 import { useTranslateStore } from '~/store/translate';
 import { FaRegSave } from 'react-icons/fa';
+import { saveTranslation } from '~/service/translate';
+import {
+  ISavedTranslation,
+  ITranslation,
+  ITranslationResult,
+} from '~/type/translate';
+import { toastMsg } from '~/type';
 
 const TargetBoxFooter = () => {
-  const { targetText } = useTranslateStore();
+  const { targetText, srcText, srcLang, targetLang } = useTranslateStore();
   const onCopyClick = () => {
     if (!targetText) return;
     navigator.clipboard.writeText(targetText);
     toast.success('Text is copied to clipboard');
   };
+
+  const onSaveClick = () => {
+    const result = {
+      source_text: srcText,
+      source_language: srcLang,
+      dest_text: targetText,
+      dest_language: targetLang,
+    } as ITranslation;
+    saveTranslation(result)
+      .then((res) => {
+        const { status, data } = res;
+        if (status === 200) {
+          toast.success(toastMsg.success);
+          return;
+        }
+        throw { data: toastMsg.error };
+      })
+      .catch((err) => {
+        err?.data ? err.data : toastMsg.error;
+      });
+  };
+
   return (
     <div className="text-gray-600 h-10 flex gap-4 px-3 items-center ">
       <div onClick={onCopyClick} className="cursor-pointer">
         <FaRegCopy size={24} />
       </div>
       {targetText ? (
-        <div onClick={onCopyClick} className="cursor-pointer">
+        <div onClick={onSaveClick} className="cursor-pointer">
           <FaRegSave size={24} />
         </div>
       ) : null}

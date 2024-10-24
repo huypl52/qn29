@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 import { ColorButton } from '~/component/Button';
 import { DLang, DLangMap } from '~/type';
-import { useLangContext } from './context';
+import { useTranslateStore } from '~/store/translate';
 
 const LangBar = () => {
   const {
-    updateSourceLang: setSourceLang,
+    updateSrcLang: setSourceLang,
     updateTargetLang: setTargetLang,
-    sourceLang,
+    srcLang: sourceLang,
     targetLang,
-  } = useLangContext();
+  } = useTranslateStore();
 
   const updateSrcLang = useCallback(
     (key: DLang) => {

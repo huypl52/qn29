@@ -74,8 +74,7 @@ const Container: React.FC<{
     [setTargetLang]
   );
 
-  const { taskDetails } = useTaskStore();
-  console.log({ taskDetails });
+  const { taskDetails, selectedTaskId } = useTaskStore();
 
   return (
     <div className="w-full h-full px-8">
@@ -114,14 +113,7 @@ const Container: React.FC<{
           </ColorButton>
         </div>
       </div>
-      {!recentAdded ? (
-        <ListResult
-          ocrResults={taskDetails.map((t) => ({
-            id: t.ocrid || '',
-            result: t,
-          }))}
-        />
-      ) : isEmpty ? (
+      {isEmpty && recentAdded ? (
         <DragDropArea>
           <div className="flex w-full h-[75vh] min-h-[360px] border border-gray-200 rounded-xl">
             <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-md">
@@ -179,7 +171,10 @@ const Container: React.FC<{
           </div>
         </DragDropArea>
       ) : (
-        <ListResult ocrResults={selectedOcrIds.map((id) => ({ id }))} />
+        <ListResult
+          ocrTaskResults={taskDetails}
+          taskId={selectedTaskId || ''}
+        />
       )}
 
       {/* <div className="flex justify-center space-x-12 mt-4"> */}

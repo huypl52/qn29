@@ -1,58 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import ItemHistory from '~/component/LeftBar/ItemHistory';
-import Pagination                     from '~/component/LeftBar/Pagination/Pagination.tsx'; // Import icons
+import Pagination from '~/component/LeftBar/Pagination/Pagination.tsx'; // Import icons
 import { getTaskHistory } from '~/service/task';
 import { useTaskStore } from '~/store/task';
-import { ETaskType, ITaskHistory } from '~/type/task';
+import { ITaskHistory } from '~/type/task';
 
 const History: React.FC<{
   updateViewHistory: (status: boolean) => void;
 }> = ({ updateViewHistory }) => {
   const [taskHistories, setTaskHistories] = useState<ITaskHistory[]>([]);
 
-  const [choiseList, setChoiseList] = useState<ITaskHistory[]>([])
+  const [choiseList, setChoiseList] = useState<ITaskHistory[]>([]);
 
-  const { type } = useTaskStore();
+  const { type, counter } = useTaskStore();
 
   let taskType = type;
-  // TODO: fix task type null is OCR
-  if (type === ETaskType.OCR) {
-    taskType = null;
-  }
-
-
 
   useEffect(() => {
-    getTaskHistory(undefined, undefined, taskType)
-      .then((res) => {
-        const { status, data } = res;
-        if (status === 200) {
-          setTaskHistories(data);
-        }
-      })
-      .catch((err) => {
-        console.log({ err });
-      });
-  }, [taskType]);
+    console.log({ getTaskHistory: taskType });
+    const getTaskRef = setTimeout(
+      () =>
+        getTaskHistory(undefined, undefined, taskType)
+          .then((res) => {
+            const { status, data } = res;
+            if (status === 200) {
+              setTaskHistories([...data]);
+              console.log({ setTaskHistories: data });
+            }
+          })
+          .catch((err) => {
+            console.log({ err });
+          }),
+      2000
+    );
+    return () => clearTimeout(getTaskRef);
+  }, [taskType, counter]);
 
-
-  useEffect(() => {
-    console.log('Data deleted', taskHistories);
-  }, [taskHistories]);
-
+  // useEffect(() => {
+  //   console.log('Data deleted', taskHistories);
+  // }, [taskHistories]);
 
   const handleClickDelete = () => {
-    const newHistories = taskHistories.filter(t => !choiseList.some(itemA => t.id === itemA.id));
+    const newHistories = taskHistories.filter(
+      (t) => !choiseList.some((itemA) => t.id === itemA.id)
+    );
     setTaskHistories(newHistories);
     setChoiseList([]);
-
-  }
+  };
 
   const handleClickDeleteAll = () => {
     setTaskHistories([]);
-  }
-
-
+  };
 
   return (
     <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
@@ -66,9 +64,17 @@ const History: React.FC<{
         </button>
       </div>
       <div className="mb-4 flex justify-end">
-        <button className="text-blue-600 text-sm" onDoubleClick={handleClickDelete}>Xóa</button>
-        <button className="text-blue-600 text-sm ml-2" onDoubleClick={handleClickDeleteAll}>
-         Xoá tất cả
+        <button
+          className="text-blue-600 text-sm"
+          onDoubleClick={handleClickDelete}
+        >
+          Xóa
+        </button>
+        <button
+          className="text-blue-600 text-sm ml-2"
+          onDoubleClick={handleClickDeleteAll}
+        >
+          Xoá tất cả
         </button>
       </div>
       <div className="h-[80vh] overflow-y-scroll">
@@ -92,4 +98,3 @@ const History: React.FC<{
 };
 
 export default History;
-

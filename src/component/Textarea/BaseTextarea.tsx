@@ -1,3 +1,4 @@
+import LoadingText from '../LoadingText';
 import { IBaseTextarea } from './type';
 import { MdClose } from 'react-icons/md';
 
@@ -52,13 +53,8 @@ const BaseTextarea = ({
         </button>
       ) : null}
       {loading ? (
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="flex gap-1 items-center text-base lg:text-2xl text-black custom-scrollbar p-4">
-            <div>Đang thực hiện</div>
-            <div className="w-2 h-2 rounded-full bg-gray-500 animate-[pulse_1s_infinite_0ms]"></div>
-            <div className="w-2 h-2 rounded-full bg-gray-500 animate-[pulse_1s_infinite_200ms]"></div>
-            <div className="w-2 h-2 rounded-full bg-gray-500 animate-[pulse_1s_infinite_400ms]"></div>
-          </div>
+        <div className="absolute top-2 left-2">
+          <LoadingText />
         </div>
       ) : null}
     </div>

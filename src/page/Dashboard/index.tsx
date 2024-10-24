@@ -4,9 +4,6 @@ import Ocr from '~/feature/ocr';
 import Translator from '~/feature/translator';
 import React from 'react';
 import History from '~/component/LeftBar/History';
-import HistoryImageOcr from '~/component/LeftBar/HistoryImageOcr.tsx';
-import SavedText from '~/component/LeftBar/SavedText.tsx';
-import SavedImage from '~/component/LeftBar/SavedImage.tsx';
 import { useTaskStore } from '~/store/task';
 import { ETaskType } from '~/type/task';
 
