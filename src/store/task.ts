@@ -11,10 +11,17 @@ interface ITaskState {
   addTaskDetail: (task: ITaskDetail) => void;
   putTaskDetails: (tasks: ITaskDetail[]) => void;
   insertTaskDetails: (tasks: ITaskDetail[]) => void;
+  counter: number;
+  incrementCounter: () => void;
 }
 
 export const useTaskStore = create<ITaskState>()(
   immer((set) => ({
+    counter: 0,
+    incrementCounter: () =>
+      set((state: ITaskState) => {
+        state.counter += 1;
+      }),
     type: ETaskType.TRANSLATE,
     changeTaskType: (t: ETaskType) => {
       set((state: ITaskState) => {

@@ -3,7 +3,7 @@ import ItemHistory from '~/component/LeftBar/ItemHistory';
 import Pagination from '~/component/LeftBar/Pagination/Pagination.tsx'; // Import icons
 import { getTaskHistory } from '~/service/task';
 import { useTaskStore } from '~/store/task';
-import { ETaskType, ITaskHistory } from '~/type/task';
+import { ITaskHistory } from '~/type/task';
 
 const History: React.FC<{
   updateViewHistory: (status: boolean) => void;
@@ -12,28 +12,33 @@ const History: React.FC<{
 
   const [choiseList, setChoiseList] = useState<ITaskHistory[]>([]);
 
-  const { type } = useTaskStore();
+  const { type, counter } = useTaskStore();
 
   let taskType = type;
 
-  console.log({ taskType });
-
   useEffect(() => {
-    getTaskHistory(undefined, undefined, taskType)
-      .then((res) => {
-        const { status, data } = res;
-        if (status === 200) {
-          setTaskHistories(data);
-        }
-      })
-      .catch((err) => {
-        console.log({ err });
-      });
-  }, [taskType]);
+    console.log({ getTaskHistory: taskType });
+    const getTaskRef = setTimeout(
+      () =>
+        getTaskHistory(undefined, undefined, taskType)
+          .then((res) => {
+            const { status, data } = res;
+            if (status === 200) {
+              setTaskHistories([...data]);
+              console.log({ setTaskHistories: data });
+            }
+          })
+          .catch((err) => {
+            console.log({ err });
+          }),
+      2000
+    );
+    return () => clearTimeout(getTaskRef);
+  }, [taskType, counter]);
 
-  useEffect(() => {
-    console.log('Data deleted', taskHistories);
-  }, [taskHistories]);
+  // useEffect(() => {
+  //   console.log('Data deleted', taskHistories);
+  // }, [taskHistories]);
 
   const handleClickDelete = () => {
     const newHistories = taskHistories.filter(

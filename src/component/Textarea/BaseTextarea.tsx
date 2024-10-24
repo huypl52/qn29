@@ -52,7 +52,11 @@ const BaseTextarea = ({
           <MdClose size={20} />
         </button>
       ) : null}
-      {loading ? <LoadingText /> : null}
+      {loading ? (
+        <div className="absolute top-2 left-2">
+          <LoadingText />
+        </div>
+      ) : null}
     </div>
   );
 };

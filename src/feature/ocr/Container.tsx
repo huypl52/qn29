@@ -113,7 +113,7 @@ const Container: React.FC<{
           </ColorButton>
         </div>
       </div>
-      {isEmpty ? (
+      {isEmpty && recentAdded ? (
         <DragDropArea>
           <div className="flex w-full h-[50vh] min-h-[360px] border border-gray-200 rounded-xl">
             <div className="w-full h-full flex flex-col justify-center items-center bg-white">
@@ -165,15 +165,6 @@ const Container: React.FC<{
           </span>
           <span className="text-xs mt-1">Các bản dịch đã thực hiện</span>
         </button>
-        {/* <button */}
-        {/*   className="flex flex-col items-center w-48 text-gray-700" */}
-        {/*   onClick={() => updateSavedText(true)} */}
-        {/* > */}
-        {/*   <span className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center"> */}
-        {/*     ★ */}
-        {/*   </span> */}
-        {/*   <span className="text-xs mt-1">Đã lưu</span> */}
-        {/* </button> */}
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ const OcrContext = createContext<IOcrContext>({
 const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { files: dragFiles, updateFiles } = useDragDropContext();
   const [translations, setTranslations] = useState<string[]>([]);
-  const { changeTaskType, type } = useTaskStore();
+  const { changeTaskType, type, incrementCounter } = useTaskStore();
 
   const [isEmpty, setEmpty] = useState(true);
 
@@ -86,6 +86,8 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
         if (status !== 200) return;
         putTaskDetails(data);
       });
+
+      incrementCounter();
 
       return true;
     },

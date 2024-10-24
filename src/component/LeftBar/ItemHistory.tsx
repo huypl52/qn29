@@ -5,6 +5,9 @@ import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { ETaskType, ITaskDetail, ITaskHistory } from '~/type/task';
+import ListTranslationHistory from './TranslationHistoryItem';
+import { useTranslateStore } from '~/store/translate';
+import { DLangMap } from '~/type';
 
 interface IItemHistory {
   taskType: ETaskType;
@@ -19,23 +22,10 @@ const ItemHistory = (props: IItemHistory) => {
 
   const { taskHistory, taskList, setTaskList, taskType } = props;
 
-  // console.log({ taskHistory, taskList, setTaskList, taskType });
-  // const [ocrTasks, setOcrTasks] = useState<ITaskDetail[]>([]);
-
   // Toggle the visibility of the dropdown
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
-
-  // useEffect(() => {
-  //   getTaskDetails(taskHistory.id).then((res) => {
-  //     const { status, data } = res;
-  //     if (status === 200) {
-  //       console.log({ setOcrTasks: data });
-  //       setOcrTasks(data);
-  //     }
-  //   });
-  // }, [taskHistory.id]);
 
   // Function to handle the delete action
   const handleDelete = () => {
@@ -64,7 +54,22 @@ const ItemHistory = (props: IItemHistory) => {
   const handleOpenDetail = useCallback(() => {
     updateRecentAdded(false);
     // putTaskDetails(ocrTasks);
+    console.log({ handleOpenDetailTaskHistory: taskHistory });
+    getTaskDetails(taskHistory.id)
+      .then((res) => {
+        const { status, data } = res;
+        if (status !== 200) return;
+        putTaskDetails(data);
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
   }, []);
+
+  const { srcLang, targetLang } = useTranslateStore();
+
+  const tranlationTitle =
+    `${DLangMap[srcLang]}` + '→' + `${DLangMap[targetLang]}`;
 
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-4">
@@ -73,7 +78,7 @@ const ItemHistory = (props: IItemHistory) => {
           className="text-md font-semibold align-middle cursor-pointer"
           onClick={handleOpenDetail}
         >
-          Trung → Việt
+          {taskType === ETaskType.TRANSLATE ? tranlationTitle : 'Trung → Việt'}
         </h3>
         <div className="flex">
           {/* Favorite Star */}
@@ -106,8 +111,14 @@ const ItemHistory = (props: IItemHistory) => {
         </div>
       </div>
 
-      {taskHistory.details?.length ? (
+      {taskHistory.details?.length && taskType !== ETaskType.TRANSLATE ? (
         <ListOcrHistory
+          ocrResults={taskHistory.details}
+          // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
+        />
+      ) : null}
+      {taskHistory.details?.length && taskType === ETaskType.TRANSLATE ? (
+        <ListTranslationHistory
           ocrResults={taskHistory.details}
           // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
         />
