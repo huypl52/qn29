@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FaEllipsisV, FaStar, FaTrashAlt } from 'react-icons/fa'; // Import icons
-import ListResult from '~/feature/ocr/Result';
+import ListResult from '~/feature/ocr/History';
 import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
@@ -10,7 +10,7 @@ interface IItemHistory {
   taskType: ETaskType;
   taskHistory: ITaskHistory;
   taskList: ITaskHistory[];
-  setTaskList: React.Dispatch<React.SetStateAction<ITaskHistory[]>>
+  setTaskList: React.Dispatch<React.SetStateAction<ITaskHistory[]>>;
 }
 
 const ItemHistory = (props: IItemHistory) => {
@@ -20,7 +20,7 @@ const ItemHistory = (props: IItemHistory) => {
   const { taskHistory } = props;
   const { taskList } = props;
 
-  const {setTaskList} = props;
+  const { setTaskList } = props;
   const [ocrTasks, setOcrTasks] = useState<ITaskDetail[]>([]);
 
   // Toggle the visibility of the dropdown
@@ -45,18 +45,18 @@ const ItemHistory = (props: IItemHistory) => {
     setShowDropdown(false); // Close the dropdown after deleting
   };
 
-
   const toggleFavorite = () => {
     setIsFavorite((prev) => !prev);
     // If checked, add the task to the taskList
     if (!isFavorite) {
       setTaskList((prevList) => [...prevList, taskHistory]);
-    }
-    // If unchecked, remove the task from the taskList
+    } // If unchecked, remove the task from the taskList
     else {
-      setTaskList((prevList) => prevList.filter((t) => t.id !== taskHistory.id));
+      setTaskList((prevList) =>
+        prevList.filter((t) => t.id !== taskHistory.id)
+      );
     }
-    console.log(1,taskList)
+    console.log(1, taskList);
   };
   const { updateRecentAdded } = useOcrTaskStore();
   const { putTaskDetails, changeTaskType } = useTaskStore();
@@ -117,4 +117,3 @@ const ItemHistory = (props: IItemHistory) => {
 };
 
 export default ItemHistory;
-

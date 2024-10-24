@@ -8,10 +8,11 @@ import { EProcessStatus } from '~/type/ocr';
 import { getImage, getTaskDetails } from '~/service/task';
 import { toast } from 'react-toastify';
 import { FaRegCopy } from 'react-icons/fa';
-import _ from 'lodash';
-import LoadingText from '~/component/LoadingText';
 
-import { MdSmsFailed } from 'react-icons/md';
+interface IOcrTask {
+  id: string;
+  result?: ITaskDetail;
+}
 
 const TextBoxFooter = ({ text }: { text: string }) => {
   const onCopyClick = () => {
@@ -30,81 +31,79 @@ const TextBoxFooter = ({ text }: { text: string }) => {
 };
 
 interface IItemTask {
-  taskId?: string;
-  ocrTaskResult: ITaskDetail;
+  subTaskId?: string;
+  ocrTask: ITaskHIstoryDetail;
 }
 
-const QUERY_TIMEOUT = 10000;
-const FAILED_TIMEOUT = 13000;
-const Item = (props: IItemTask) => {
-  const { taskId, ocrTaskResult } = props;
-  const [taskDetailStatus, setTaskDetailStatus] = useState<EProcessStatus>(
-    // ocrTaskResult ? EProcessStatus.success : EProcessStatus.pending
-    EProcessStatus.pending
+const HistoryItem = (props: IItemTask) => {
+  const { subTaskId, ocrTask: result } = props;
+  const { selectedTaskId } = useTaskStore();
+  const [taskDetailStatus, setTaskDetailStatus] = useState(
+    result ? EProcessStatus.success : EProcessStatus.pending
   );
   const { needTranslate } = useOcrContext();
   const [img, setImg] = useState<string>();
-  const [ocrResult, setOcrResult] = useState<ITaskDetail | undefined>(
-    ocrTaskResult
+  const [ocrResult, setOcrResult] = useState<ITaskHIstoryDetail | undefined>(
+    result
   );
+
+  useEffect(() => {
+    if (result) {
+      setOcrResult(result);
+      setTaskDetailStatus(EProcessStatus.success);
+    }
+  }, [result]);
 
   useEffect(() => {
     if (taskDetailStatus !== EProcessStatus.pending) {
       return;
     }
-
-    const neededFields: (keyof ITaskDetail)[] = ['detected_text'];
-    if (needTranslate) {
-      neededFields.push('dest_text');
-    }
-
-    if (_.every(neededFields, (k) => _.has(ocrResult, k))) {
-      // if (_.hasIn(ocrResult, neededFields)) {
-      setTaskDetailStatus(EProcessStatus.success);
-      return;
-    }
-
-    if (!taskId) return;
-    if (!ocrResult) return;
-
     const intervalRef = setInterval(() => {
-      getTaskDetails(taskId).then((res) => {
+      getOcrDetail(ocrTask.id).then((res) => {
         const { status, data } = res;
         if (status !== 200) {
           return;
         }
-        const newOcrTaskResult = data.find((d) => d.ocrid === ocrResult.ocrid);
-        const success = _.every(neededFields, (k) =>
-          _.has(newOcrTaskResult, k)
-        );
-        if (success) {
-          setTaskDetailStatus(EProcessStatus.success);
-          setOcrResult(newOcrTaskResult);
-        }
+        const { status: success } = data;
+        setTaskDetailStatus(success);
       });
     }, 1000);
 
-    const timeoutRef = setTimeout(
-      () => clearInterval(intervalRef),
-      QUERY_TIMEOUT
-    );
-
-    const failTimeoutRef = setTimeout(() => {
-      if (taskDetailStatus.valueOf() !== EProcessStatus.success.valueOf()) {
-        setTaskDetailStatus(EProcessStatus.failed);
-      }
-    }, FAILED_TIMEOUT);
-
+    const timeoutRef = setTimeout(() => clearInterval(intervalRef), 3000);
     return () => {
       clearTimeout(timeoutRef);
       clearInterval(intervalRef);
-      clearTimeout(failTimeoutRef);
     };
-  }, [taskId, needTranslate, taskDetailStatus, ocrResult]);
+  }, [ocrTask.id]);
 
   useEffect(() => {
-    setOcrResult(ocrTaskResult);
-  }, [ocrTaskResult]);
+    if (taskDetailStatus === EProcessStatus.pending) {
+      return;
+    }
+    if (taskDetailStatus === EProcessStatus.success) {
+      const fetchTask = async () => {
+        if (selectedTaskId) {
+          getTaskDetails(selectedTaskId).then((res) => {
+            const { status, data } = res;
+            console.log({ getTaskDetails: status, data });
+            if (status !== 200) {
+              console.log(`Get task detail failed: ${selectedTaskId}`);
+              return;
+            }
+            const ocr = data.find(({ ocrid }) => ocrid === ocrTask.id);
+            if (ocr) {
+              setOcrResult(ocr);
+            }
+          });
+        }
+      };
+      if (result) {
+        fetchTask();
+      } else {
+        setTimeout(fetchTask, 5000);
+      }
+    }
+  }, [taskDetailStatus, ocrTask.id]);
 
   useEffect(() => {
     const ocr = ocrResult;
@@ -134,14 +133,9 @@ const Item = (props: IItemTask) => {
       </div>
 
       {taskDetailStatus === EProcessStatus.pending ? (
-        <LoadingText />
+        'processing...'
       ) : taskDetailStatus === EProcessStatus.failed ? (
-        <div className="w-1/2 h-auto flex flex-col justify-center items-center text-red-800">
-          <div className="border border-red-600 rounded-full p-3 ">
-            <MdSmsFailed size={40} />
-          </div>
-          <span>Thất bại</span>
-        </div>
+        'failed!!!'
       ) : (
         <div className="w-1/2 pl-2">
           <div>
@@ -173,22 +167,21 @@ const Item = (props: IItemTask) => {
 };
 
 interface IResult {
-  taskId: string;
-  ocrTaskResults: ITaskDetail[];
+  ocrResults: ITaskHIstoryDetail[];
 }
 
-const ListResult = (props: IResult) => {
-  const { ocrTaskResults, taskId } = props;
+const ListHistory = (props: IResult) => {
+  const { ocrResults } = props;
 
   return (
     <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-white">
       <div className="w-full h-full p-4 divide-y divide-stone-400">
-        {ocrTaskResults.map((r) => {
-          return <Item ocrTaskResult={r} taskId={taskId} />;
+        {ocrResults.map((r) => {
+          return <HistoryItem ocrTask={r} />;
         })}
       </div>
     </div>
   );
 };
 
-export default ListResult;
+export default ListHistory;

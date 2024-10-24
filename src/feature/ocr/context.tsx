@@ -12,6 +12,7 @@ import { DLang, toastMsg } from '~/type';
 import { useTaskStore } from '~/store/task';
 import { ETaskType } from '~/type/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
+import { getTaskDetails } from '~/service/task';
 
 const OcrContext = createContext<IOcrContext>({
   clearInput: () => {},
@@ -27,15 +28,13 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { files: dragFiles, updateFiles } = useDragDropContext();
   const [translations, setTranslations] = useState<string[]>([]);
   const [needTranslate, setNeedTranslate] = useState(false);
-  const { addSelectedOcrIds } = useOcrTaskStore();
-  const { selectTaskId } = useTaskStore();
   const [isEmpty, setEmpty] = useState(true);
 
   const toggleNeedTranslate = useCallback(() => {
     setNeedTranslate((prev) => !prev);
   }, []);
 
-  const { selectedTaskId: selectedTask } = useTaskStore();
+  const { putTaskDetails, selectTaskId } = useTaskStore();
   const { updateRecentAdded } = useOcrTaskStore();
 
   const clearInput = useCallback(() => {
@@ -68,8 +67,15 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
         console.log('No task id found');
         return;
       }
+
       selectTaskId(taskId);
-      addSelectedOcrIds(ocrResponses.map((r) => r.ocr_id));
+
+      getTaskDetails(taskId).then((res) => {
+        const { status, data } = res;
+        if (status !== 200) return;
+        putTaskDetails(data);
+      });
+
       return true;
     },
     [needTranslate]
@@ -99,9 +105,9 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
     })();
   }, [dragFiles]);
 
-  useEffect(() => {
-    if (selectedTask?.type !== ETaskType.OCR) return;
-  }, [selectedTask]);
+  // useEffect(() => {
+  //   if (selectedTask?.type !== ETaskType.OCR) return;
+  // }, [selectedTask]);
 
   return (
     <OcrContext.Provider
