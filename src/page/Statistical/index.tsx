@@ -176,6 +176,9 @@
 import React, {useState}                                                                  from 'react';
 import {Bar}                                                                              from 'react-chartjs-2';
 import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
+import DatePicker
+																																													from '~/component/DataPicker/DatePicker.tsx';
+import TreeView                                                                           from '~/component/TreeView';
 
 // Register chart.js modules
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -375,141 +378,146 @@ const Statistical: React.FC = () => {
 
 	// Determine which data to show based on the selected time scale and data type
 	const chartData =
-		timeScale === 'day'
-		? dataType === 'text'
-		  ? dataByDayText
-		  : dataByDayImage
-		: timeScale === 'month'
-		  ? dataType === 'text'
-		    ? dataByMonthText
-		    : dataByMonthImage
-		  : dataType === 'text'
-		    ? dataByYearText
-		    : dataByYearImage;
+    timeScale === 'day'
+      ? dataType === 'text'
+        ? dataByDayText
+        : dataByDayImage
+      : timeScale === 'month'
+        ? dataType === 'text'
+          ? dataByMonthText
+          : dataByMonthImage
+        : dataType === 'text'
+          ? dataByYearText
+          : dataByYearImage;
 
-	const chartDataTLC =
-		timeScaleTLC === 'day'
-		? dataByDayTLC
-		: timeScaleTLC === 'month'
-		  ? dataByMonthTLC
-		  : dataByYearTLC;
+  const chartDataTLC =
+    timeScaleTLC === 'day'
+      ? dataByDayTLC
+      : timeScaleTLC === 'month'
+        ? dataByMonthTLC
+        : dataByYearTLC;
 
-	return (
-		<div className="flex">
-			<div className="w-full max-w-4xl mx-auto mt-4">
-				<h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng</h2>
+  return (
+    <div className="flex">
+      <TreeView />
+      <div className="w-full max-w-4xl mx-auto mt-4">
+        <h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng</h2>
+        {/* Radio Buttons for Time Scale Selection */}
+        <div className="flex items-center	 justify-between h-[5vh]">
+          <div className="flex gap-1 mb-4 items-center">
+            <label>
+              <input
+                type="radio"
+                value="day"
+                checked={timeScale === 'day'}
+                onChange={() => setTimeScale('day')}
+                className="mr-1"
+              />
+              Tuần
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="month"
+                checked={timeScale === 'month'}
+                onChange={() => setTimeScale('month')}
+                className="mr-1"
+              />
+              Tháng
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="year"
+                checked={timeScale === 'year'}
+                onChange={() => setTimeScale('year')}
+                className="mr-1"
+              />
+              Năm
+            </label>
+          </div>
+          <div className="mb-4">
+            <DatePicker />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="dataType" className="mr-1">
+              Chọn kiểu dữ liệu:
+            </label>
+            <select
+              id="dataType"
+              value={dataType}
+              onChange={(e) => setDataType(e.target.value)}
+              className="border rounded p-1"
+            >
+              <option value="text">Văn bản</option>
+              <option value="image">Hình ảnh</option>
+            </select>
+          </div>
+        </div>
 
-				{/* Radio Buttons for Time Scale Selection */}
-				<div className="flex justify-between h-[5vh]">
-					<div className="flex gap-4 mb-4 items-center">
-						<label>
-							<input
-								type="radio"
-								value="day"
-								checked={timeScale === 'day'}
-								onChange={() => setTimeScale('day')}
-								className="mr-2"
-							/>
-							Tuần
-						</label>
-						<label>
-							<input
-								type="radio"
-								value="month"
-								checked={timeScale === 'month'}
-								onChange={() => setTimeScale('month')}
-								className="mr-2"
-							/>
-							Tháng
-						</label>
-						<label>
-							<input
-								type="radio"
-								value="year"
-								checked={timeScale === 'year'}
-								onChange={() => setTimeScale('year')}
-								className="mr-2"
-							/>
-							Năm
-						</label>
-					</div>
+        <div className="bg-gray-100 p-4 shadow-md rounded-lg mt-4">
+          <Bar
+            data={chartData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
+            height={400}
+          />
+        </div>
+      </div>
+      <div className="w-full max-w-4xl mx-auto mt-4">
+        <h2 className="text-xl font-semibold mb-4">
+          Biểu đồ tần suất sử dụng dịch văn bản
+        </h2>
 
-					<div className="mb-4">
-						<label htmlFor="dataType" className="mr-2">
-							Chọn kiểu dữ liệu:
-						</label>
-						<select
-							id="dataType"
-							value={dataType}
-							onChange={(e) => setDataType(e.target.value)}
-							className="border rounded px-2 py-1"
-						>
-							<option value="text">Văn bản</option>
-							<option value="image">Hình ảnh</option>
-						</select>
-					</div>
-				</div>
+        {/* Radio Buttons for Time Scale Selection */}
+        <div className="flex justify-between mb-4 h-[5vh]">
+          <div className="flex gap-4 items-center">
+            <label>
+              <input
+                type="radio"
+                value="day"
+                checked={timeScaleTLC === 'day'}
+                onChange={() => setTimeScaleTLC('day')}
+                className="mr-2"
+              />
+              Tuần
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="month"
+                checked={timeScaleTLC === 'month'}
+                onChange={() => setTimeScaleTLC('month')}
+                className="mr-2"
+              />
+              Tháng
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="year"
+                checked={timeScaleTLC === 'year'}
+                onChange={() => setTimeScaleTLC('year')}
+                className="mr-2"
+              />
+              Năm
+            </label>
+          </div>
+          <DatePicker />
+        </div>
 
-				<div className="bg-gray-100 p-4 shadow-md rounded-lg mt-4">
-					<Bar
-						data={chartData}
-						options={{
-							responsive: true,
-							maintainAspectRatio: false,
-						}}
-						height={400}
-					/>
-				</div>
-			</div>
-			<div className="w-full max-w-4xl mx-auto mt-4">
-				<h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng dịch văn bản</h2>
-
-				{/* Radio Buttons for Time Scale Selection */}
-				<div className="flex justify-between mb-4 h-[5vh]">
-					<div className="flex gap-4 items-center">
-						<label>
-							<input
-								type="radio"
-								value="day"
-								checked={timeScaleTLC === 'day'}
-								onChange={() => setTimeScaleTLC('day')}
-								className="mr-2"
-							/>
-							Tuần
-						</label>
-						<label>
-							<input
-								type="radio"
-								value="month"
-								checked={timeScaleTLC === 'month'}
-								onChange={() => setTimeScaleTLC('month')}
-								className="mr-2"
-							/>
-							Tháng
-						</label>
-						<label>
-							<input
-								type="radio"
-								value="year"
-								checked={timeScaleTLC === 'year'}
-								onChange={() => setTimeScaleTLC('year')}
-								className="mr-2"
-							/>
-							Năm
-						</label>
-					</div>
-				</div>
-
-				<div className="bg-gray-100 p-4 shadow-md rounded-lg">
-					<Bar
-						data={chartDataTLC}
-						options={{responsive: true, maintainAspectRatio: false}}
-						height={400}
-					/>
-				</div>
-			</div>
-		</div>
-	);
+        <div className="bg-gray-100 p-4 shadow-md rounded-lg">
+          <Bar
+            data={chartDataTLC}
+            options={{ responsive: true, maintainAspectRatio: false }}
+            height={400}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Statistical;

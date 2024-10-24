@@ -104,7 +104,7 @@ const Container: React.FC<{
           />
         </div>
 
-        <div className="flex w-full gap-2 ml-2 flex-row-reverse">
+        <div className="flex w-full gap-2 mr-2 flex-row-reverse">
           {/* <IoMdSwap size={24} /> */}
           <ColorButton
             active={targetLang === DLang.vi}
@@ -124,7 +124,7 @@ const Container: React.FC<{
       ) : isEmpty ? (
         <DragDropArea>
           <div className="flex w-full h-[50vh] min-h-[360px] border border-gray-200 rounded-xl">
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-white">
               <img
                 src={drag2dropImg}
                 alt="drag and drop"
@@ -152,8 +152,8 @@ const Container: React.FC<{
                 Dán ảnh từ clipboard
               </ColorOptionButton>
             </div>
-            <div className="h-5/6 w-[2px] bg-gray-300 my-auto"></div>
-            <div className="w-full h-full flex flex-col gap-3 justify-center items-center"></div>
+            <div className="h-full w-[2px]  my-auto"></div>
+            <div className="w-full h-full flex flex-col gap-3 justify-center items-center bg-white"></div>
           </div>
         </DragDropArea>
       ) : (

@@ -9,6 +9,8 @@ import { ETaskType, ITaskDetail, ITaskHistory } from '~/type/task';
 interface IItemHistory {
   taskType: ETaskType;
   taskHistory: ITaskHistory;
+  taskList: ITaskHistory[];
+  setTaskList: React.Dispatch<React.SetStateAction<ITaskHistory[]>>
 }
 
 const ItemHistory = (props: IItemHistory) => {
@@ -16,7 +18,11 @@ const ItemHistory = (props: IItemHistory) => {
   const [isFavorite, setIsFavorite] = React.useState(false); // State to track favorite status
 
   const { taskHistory } = props;
+  const { taskList } = props;
+
+  const {setTaskList} = props;
   const [ocrTasks, setOcrTasks] = useState<ITaskDetail[]>([]);
+
   // Toggle the visibility of the dropdown
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -39,10 +45,19 @@ const ItemHistory = (props: IItemHistory) => {
     setShowDropdown(false); // Close the dropdown after deleting
   };
 
-  const toggleFavorite = () => {
-    setIsFavorite((prev) => !prev); // Toggle the favorite state
-  };
 
+  const toggleFavorite = () => {
+    setIsFavorite((prev) => !prev);
+    // If checked, add the task to the taskList
+    if (!isFavorite) {
+      setTaskList((prevList) => [...prevList, taskHistory]);
+    }
+    // If unchecked, remove the task from the taskList
+    else {
+      setTaskList((prevList) => prevList.filter((t) => t.id !== taskHistory.id));
+    }
+    console.log(1,taskList)
+  };
   const { updateRecentAdded } = useOcrTaskStore();
   const { putTaskDetails, changeTaskType } = useTaskStore();
 
@@ -63,14 +78,12 @@ const ItemHistory = (props: IItemHistory) => {
         </h3>
         <div className="flex">
           {/* Favorite Star */}
-          <button
-            className={`text-md font-semibold focus:outline-none text-center hover:text-yellow-500 ${
-              isFavorite ? 'text-yellow-500' : 'text-gray-400'
-            }`} // Change color based on state
-            onClick={toggleFavorite} // Toggle favorite status
-          >
-            <FaStar />
-          </button>
+          <input
+            type="checkbox"
+            checked={isFavorite}
+            onChange={toggleFavorite}
+            className="mr-2 h-5 w-5 border border-gray-300 rounded checked:bg-yellow-500 checked:border-transparent focus:outline-none"
+          />
 
           {/* More Options (Three Dots) */}
           <button

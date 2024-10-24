@@ -9,6 +9,17 @@ const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    if (darkMode) {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  };
+
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -20,8 +31,8 @@ const Header = () => {
 
   return (
     <header
-      className="flex flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat mb-5"
-      style={{ backgroundColor: 'rgb(16, 91, 91)' }}
+      className="flex bg-teal-700 dark:bg-white flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat"
+
     >
       <div className="flex-none">
         <div
@@ -41,13 +52,21 @@ const Header = () => {
             />
           </button>
 
-          <div className="ml-2 my-auto text-3xl font-semibold text-white">
+          <div className="ml-2 my-auto text-3xl font-semibold text-white dark:text-black">
             PHẦN MỀM DỊCH NGÔN NGỮ PHỤC VỤ TRINH SÁT, GIÁM SÁT TRÊN KGM
           </div>
         </div>
       </div>
       <div className="flex-grow"></div>
-      <div className="flex-none">
+      <div className="flex items-center">
+        <div className={darkMode ? 'dark' : ''}>
+          <button
+            onClick={toggleDarkMode}
+            className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded"
+          >
+            Custom Mode
+          </button>
+        </div>
         <div className="relative">
           <button
             className="hover:bg-gray-100 rounded-full
@@ -96,11 +115,12 @@ const Layout = () => {
     <div className="w-full h-[100vh] flex flex-col">
       <Header></Header>
       <div
-        className="w-full h-full bg-cover bg-center bg-no-repeat " // style={{
+        className="w-full h-full bg-cover bg-center bg-no-repeat bg-gray-300
+ dark:bg-white " // style={{
         //   backgroundImage: "url('/src/assets/background.jpeg')",
         //   backgroundColor: 'rgba(0, 0, 0, 0.25)',
         // }}
-        style={{ backgroundColor: '#cfcfb6' }}
+        //style={{ backgroundColor: '#CFCFB6' }}
       >
         <Outlet />
       </div>

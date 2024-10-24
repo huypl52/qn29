@@ -13,8 +13,8 @@ export function TabWithContent({ tabs, defaultTabId, onTabChange }: TabsProps) {
   };
 
   return (
-    <div className="w-full h-full mx-auto">
-      <div className="flex gap-2 mt-4 max-w-screen-xl mx-auto">
+    <div className="w-full h-full mx-auto ">
+      <div className="flex gap-2 mt-4 max-w-screen-xxl mx-12">
         {tabs.map((tab) => (
           <ColorOptionButton
             active={selectedId === tab.id}

@@ -5,7 +5,7 @@ const SavedText: React.FC<{ updateViewHistory: (status: boolean) => void }> = ({
   updateViewHistory,
 }) => {
   return (
-    <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-lg max-w-lg">
+    <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-lg max-w-lg w-[30vh]">
       <div className="mb-4 flex justify-between">
         <h2 className="text-lg font-semibold">Các bản dịch đã lưu</h2>
         <button

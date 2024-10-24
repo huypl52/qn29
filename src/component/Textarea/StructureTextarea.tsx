@@ -18,7 +18,7 @@ const StructureTextarea = (props: IStructureTextarea) => {
       ) : null}
       <BaseTextarea {...args} disabled={disabled} />
       {Footer ? (
-        <div className="p-2">
+        <div className="p-2 bg-gray-200 rounded-bl-md rounded-br-md">
           <Footer />
         </div>
       ) : null}
