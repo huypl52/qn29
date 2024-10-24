@@ -3,6 +3,7 @@ import { RiTranslate2 } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
 import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
+import TextSwitch from '~/component/Switch';
 import { AuthRoutePath } from '~/routes';
 
 const Header = () => {
@@ -30,10 +31,7 @@ const Header = () => {
   };
 
   return (
-    <header
-      className="flex bg-teal-700 dark:bg-white flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat"
-
-    >
+    <header className="flex bg-teal-700 dark:bg-white flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat">
       <div className="flex-none">
         <div
           className="flex flex-grow mt-1 cursor-pointer"
@@ -58,14 +56,16 @@ const Header = () => {
         </div>
       </div>
       <div className="flex-grow"></div>
+
       <div className="flex items-center">
         <div className={darkMode ? 'dark' : ''}>
-          <button
-            onClick={toggleDarkMode}
-            className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded"
+          <TextSwitch
+            onText="Sáng"
+            offText="Tối"
+            onChange={toggleDarkMode}
           >
-            Custom Mode
-          </button>
+
+          </TextSwitch>
         </div>
         <div className="relative">
           <button
@@ -115,7 +115,7 @@ const Layout = () => {
     <div className="w-full h-[100vh] flex flex-col">
       <Header></Header>
       <div
-        className="w-full h-full bg-cover bg-center bg-no-repeat bg-gray-300
+        className="w-full h-full bg-cover bg-center bg-no-repeat bg-[#CFCFB6]
  dark:bg-white " // style={{
         //   backgroundImage: "url('/src/assets/background.jpeg')",
         //   backgroundColor: 'rgba(0, 0, 0, 0.25)',
