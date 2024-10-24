@@ -13,7 +13,7 @@ const BaseTextarea = ({
   rows = 5,
 }: IBaseTextarea) => {
   let className =
-    'w-full bg-white focus:outline-none text-base h-[75vh] lg:text-2xl text-black custom-scrollbar overflow-auto p-4 rounded-tl-lg rounded-tr-lg';
+    'w-full bg-white focus:outline-none text-base h-[73vh] lg:text-2xl text-black custom-scrollbar overflow-auto p-4 rounded-tl-lg rounded-tr-lg';
 
   if (!resizable) {
     className += ' resize-none';

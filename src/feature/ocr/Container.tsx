@@ -26,6 +26,7 @@ const Container: React.FC<{
   const { selectedOcrIds, recentAdded } = useOcrTaskStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+
   const handlePasteFromClipboard = async () => {
     try {
       const clipboardItems = await navigator.clipboard.read();
@@ -78,8 +79,8 @@ const Container: React.FC<{
 
   return (
     <div className="w-full h-full px-8">
-      <div className="flex max-w-screen-xxl h-full justify-between mt-2 gap-2 mx-auto ">
-        <div className="flex w-full gap-2 ml-2">
+      <div className="flex max-w-screen-xxl h-full justify-between mt-2 gap-2 mx-2 ">
+        <div className="flex w-full gap-2 ml-2 ">
           <ColorButton
             active={sourceLang === DLang.zh}
             onClick={updateSrcLang.bind(null, DLang.zh)}
@@ -88,35 +89,38 @@ const Container: React.FC<{
           </ColorButton>
         </div>
         <div className="flex items-center gap-3">
-          {/* <button */}
-          {/*   className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center" */}
-          {/*   title="Clear" */}
-          {/*   onClick={clearInput} */}
-          {/* > */}
-          {/*   <MdClose size={20} /> */}
-          {/* </button> */}
-          {/* <TextSwitch */}
-          {/*   onText="Dịch" */}
-          {/*   offText="Dịch" */}
-          {/*   defaultChecked={needTranslate} */}
-          {/*   onChange={toggleNeedTranslate} */}
-          {/* /> */}
+          <button
+            className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
+            title="Clear"
+            onClick={clearInput}
+          >
+            <MdClose size={20} />
+          </button>
+
         </div>
 
         <div className="flex w-full gap-2 mr-2 flex-row-reverse">
+          <TextSwitch
+            onText="Dịch"
+            offText="Dịch"
+            defaultChecked={needTranslate}
+            onChange={toggleNeedTranslate}
+          />
           {/* <IoMdSwap size={24} /> */}
+          {needTranslate &&
           <ColorButton
             active={targetLang === DLang.vi}
             onClick={updateTargetLang.bind(null, DLang.vi)}
           >
             {DLangMap[DLang.vi]}
-          </ColorButton>
+          </ColorButton> }
+
         </div>
       </div>
       {isEmpty && recentAdded ? (
         <DragDropArea>
-          <div className="flex w-full h-[75vh] min-h-[360px] border border-gray-200 rounded-xl">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-md">
+          <div className="flex w-full h-[75vh] min-h-[360px] border border-gray-300 rounded-tl-xl rounded-tr-xl">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-xl">
               <div className="w-full flex justify-end">
                 <button
                   className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
@@ -126,7 +130,7 @@ const Container: React.FC<{
                   <MdClose size={20} />
                 </button>
               </div>
-              <div className="w-full h-full flex flex-col justify-center items-center bg-white">
+              <div className="w-full h-full flex flex-col justify-center items-center bg-white ">
                 <img
                   src={drag2dropImg}
                   alt="drag and drop"
@@ -158,15 +162,15 @@ const Container: React.FC<{
               </div>
             </div>
             <div className="h-full w-[2px]  my-auto"></div>
-            <div className="w-full h-full flex flex-col gap-3 justify-start items-center bg-white rounded-tr-md">
-              <div className="w-full flex justify-end h-10 mt-1 mr-4">
-                <TextSwitch
-                  onText="Dịch"
-                  offText="Dịch"
-                  defaultChecked={needTranslate}
-                  onChange={toggleNeedTranslate}
-                />
-              </div>
+            <div className="w-full h-full flex flex-col gap-3 justify-start items-center bg-white rounded-tr-xl">
+              {/* <div className="w-full flex justify-end h-10 mt-1 mr-4"> */}
+              {/*   <TextSwitch */}
+              {/*     onText="Dịch" */}
+              {/*     offText="Dịch" */}
+              {/*     defaultChecked={needTranslate} */}
+              {/*     onChange={toggleNeedTranslate} */}
+              {/*   /> */}
+              {/* </div> */}
             </div>
           </div>
         </DragDropArea>

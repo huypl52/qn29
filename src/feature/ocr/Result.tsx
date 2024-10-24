@@ -182,7 +182,7 @@ const ListResult = (props: IResult) => {
   const { ocrTaskResults, taskId } = props;
 
   return (
-    <div className="w-full h-[75vh] relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-white overscroll-auto">
+    <div className="w-full h-[85vh] relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-white overscroll-auto">
       <div className="w-full h-full p-4 divide-y divide-stone-400">
         {ocrTaskResults.map((r) => {
           return <Item ocrTaskResult={r} taskId={taskId} />;

@@ -38,7 +38,7 @@ const LoginForm = () => {
     >
       <Card className="w-[450px] bg-white rounded-lg shadow-md p-6">
         <CardHeader>
-          <CardTitle>Phần mềm phục vụ trinh sát KGM</CardTitle>
+          <CardTitle className="text-center font-bold text-xl">Đăng nhập hệ thống</CardTitle>
         </CardHeader>
         <CardContent className="">
           <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -87,7 +87,7 @@ const LoginForm = () => {
                   formik.values.username.length > 0
                 }
               >
-                Xác nhận
+                Đăng nhập
               </ColorLoginButton>
             </div>
 
