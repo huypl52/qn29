@@ -79,7 +79,7 @@ const Container: React.FC<{
 
   return (
     <div className="w-full h-full px-8">
-      <div className="flex max-w-screen-xl h-full justify-between mt-2 gap-2 mx-auto">
+      <div className="flex max-w-screen-xxl h-full justify-between mt-2 gap-2 mx-auto ">
         <div className="flex w-full gap-2 ml-2">
           <ColorButton
             active={sourceLang === DLang.zh}
@@ -89,19 +89,19 @@ const Container: React.FC<{
           </ColorButton>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
-            title="Clear"
-            onClick={clearInput}
-          >
-            <MdClose size={20} />
-          </button>
-          <TextSwitch
-            onText="Dịch"
-            offText="Dịch"
-            defaultChecked={needTranslate}
-            onChange={toggleNeedTranslate}
-          />
+          {/* <button */}
+          {/*   className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center" */}
+          {/*   title="Clear" */}
+          {/*   onClick={clearInput} */}
+          {/* > */}
+          {/*   <MdClose size={20} /> */}
+          {/* </button> */}
+          {/* <TextSwitch */}
+          {/*   onText="Dịch" */}
+          {/*   offText="Dịch" */}
+          {/*   defaultChecked={needTranslate} */}
+          {/*   onChange={toggleNeedTranslate} */}
+          {/* /> */}
         </div>
 
         <div className="flex w-full gap-2 mr-2 flex-row-reverse">
@@ -123,63 +123,85 @@ const Container: React.FC<{
         />
       ) : isEmpty ? (
         <DragDropArea>
-          <div className="flex w-full h-[50vh] min-h-[360px] border border-gray-200 rounded-xl">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-white">
-              <img
-                src={drag2dropImg}
-                alt="drag and drop"
-                className="object-cover w-32 md:w-48 lg:w-64"
-              />
-              <span className="mb-4 text-xl font-semibold">Hoặc chọn tệp</span>
-              <input
-                ref={fileInputRef}
-                type="file"
-                multiple={false}
-                onChange={uploadFile}
-                className="hidden"
-              />
-              <ColorOptionButton
-                active
-                className="w-48 mt-1"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Tải tệp lên
-              </ColorOptionButton>
-              <ColorOptionButton
-                className="w-48 mt-1"
-                onClick={handlePasteFromClipboard}
-              >
-                Dán ảnh từ clipboard
-              </ColorOptionButton>
+          <div className="flex w-full h-[75vh] min-h-[360px] border border-gray-200 rounded-xl">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-md">
+              <div className="w-full flex justify-end">
+                <button
+                  className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
+                  title="Clear"
+                  onClick={clearInput}
+                >
+                  <MdClose size={20} />
+                </button>
+              </div>
+              <div className="w-full h-full flex flex-col justify-center items-center bg-white">
+                <img
+                  src={drag2dropImg}
+                  alt="drag and drop"
+                  className="object-cover w-32 md:w-48 lg:w-64"
+                />
+                <span className="mb-4 text-xl font-semibold">
+                  Hoặc chọn tệp
+                </span>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple={false}
+                  onChange={uploadFile}
+                  className="hidden"
+                />
+                <ColorOptionButton
+                  active
+                  className="w-48 mt-1"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Tải tệp lên
+                </ColorOptionButton>
+                <ColorOptionButton
+                  className="w-48 mt-1"
+                  onClick={handlePasteFromClipboard}
+                >
+                  Dán ảnh từ clipboard
+                </ColorOptionButton>
+              </div>
             </div>
             <div className="h-full w-[2px]  my-auto"></div>
-            <div className="w-full h-full flex flex-col gap-3 justify-center items-center bg-white"></div>
+            <div className="w-full h-full flex flex-col gap-3 justify-start items-center bg-white rounded-tr-md">
+              <div className="w-full flex justify-end h-10 mt-1 mr-4">
+                <TextSwitch
+                  onText="Dịch"
+                  offText="Dịch"
+                  defaultChecked={needTranslate}
+                  onChange={toggleNeedTranslate}
+                />
+              </div>
+            </div>
           </div>
         </DragDropArea>
       ) : (
         <ListResult ocrResults={selectedOcrIds.map((id) => ({ id }))} />
       )}
 
-      <div className="flex justify-center space-x-12 mt-4">
-        <button
-          className="flex flex-col items-center w-48 text-gray-700"
-          onClick={() => updateViewHistory(true)}
-        >
-          <span className="w-16 h-16 text-3xl rounded-full bg-gray-200 flex items-center justify-center">
-            ↻
-          </span>
-          <span className="text-xs mt-1">Các bản dịch đã thực hiện</span>
-        </button>
-        {/* <button */}
-        {/*   className="flex flex-col items-center w-48 text-gray-700" */}
-        {/*   onClick={() => updateSavedText(true)} */}
-        {/* > */}
-        {/*   <span className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center"> */}
-        {/*     ★ */}
-        {/*   </span> */}
-        {/*   <span className="text-xs mt-1">Đã lưu</span> */}
-        {/* </button> */}
-      </div>
+      {/* <div className="flex justify-center space-x-12 mt-4"> */}
+      {/*   <button */}
+      {/*     className="flex flex-col items-center w-48 text-gray-700" */}
+      {/*     onClick={() => updateViewHistory(true)} */}
+      {/*   > */}
+      {/*     <span className="w-16 h-16 text-3xl rounded-full bg-gray-200 flex items-center justify-center"> */}
+      {/*       ↻ */}
+      {/*     </span> */}
+      {/*     <span className="text-xs mt-1">Các bản dịch đã thực hiện</span> */}
+      {/*   </button> */}
+      {/*   /!* <button *!/ */}
+      {/*   /!*   className="flex flex-col items-center w-48 text-gray-700" *!/ */}
+      {/*   /!*   onClick={() => updateSavedText(true)} *!/ */}
+      {/*   /!* > *!/ */}
+      {/*   /!*   <span className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center"> *!/ */}
+      {/*   /!*     ★ *!/ */}
+      {/*   /!*   </span> *!/ */}
+      {/*   /!*   <span className="text-xs mt-1">Đã lưu</span> *!/ */}
+      {/*   /!* </button> *!/ */}
+      {/* </div> */}
     </div>
   );
 };

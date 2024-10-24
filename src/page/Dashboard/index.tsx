@@ -59,20 +59,28 @@ const Dashboard = () => {
   return (
     <div className="flex">
       <LangContextProvider>
-        <TabWithContent
-          tabs={tabs}
-          onTabChange={(id) => {
-            updateViewHistory(false);
-            switch (id) {
-              case '1':
-                changeTaskType(ETaskType.TRANSLATE);
-                break;
-              case '2':
-                changeTaskType(ETaskType.OCR);
-                break;
-            }
-          }}
-        />
+        <div className="flex justify-between w-full">
+          <TabWithContent
+            tabs={tabs}
+            showHistory={viewHistory}
+            onClickHistory={updateViewHistory}
+            onTabChange={(id) => {
+              updateViewHistory(false);
+              switch (id) {
+                case '1':
+                  changeTaskType(ETaskType.TRANSLATE);
+                  break;
+                case '2':
+                  changeTaskType(ETaskType.OCR);
+                  break;
+              }
+            }}
+          />
+          {/* <div> */}
+          {/*   History */}
+          {/* </div> */}
+        </div>
+
       </LangContextProvider>
       {viewHistory && <History updateViewHistory={updateViewHistory} />}
       {/* {viewHistoryImage && <HistoryImageOcr updateViewHistory={updateViewHistoryImage}/>} */}

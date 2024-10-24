@@ -12,7 +12,7 @@ const BaseTextarea = ({
   rows = 5,
 }: IBaseTextarea) => {
   let className =
-    'w-full h-full focus:outline-none text-base lg:text-2xl text-black custom-scrollbar p-4 rounded-lg';
+    'w-full bg-white focus:outline-none text-base h-[75vh] lg:text-2xl text-black custom-scrollbar overflow-auto p-4 rounded-tl-lg rounded-tr-lg';
 
   if (!resizable) {
     className += ' resize-none';
@@ -44,7 +44,7 @@ const BaseTextarea = ({
       ></textarea>
       {showClearButton ? (
         <button
-          className="hover:bg-gray-100 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
+          className="hover:bg-gray-100 rounded-tl rounded-tr w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
           title="Clear"
           onClick={clearText}
         >

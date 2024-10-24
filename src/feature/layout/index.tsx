@@ -59,13 +59,10 @@ const Header = () => {
 
       <div className="flex items-center">
         <div className={darkMode ? 'dark' : ''}>
-          <TextSwitch
-            onText="Sáng"
-            offText="Tối"
-            onChange={toggleDarkMode}
-          >
-
-          </TextSwitch>
+          <div
+            onClick={toggleDarkMode}
+            className="mr-2 h-[1vw] w-[1vw] bg-white dark:bg-[#CFCFB6] text-black dark:text-white"
+          />
         </div>
         <div className="relative">
           <button

@@ -8,4 +8,6 @@ export type TabsProps = {
   tabs: ITab[];
   defaultTabId?: string;
   onTabChange: (tabId?: string) => void;
+  showHistory: boolean;
+  onClickHistory: (status: boolean) => void;
 };

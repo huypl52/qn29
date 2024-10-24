@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{html,js,ts,tsx,jsx,css,scss}", "./index.html"],
@@ -7,6 +8,9 @@ export default {
       minHeight: {
         'screen-minus-4rem': 'calc(100vh - 4rem)',
       },
+      backgroundImage: {
+        'login': "url('../assets/login.jpg')",
+      }
     },
   },
   plugins: [],

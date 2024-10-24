@@ -41,8 +41,8 @@ const ItemHistory = (props: IItemHistory) => {
   // Function to handle the delete action
   const handleDelete = () => {
     console.log('Data deleted');
-    // Implement your data deletion logic here
     setShowDropdown(false); // Close the dropdown after deleting
+
   };
 
 
@@ -56,7 +56,6 @@ const ItemHistory = (props: IItemHistory) => {
     else {
       setTaskList((prevList) => prevList.filter((t) => t.id !== taskHistory.id));
     }
-    console.log(1,taskList)
   };
   const { updateRecentAdded } = useOcrTaskStore();
   const { putTaskDetails, changeTaskType } = useTaskStore();
