@@ -27,9 +27,9 @@ export function TabWithContent({ tabs, defaultTabId, onTabChange, onClickHistory
         </div>
         {!showHistory && (
           <div className="group absolute right-0 top-1/2 transform -translate-y-1/2 p-2">
-            <button className="flex items-center bg-blue-500 text-white font-semibold px-2 py-1 rounded-lg shadow-lg hover:bg-blue-600 transition"
+            <button className="flex items-center leading-1 bg-[#38a169] text-white font-semibold px-2 py-1 rounded-lg shadow-lg hover:bg-[#38a169] transition"
                     onClick={()=>onClickHistory(true)}>
-              ←
+              &lt;
               <span className="ml-2 hidden group-hover:inline px-2 py-1">
                 Lịch sử
               </span>

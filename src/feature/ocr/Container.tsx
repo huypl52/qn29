@@ -26,6 +26,7 @@ const Container: React.FC<{
   const { selectedOcrIds, recentAdded } = useOcrTaskStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+
   const handlePasteFromClipboard = async () => {
     try {
       const clipboardItems = await navigator.clipboard.read();
@@ -84,7 +85,7 @@ const Container: React.FC<{
             active={sourceLang === DLang.zh}
             onClick={updateSrcLang.bind(null, DLang.zh)}
           >
-            {DLangMap[DLang.zh]}
+            Ảnh tiếng Trung
           </ColorButton>
         </div>
         <div className="flex items-center gap-3">
@@ -95,9 +96,10 @@ const Container: React.FC<{
           >
             <MdClose size={20} />
           </button>
+
         </div>
 
-        <div className="flex w-full gap-2 mr-2 flex-row-reverse">
+        <div className="flex w-full gap-2 mr-2 flex-row-reverse items-end">
           <TextSwitch
             onText="Dịch"
             offText="Dịch"

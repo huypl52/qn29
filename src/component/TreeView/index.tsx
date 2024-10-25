@@ -2,31 +2,34 @@ import React, { useState } from 'react';
 import { Treebeard } from 'react-treebeard';
 
 const data = {
-  name: 'root',
+  name: 'BTL',
   children: [
     {
-      name: 'parent',
+      name: 'T1',
       children: [
-        { name: 'child1' },
-        { name: 'child2' }
+        { name: 'user1' },
+        { name: 'user2' }
       ]
     },
     {
-      name: 'loading parent',
-      children: []
-    },
-    {
-      name: 'parent',
+      name: 'T5',
       children: [
-        {
-          name: 'nested parent',
-          children: [
-            { name: 'nested child 1' },
-            { name: 'nested child 2' }
-          ]
-        }
+        { name: 'user1' },
+        { name: 'user2' }
       ]
     }
+    //{
+    //  name: 'T5',
+    //  children: [
+    //    {
+    //      name: 'nested parent',
+    //      children: [
+    //        { name: 'nested child 1' },
+    //        { name: 'nested child 2' }
+    //      ]
+    //    }
+    //  ]
+    //}
   ]
 };
 
@@ -68,10 +71,12 @@ const customTheme = {
           margin: '-0.5rem 0 0 -0.5rem',
           height: '1rem'
         },
-        height: 14,
-        width: 14,
+        height: 12,
+        width: 12,
         arrow: {
           fill: '#000',
+          height: 12,
+          width: 12,
           strokeWidth: 0
         }
       },

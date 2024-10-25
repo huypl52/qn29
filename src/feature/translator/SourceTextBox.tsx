@@ -78,7 +78,7 @@ const SourceTextBox = () => {
   }, [timeoutId]);
 
   return (
-    <div className="w-full bg-white rounded-lg ">
+    <div className="w-full bg-white rounded-lg">
       <StructureTextarea
         resizable={false}
         value={srcText}

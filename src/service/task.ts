@@ -4,6 +4,7 @@ import {
   ITaskDetail,
   ITaskHistory,
   LTaskTypeOcr,
+  StatisticalParam,
 } from '~/type/task';
 
 export const getTaskDetails = (taskId: string) => {
@@ -40,3 +41,15 @@ export const getTaskHistory = (skip = 0, take = 20, type?: ETaskType) => {
 export const getTotalTaskHistory = () => {
   return httpGet()<{ total: number }>('/tasks/history/summary?');
 };
+
+
+//Statistical
+
+export const getStatisticalOcrHistory = ({group=o, from_date, to_date}:StatisticalParam) => {
+  const queryParams = new URLSearchParams({
+                                            group: group.toString(),
+                                            ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
+                                            ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
+                                          }).toString();
+  return httpGet()(`/reports/ocr/imagecount/group?${queryParams}`);
+}

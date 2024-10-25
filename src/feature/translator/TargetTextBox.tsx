@@ -73,7 +73,7 @@ const TargetTextBox = () => {
         disabled
         value={targetText}
         loading={loading}
-        text={'Bản dịch'}
+        text={'Bản dịch tiếng Việt'}
         rows={15}
       />
     </div>

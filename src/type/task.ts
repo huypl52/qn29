@@ -56,3 +56,10 @@ export interface ITaskDetail {
   // FE insert image by uploading
   fileid?: string;
 }
+
+
+export interface StatisticalParam {
+  group?: number; // Tham số group có thể là số
+  from_date?: string; // Tham số ngày bắt đầu (định dạng YYYY-MM-DD)
+  to_date?: string; // Tham số ngày kết thúc (định dạng YYYY-MM-DD)
+}
