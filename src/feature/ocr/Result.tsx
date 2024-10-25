@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useOcrContext } from './context';
-import { BaseTextarea, StructureTextarea } from '~/component/Textarea';
+import { StructureTextarea } from '~/component/Textarea';
 import { ITaskDetail, ITaskHistoryDetail } from '~/type/task';
-import { useTaskStore } from '~/store/task';
-import { getOcrDetail } from '~/service/ocr';
 import { EProcessStatus } from '~/type/ocr';
 import { getImage, getTaskDetails } from '~/service/task';
 import { toast } from 'react-toastify';
@@ -12,6 +10,7 @@ import _ from 'lodash';
 import LoadingText from '~/component/LoadingText';
 
 import { MdSmsFailed } from 'react-icons/md';
+import { useTaskStore } from '~/store/task';
 
 const TextBoxFooter = ({ text }: { text: string }) => {
   const onCopyClick = () => {
@@ -48,6 +47,11 @@ const Item = (props: IItemTask) => {
   const [ocrResult, setOcrResult] = useState<ITaskDetail | undefined>(
     ocrTaskResult
   );
+  const { counter } = useTaskStore();
+
+  useEffect(() => {
+    setTaskDetailStatus(EProcessStatus.pending);
+  }, [counter]);
 
   useEffect(() => {
     if (taskDetailStatus !== EProcessStatus.pending) {
@@ -59,8 +63,8 @@ const Item = (props: IItemTask) => {
       neededFields.push('dest_text');
     }
 
+    // console.log({ ocrResult, taskId });
     if (_.every(neededFields, (k) => _.has(ocrResult, k))) {
-      // if (_.hasIn(ocrResult, neededFields)) {
       setTaskDetailStatus(EProcessStatus.success);
       return;
     }
@@ -68,6 +72,7 @@ const Item = (props: IItemTask) => {
     if (!taskId) return;
     if (!ocrResult) return;
 
+    // console.log(`start query ${ocrTaskResult}`);
     const intervalRef = setInterval(() => {
       getTaskDetails(taskId).then((res) => {
         const { status, data } = res;
@@ -78,6 +83,7 @@ const Item = (props: IItemTask) => {
         const success = _.every(neededFields, (k) =>
           _.has(newOcrTaskResult, k)
         );
+        // console.log({ newOcrTaskResult, success });
         if (success) {
           setTaskDetailStatus(EProcessStatus.success);
           setOcrResult(newOcrTaskResult);
@@ -194,3 +200,4 @@ const ListResult = (props: IResult) => {
 };
 
 export default ListResult;
+

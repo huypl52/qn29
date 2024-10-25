@@ -14,6 +14,7 @@ import { useTaskStore } from '~/store/task';
 import { ETaskType } from '~/type/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { getTaskDetails } from '~/service/task';
+import { translateOcr } from '~/service/translate';
 
 const OcrContext = createContext<IOcrContext>({
   clearInput: () => {},
@@ -29,6 +30,8 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [translations, setTranslations] = useState<string[]>([]);
   const { changeTaskType, type, incrementCounter } = useTaskStore();
 
+  const { putTaskDetails, selectTaskId, taskDetails } = useTaskStore();
+  const { updateRecentAdded } = useOcrTaskStore();
   const [isEmpty, setEmpty] = useState(true);
 
   const toggleNeedTranslate = useCallback(() => {
@@ -45,8 +48,40 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
     return type === ETaskType.OCR_TRANSLATE;
   }, [type]);
 
-  const { putTaskDetails, selectTaskId } = useTaskStore();
-  const { updateRecentAdded } = useOcrTaskStore();
+  // useEffect(() => {
+  //   if (type !== ETaskType.OCR_TRANSLATE) return;
+  //
+  //   (() => {
+  //     const ocrIds = taskDetails
+  //       .map((t) => {
+  //         return t.ocrid;
+  //       })
+  //       .filter((i) => i !== undefined);
+  //
+  //     translateOcr(ocrIds)
+  //       .then((res) => {
+  //         const { data, status } = res;
+  //         if (status !== 200) throw new Error('Dịch thất bại');
+  //
+  //         console.log({ data });
+  //         if (!data?.length) throw new Error('Dịch thất bại');
+  //         const taskId = data[0].taskid;
+  //         console.log({ taskId });
+  //         getTaskDetails(taskId).then((res) => {
+  //           const { status, data } = res;
+  //           if (status !== 200) throw new Error('Dịch thất bại');
+  //
+  //           console.log({ getTaskDetails: data });
+  //           putTaskDetails(data);
+  //           incrementCounter();
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         console.log({ err });
+  //         toast.error(err?.data ? err.data : toastMsg.error);
+  //       });
+  //   })();
+  // }, [type]);
 
   const clearInput = useCallback(() => {
     setTranslations([]);
@@ -70,9 +105,11 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
         .catch((err) => {
           toast.error(err?.data ? err.data : toastMsg.error);
         });
-      if (!ocrResponses) {
+      if (!ocrResponses?.length) {
         return;
       }
+
+      console.log({ ocrResponses });
       const taskId = ocrResponses[0].refid;
       if (!taskId) {
         console.log('No task id found');
@@ -117,6 +154,11 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
       );
     })();
   }, [dragFiles]);
+
+  useEffect(() => {
+    if (type !== ETaskType.OCR_TRANSLATE) return;
+    handleUploadFiles(dragFiles);
+  }, [type, dragFiles]);
 
   return (
     <OcrContext.Provider

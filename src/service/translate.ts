@@ -5,6 +5,7 @@ import {
 } from '~/type/translate';
 import { httpPost } from './_req';
 import { DLang } from '~/type';
+import { ITranslateOcr } from '~/type/ocr';
 
 const defaultTranslateConf: ITranslation = {
   source_language: DLang.zh,
@@ -22,4 +23,11 @@ export const translate = ({ source_text }: ITranslation) => {
 
 export const saveTranslation = (data: ITranslation) => {
   return httpPost(0)<ISavedTranslation>('/translations/manual/history?', data);
+};
+
+export const translateOcr = (ocrIds: string[], lang: DLang = DLang.vi) => {
+  return httpPost(0)<ITranslateOcr[]>('/translations/ocrs?', {
+    dest_language: lang,
+    ocrids: ocrIds,
+  });
 };
