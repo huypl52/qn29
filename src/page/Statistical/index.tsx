@@ -340,7 +340,7 @@ const Statistical: React.FC = () => {
 
   return (
     <div className="flex">
-      {/* <TreeView /> */}
+      <TreeView />
       <div className="w-full max-w-4xl mx-auto mt-4">
         <h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng</h2>
         {/* Radio Buttons for Time Scale Selection */}
@@ -351,7 +351,7 @@ const Statistical: React.FC = () => {
                 type="radio"
                 value="day"
                 checked={timeScale === 'day'}
-                onChange={()=>handleChangeTime('day')}
+                onChange={() => handleChangeTime('day')}
                 className="mr-1"
               />
               Tuần
@@ -470,3 +470,4 @@ const Statistical: React.FC = () => {
 };
 
 export default Statistical;
+
