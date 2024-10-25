@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { TabsProps } from './type';
 import ColorOptionButton from '~/component/Button/ColorOptionButton.tsx';
 
-export function TabWithContent({ tabs, defaultTabId, onTabChange }: TabsProps) {
+export function TabWithContent({ tabs, defaultTabId, onTabChange, onClickHistory, showHistory }: TabsProps) {
   const [selectedId, setSelectedId] = useState(
     defaultTabId || tabs[0]?.id || ''
   );
@@ -13,16 +13,29 @@ export function TabWithContent({ tabs, defaultTabId, onTabChange }: TabsProps) {
   };
 
   return (
-    <div className="w-full h-full mx-auto ">
-      <div className="flex gap-2 mt-4 max-w-screen-xxl mx-12">
-        {tabs.map((tab) => (
-          <ColorOptionButton
-            active={selectedId === tab.id}
-            onClick={() => handleChangeTab(tab.id)}
-          >
-            {tab.label}
-          </ColorOptionButton>
-        ))}
+    <div className="w-full h-full mx-auto">
+      <div className="flex gap-2 mt-4 max-w-screen-xxl mx-12 justify-between mr-0 relative">
+        <div className="flex gap-2">
+          {tabs.map((tab) => (
+            <ColorOptionButton
+              active={selectedId === tab.id}
+              onClick={() => handleChangeTab(tab.id)}
+            >
+              {tab.label}
+            </ColorOptionButton>
+          ))}
+        </div>
+        {!showHistory && (
+          <div className="group absolute right-0 top-1/2 transform -translate-y-1/2 p-2">
+            <button className="flex items-center bg-blue-500 text-white font-semibold px-2 py-1 rounded-lg shadow-lg hover:bg-blue-600 transition"
+                    onClick={()=>onClickHistory(true)}>
+              ←
+              <span className="ml-2 hidden group-hover:inline px-2 py-1">
+                Lịch sử
+              </span>
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-4">
         {tabs.map((tab) => (

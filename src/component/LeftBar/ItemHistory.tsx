@@ -34,20 +34,21 @@ const ItemHistory = (props: IItemHistory) => {
     setShowDropdown(false); // Close the dropdown after deleting
   };
 
+
   const toggleFavorite = () => {
     setIsFavorite((prev) => !prev);
     // If checked, add the task to the taskList
     if (!isFavorite) {
       setTaskList((prevList) => [...prevList, taskHistory]);
-    } // If unchecked, remove the task from the taskList
+    }
+    // If unchecked, remove the task from the taskList
     else {
       setTaskList((prevList) =>
         prevList.filter((t) => t.id !== taskHistory.id)
       );
     }
-    console.log(1, taskList);
+    console.log(1,taskList)
   };
-
   const { updateRecentAdded } = useOcrTaskStore();
   const { putTaskDetails, changeTaskType } = useTaskStore();
 
@@ -128,3 +129,4 @@ const ItemHistory = (props: IItemHistory) => {
 };
 
 export default ItemHistory;
+

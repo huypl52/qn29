@@ -1,23 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RiTranslate2 } from 'react-icons/ri';
+import { LuSettings2 } from "react-icons/lu";
 import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
 import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
+import TextSwitch from '~/component/Switch';
 import { AuthRoutePath } from '~/routes';
 
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    if (darkMode) {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
   };
 
   const toggleDropdown = () => {
@@ -30,10 +35,7 @@ const Header = () => {
   };
 
   return (
-    <header
-      className="flex bg-teal-700 dark:bg-white flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat"
-
-    >
+    <header className="flex bg-teal-700 dark:bg-white flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat">
       <div className="flex-none">
         <div
           className="flex flex-grow mt-1 cursor-pointer"
@@ -58,14 +60,13 @@ const Header = () => {
         </div>
       </div>
       <div className="flex-grow"></div>
+
       <div className="flex items-center">
         <div className={darkMode ? 'dark' : ''}>
-          <button
+          <div
             onClick={toggleDarkMode}
-            className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded"
-          >
-            Custom Mode
-          </button>
+            className="mr-2 h-[1vw] w-[1vw] bg-white dark:bg-[#CFCFB6] text-black dark:text-white"
+          />
         </div>
         <div className="relative">
           <button
@@ -73,7 +74,7 @@ const Header = () => {
             w-9 h-9 mt-1 mr-2 transition-colors duration-100 shado flex justify-center items-center"
             onClick={toggleDropdown}
           >
-            <RiTranslate2 size={24} />
+            <LuSettings2 size={24} />
           </button>
 
           {/* Dropdown */}
@@ -115,7 +116,7 @@ const Layout = () => {
     <div className="w-full h-[100vh] flex flex-col">
       <Header></Header>
       <div
-        className="w-full h-full bg-cover bg-center bg-no-repeat bg-gray-300
+        className="w-full h-full bg-cover bg-center bg-no-repeat bg-[#CFCFB6]
  dark:bg-white " // style={{
         //   backgroundImage: "url('/src/assets/background.jpeg')",
         //   backgroundColor: 'rgba(0, 0, 0, 0.25)',

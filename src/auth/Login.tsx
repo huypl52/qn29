@@ -8,6 +8,8 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { AuthRoutePath } from "~/routes";
 import { saveUser } from "~/storage/auth";
+import loginImage from '../assets/login.jpg';
+import ColorLoginButton from "~/component/Button/ColorLoginButton";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -31,45 +33,53 @@ const LoginForm = () => {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-[400px] bg-white rounded-lg shadow-md p-6">
+    <div className="flex items-center justify-center min-h-screen w-full bg-cover bg-center"
+    style={{backgroundImage: `url(${loginImage})`}}
+    >
+      <Card className="w-[450px] bg-white rounded-lg shadow-md p-6">
         <CardHeader>
-          <CardTitle>Đăng nhập</CardTitle>
+          <CardTitle className="text-center font-bold text-xl">Đăng nhập hệ thống</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="">
           <form onSubmit={formik.handleSubmit} className="space-y-4">
-            <div>
+            <div className="mt-4">
               <Input
                 type="text"
-                placeholder="Username"
+                placeholder="Tên đăng nhập"
                 value={formik.values.username}
                 onChange={(e) =>
                   formik.setFieldValue("username", e.target.value)
                 }
+                className={formik.errors.username ? "border-red-500" : ""}
               />
             </div>
-            {formik.errors.username && (
-              <Alert variant="destructive">
-                <AlertDescription>{formik.errors.username}</AlertDescription>
-              </Alert>
-            )}
-            <div>
+            {/* <div className="h-[5vh]"> */}
+            {/*   {formik.errors.username && ( */}
+            {/*     <Alert variant="destructive"> */}
+            {/*       <AlertDescription>{formik.errors.username}</AlertDescription> */}
+            {/*     </Alert> */}
+            {/*   )} */}
+            {/* </div> */}
+            <div className="mt-4">
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 value={formik.values.password}
                 onChange={(e) =>
                   formik.setFieldValue("password", e.target.value)
                 }
+                className={formik.errors.password ? "border-red-500" : ""}
               />
             </div>
-            {formik.errors.password && (
-              <Alert variant="destructive">
-                <AlertDescription>{formik.errors.password}</AlertDescription>
-              </Alert>
-            )}
-            <div className="flex justify-end">
-              <ColorButton
+            {/* <div className="h-[5vh]"> */}
+            {/*   {formik.errors.password && ( */}
+            {/*     <Alert variant="destructive"> */}
+            {/*       <AlertDescription>{formik.errors.password}</AlertDescription> */}
+            {/*     </Alert> */}
+            {/*   )} */}
+            {/* </div> */}
+            <div className="flex justify-center">
+              <ColorLoginButton
                 type="submit"
                 className="w-full bg-blue-500"
                 active={
@@ -77,9 +87,10 @@ const LoginForm = () => {
                   formik.values.username.length > 0
                 }
               >
-                Xác nhận
-              </ColorButton>
+                Đăng nhập
+              </ColorLoginButton>
             </div>
+
           </form>
         </CardContent>
       </Card>

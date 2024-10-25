@@ -3,7 +3,6 @@ import { Treebeard } from 'react-treebeard';
 
 const data = {
   name: 'root',
-  toggled: true,
   children: [
     {
       name: 'parent',
@@ -14,7 +13,6 @@ const data = {
     },
     {
       name: 'loading parent',
-      loading: true,
       children: []
     },
     {

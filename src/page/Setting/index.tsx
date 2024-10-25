@@ -4,6 +4,7 @@ const Setting: React.FC = () => {
   const [maxImageSize, setMaxImageSize] = React.useState('');
   const [minImageSize, setMinImageSize] = React.useState('');
   const [textSize, setTextSize] = React.useState('');
+  const [waitingTime, setWaitingTIme] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false); // Trạng thái hiển thị mật khẩu
 
@@ -46,7 +47,7 @@ const Setting: React.FC = () => {
               value={maxImageSize}
               onChange={(e) => handleNumberInput(e, setMaxImageSize)}
               placeholder=""
-              className="border rounded px-3 py-2 w-full"
+              className="border rounded px-3 py-2 w-full text-right"
               required
             />
             <p className='min-w-[3vw] text-center'>MB</p>
@@ -62,7 +63,7 @@ const Setting: React.FC = () => {
               value={minImageSize}
               onChange={(e) => handleNumberInput(e, setMinImageSize)}
               placeholder=""
-              className="border rounded px-3 py-2 w-full"
+              className="border rounded px-3 py-2 w-full text-right"
               required
             />
             <p className="min-w-[3vw] text-center">MB</p>
@@ -78,10 +79,26 @@ const Setting: React.FC = () => {
               value={textSize}
               onChange={(e) => handleNumberInput(e, setTextSize)}
               placeholder=""
-              className="border rounded px-3 py-2 w-full"
+              className="border rounded px-3 py-2 w-full text-right"
               required
             />
-            <p className="min-w-[3vw] text-center">Kí tự</p>
+            <p className="min-w-[3vw] text-center">kí tự</p>
+          </label>
+        </div>
+        <div>
+          <label className="block mb-2" htmlFor="textSize">
+            Thời gian dịch tối đa:
+          </label>
+          <label className="flex items-center">
+            <input
+              type="text"
+              value={waitingTime}
+              onChange={(e) => handleNumberInput(e, setWaitingTIme)}
+              placeholder=""
+              className="border rounded px-3 py-2 w-full text-right"
+              required
+            />
+            <p className="min-w-[3vw] text-center">giây</p>
           </label>
         </div>
         {/* <div> */}

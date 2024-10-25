@@ -130,6 +130,7 @@ const Item = (props: IItemTask) => {
         <img
           src={img}
           // alt={f.name}
+          alt="no load image"
           className="object-contain w-full h-full"
         />
       </div>
