@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {Bar}                          from 'react-chartjs-2';
 import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
@@ -7,10 +8,39 @@ import TreeView                                                                 
 
 import { getStatisticalOcrHistory } from '~/service/task.ts';
 import { getStatisticalOcrHistoryTranslate } from '~/service/task.ts';
+
+import React, { useEffect, useMemo, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import DatePickerCustom from '~/component/DataPicker/DatePicker.tsx';
+import TreeView from '~/component/TreeView';
+
+import {
+  getStatisticalOcrHistory,
+  getStatisticalTranslateHistory,
+} from '~/service/task.ts';
+import { DLang, DLangMap } from '~/type';
+import { forIn } from 'lodash';
 // Register chart.js modules
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Statistical: React.FC = () => {
+
 	const [timeScale, setTimeScale] = useState('day'); // Default to 'day'
 	const [dataType, setDataType] = useState('text'); // Default to 'text' data
 
@@ -235,6 +265,7 @@ const Statistical: React.FC = () => {
 
 	// Determine which data to show based on the selected time scale and data type
 	const chartData =
+
     timeScale === 'day'
       ? dataType === 'text'
         ? dataByDayText
@@ -246,6 +277,7 @@ const Statistical: React.FC = () => {
         : dataType === 'text'
           ? dataByYearText
           : dataByYearImage;
+
 
   const chartDataTLC =
     timeScaleTLC === 'day'
@@ -266,7 +298,6 @@ const Statistical: React.FC = () => {
       {/* <TreeView /> */}
       <div className="w-full max-w-4xl mx-auto mt-4">
         <h2 className="text-xl font-semibold mb-4">Biểu đồ tần suất sử dụng</h2>
-        {/* Radio Buttons for Time Scale Selection */}
         <div className="flex items-center	 justify-between h-[5vh]">
           <div className="flex gap-1 mb-4 items-center">
             <label>
@@ -274,7 +305,7 @@ const Statistical: React.FC = () => {
                 type="radio"
                 value="day"
                 checked={timeScale === 'day'}
-                onChange={()=>handleChangeTime('day')}
+                onChange={() => handleChangeTime('day')}
                 className="mr-1"
               />
               Tuần
@@ -373,6 +404,7 @@ const Statistical: React.FC = () => {
               Năm
             </label>
           </div>
+
 					<div className="mr-6">
 						<DatePickerCustom
 							startDate={startDate}
@@ -382,13 +414,15 @@ const Statistical: React.FC = () => {
 					</div>
         </div>
 
-        <div className="bg-gray-100 p-4 shadow-md rounded-lg">
-          <Bar
-            data={chartDataTLC}
-            options={{ responsive: true, maintainAspectRatio: false }}
-            height={400}
-          />
-        </div>
+        {chartDataTLC ? (
+          <div className="bg-gray-100 p-4 shadow-md rounded-lg">
+            <Bar
+              data={chartDataTLC}
+              options={{ responsive: true, maintainAspectRatio: false }}
+              height={400}
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );

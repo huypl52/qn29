@@ -69,7 +69,6 @@ const History: React.FC<{
     setChoiseList([]);
   };
 
-  console.log({ taskType });
   return (
     <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
       <div className="mb-4 flex start ">

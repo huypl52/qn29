@@ -42,16 +42,22 @@ export const getTotalTaskHistory = () => {
   return httpGet()<{ total: number }>('/tasks/history/summary?');
 };
 
-
 //Statistical
 
-export const getStatisticalOcrHistory = ({group=0, from_date, to_date}:StatisticalParam) => {
+
+export const getStatisticalOcrHistory = ({
+  group = 0,
+  from_date,
+  to_date,
+}: StatisticalParam) => {
+
   const queryParams = new URLSearchParams({
-                                            group: group.toString(),
-                                            ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
-                                            ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
-                                          }).toString();
+    group: group.toString(),
+    ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
+    ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
+  }).toString();
   return httpGet()(`/reports/ocr/imagecount/group?${queryParams}`);
+
 }
 
 
@@ -63,3 +69,4 @@ export const getStatisticalOcrHistoryTranslate = ({group=0, from_date, to_date}:
                                           }).toString();
   return httpGet()(`/reports/ocr/translatecount/group?${queryParams2}`);
 }
+
