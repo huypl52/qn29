@@ -3,17 +3,28 @@ import { ColorButton } from '~/component/Button';
 import { DLang, DLangMap } from '~/type';
 import { useTranslateStore } from '~/store/translate';
 
-const LangBar = () => {
+
+interface LangBarProps {
+  updateSrc: (newText: string) => void;
+}
+
+
+const LangBar: React.FC<LangBarProps> = ({ updateSrc }) => {
   const {
     updateSrcLang: setSourceLang,
     updateTargetLang: setTargetLang,
     srcLang: sourceLang,
+    srcText: srcText,
+    updateSrcText,
+    updateTargetText,
     targetLang,
   } = useTranslateStore();
 
   const updateSrcLang = useCallback(
     (key: DLang) => {
       setSourceLang(key);
+      updateSrcText('');
+      updateTargetText('')
     },
     [setSourceLang]
   );
@@ -49,12 +60,12 @@ const LangBar = () => {
       </div>
       <div className="flex flex-row-reverse w-full gap-2 ml-2">
         {/* <IoMdSwap size={24} /> */}
-        <ColorButton
-          active={targetLang === DLang.vi}
-          onClick={updateTargetLang.bind(null, DLang.vi)}
-        >
-          {DLangMap[DLang.vi]}
-        </ColorButton>
+        {/* <ColorButton */}
+        {/*   active={targetLang === DLang.vi} */}
+        {/*   onClick={updateTargetLang.bind(null, DLang.vi)} */}
+        {/* > */}
+        {/*   {DLangMap[DLang.vi]} */}
+        {/* </ColorButton> */}
       </div>
     </div>
   );

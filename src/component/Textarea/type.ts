@@ -10,6 +10,8 @@ interface IBaseTextarea
   loading?: boolean;
   text?: string;
   rows?: number;
+  srcText?: string;
+  onUpdateRequest?: (newText: string) => void;
 }
 
 interface IStructureTextarea extends IBaseTextarea {

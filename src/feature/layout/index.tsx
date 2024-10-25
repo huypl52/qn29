@@ -61,11 +61,11 @@ const Header = () => {
       </div>
       <div className="flex-grow"></div>
 
-      <div className="flex items-center">
+      <div className="flex items-center h-[1.5vw] w-[1.5vw] justify-center">
         <div className={darkMode ? 'dark' : ''}>
           <div
             onClick={toggleDarkMode}
-            className="mr-2 h-[1vw] w-[1vw] bg-white dark:bg-[#CFCFB6] text-black dark:text-white"
+            className="mr-2 h-[1vw] w-[1vw] bg-white dark:bg-[#CFCFB6] text-black dark:text-white cursor-pointer hover:h-[1.5vw] hover:w-[1.5vw] hover:border-blue-500 dark:hover:border-teal-700"
           />
         </div>
         <div className="relative">
@@ -95,6 +95,14 @@ const Header = () => {
                     onClick={() => handleNavigation('/setting')}
                   >
                     Cài đặt
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleNavigation('/registration')}
+                  >
+                    Đăng ký
                   </button>
                 </li>
                 <li>

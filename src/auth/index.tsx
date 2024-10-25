@@ -5,6 +5,7 @@ import {
   Routes,
 } from 'react-router-dom';
 import { Button } from '~/component/Button';
+import RegistrationForm from '~/component/RegistrationForm';
 import { AuthProvider, useAuth } from './context';
 import { IRouteWrapper } from './type';
 import LoginForm from './Login';
@@ -91,6 +92,10 @@ const AuthContainer = () => {
                     <Route
                       path={AuthRoutePath.TRANSLATE}
                       element={<Translator />}
+                    />,
+                    <Route
+                      path={AuthRoutePath.REGISTRATION}
+                      element={<RegistrationForm />}
                     />,
                     <Route
                       path={AuthRoutePath.SETTING}

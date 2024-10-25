@@ -55,7 +55,7 @@ const TextSwitch = ({
       checked={checked}
       onCheckedChange={handleChange}
       className={`
-        relative rounded-full outline-none
+        relative rounded-full outline-none mb-1
         ${sizes[size].root}
         ${checked ? 'bg-green-500' : 'bg-gray-200'} 
         transition-colors duration-200

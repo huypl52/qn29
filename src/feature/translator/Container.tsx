@@ -1,18 +1,31 @@
 import LangBar from '../languageSelect/LangBar';
 import SourceTextBox from './SourceTextBox';
-import TargetTextBox from './TargetTextBox';
-import React from 'react';
+import TargetTextBox       from './TargetTextBox';
+import React, { useState } from 'react';
 
 const Container: React.FC<{
   updateViewHistory: (status: boolean) => void;
   updateSavedText: (status: boolean) => void;
 }> = ({ updateViewHistory, updateSavedText }) => {
+
+  const [srcText, setSrcText] = useState('');
+
+
+  const updateSrcFromLangBar = (newText) => {
+
+    setSrcText(newText);
+  };
+
+  const updateSrcFromSourceTextBox = (newText) => {
+    setSrcText(newText);
+  };
+
   return (
     <div className="w-full h-full flex">
       <div className="w-full h-full mx-auto">
-        <LangBar/>
+        <LangBar updateSrc ={updateSrcFromLangBar} />
         <div className="flex gap-2 max-w-screen-xxl mx-8">
-          <SourceTextBox />
+          <SourceTextBox srcText={srcText} onUpdateRequest={updateSrcFromSourceTextBox} />
           <TargetTextBox />
         </div>
         {/* <div className="flex justify-center space-x-12 py-24"> */}

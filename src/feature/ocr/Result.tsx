@@ -124,14 +124,14 @@ const Item = (props: IItemTask) => {
   }, [ocrResult]);
 
   return (
-    <div className="flex w-full divide-x divide-stone-400 gap-4 py-2">
+    <div className="flex w-full divide-x divide-stone-400 gap-4 py-2 overscroll-auto overflow-y-auto">
       <div className="w-1/2 min-w-32 h-1/3 min-h-16">
         {/* <p className="text-sm font-medium text-gray-600">{f.name}</p> */}
         <img
           src={img}
           // alt={f.name}
           alt="no load image"
-          className="object-contain w-full h-full"
+          className="object-contain max-w-100 max-h-[75vh] mx-auto"
         />
       </div>
 

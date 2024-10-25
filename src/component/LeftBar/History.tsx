@@ -74,10 +74,10 @@ const History: React.FC<{
     <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
       <div className="mb-4 flex start ">
         <button
-          className="flex items-center bg-blue-500 text-white font-semibold px-2 py-1 rounded-lg shadow-lg hover:bg-blue-600 transition"
+          className="flex items-center leading-normal text-red-600 font-semibold px-2 py-1  hover:bg-red-300 rounded transition"
           onClick={() => updateViewHistory(false)}
         >
-          →
+          &gt;
         </button>
         <h2 className="text-lg px-2  font-semibold">
           Các bản dịch đã thực hiện
@@ -110,7 +110,7 @@ const History: React.FC<{
             />
           ))}
       </div>
-      <div className="h-[5vh]">
+      <div className="h-[5vh] mt-2">
         <Pagination totalPages={totalPage} onPageChange={handlePageChange} />
       </div>
     </div>
