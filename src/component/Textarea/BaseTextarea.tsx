@@ -4,16 +4,18 @@ import { MdClose } from 'react-icons/md';
 
 const BaseTextarea = ({
   value,
-  onChange,
+  onChange: onChange,
   disabled,
   showClear,
   resizable = true,
   loading,
   text,
   rows = 5,
+  className: customClassname,
 }: IBaseTextarea) => {
   let className =
-    'w-full bg-white focus:outline-none text-base h-[70vh] lg:text-2xl text-black custom-scrollbar overflow-auto p-4 rounded-tl-lg rounded-tr-lg';
+    customClassname +
+    ' w-full bg-white focus:outline-none text-base lg:text-2xl text-black custom-scrollbar overflow-auto p-4 rounded-tl-lg rounded-tr-lg';
 
   if (!resizable) {
     className += ' resize-none';

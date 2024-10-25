@@ -1,5 +1,7 @@
-import React from 'react';
-interface IBaseTextarea {
+import React, { ButtonHTMLAttributes, PropsWithChildren } from 'react';
+interface IBaseTextarea
+  extends PropsWithChildren,
+    Omit<ButtonHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
   value?: string;
   onChange?: (s: string) => void;
   disabled?: boolean;
@@ -8,7 +10,6 @@ interface IBaseTextarea {
   loading?: boolean;
   text?: string;
   rows?: number;
-
 }
 
 interface IStructureTextarea extends IBaseTextarea {

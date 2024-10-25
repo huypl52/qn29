@@ -172,212 +172,225 @@
 //
 // export default Statistical;
 
-
-import React, {useState}                                                                  from 'react';
-import {Bar}                                                                              from 'react-chartjs-2';
-import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
-import DatePicker
-																																													from '~/component/DataPicker/DatePicker.tsx';
-import TreeView                                                                           from '~/component/TreeView';
+import React, { useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import DatePicker from '~/component/DataPicker/DatePicker.tsx';
+import TreeView from '~/component/TreeView';
 
 // Register chart.js modules
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Statistical: React.FC = () => {
-	const [timeScale, setTimeScale] = useState('day'); // Default to 'day'
-	const [dataType, setDataType] = useState('text'); // Default to 'text' data
+  const [timeScale, setTimeScale] = useState('day'); // Default to 'day'
+  const [dataType, setDataType] = useState('text'); // Default to 'text' data
 
-	const [timeScaleTLC, setTimeScaleTLC] = useState('day'); // Default to 'day' for second chart
+  const [timeScaleTLC, setTimeScaleTLC] = useState('day'); // Default to 'day' for second chart
 
-	// Dummy data for each time scale (Text data example)
-	const dataByDayText = {
-		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
-		datasets: [
-			{
-				label: 'Số lần sử dụng theo tuần (Văn bản)',
-				data: [12, 19, 3, 5, 2, 3, 7],
-				backgroundColor: 'rgba(75, 192, 192, 0.5)',
-				borderColor: 'rgba(75, 192, 192, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  // Dummy data for each time scale (Text data example)
+  const dataByDayText = {
+    labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+    datasets: [
+      {
+        label: 'Số lần sử dụng theo tuần (Văn bản)',
+        data: [12, 19, 3, 5, 2, 3, 7],
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	const dataByMonthText = {
-		labels: [
-			'Tháng 1',
-			'Tháng 2',
-			'Tháng 3',
-			'Tháng 4',
-			'Tháng 5',
-			'Tháng 6',
-			'Tháng 7',
-			'Tháng 8',
-			'Tháng 9',
-			'Tháng 10',
-			'Tháng 11',
-			'Tháng 12',
-		],
-		datasets: [
-			{
-				label: 'Số lần sử dụng theo tháng (Văn bản)',
-				data: [65, 59, 80, 81, 56, 55, 40, 49, 63, 75, 54, 61],
-				backgroundColor: 'rgba(153, 102, 255, 0.5)',
-				borderColor: 'rgba(153, 102, 255, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  const dataByMonthText = {
+    labels: [
+      'Tháng 1',
+      'Tháng 2',
+      'Tháng 3',
+      'Tháng 4',
+      'Tháng 5',
+      'Tháng 6',
+      'Tháng 7',
+      'Tháng 8',
+      'Tháng 9',
+      'Tháng 10',
+      'Tháng 11',
+      'Tháng 12',
+    ],
+    datasets: [
+      {
+        label: 'Số lần sử dụng theo tháng (Văn bản)',
+        data: [65, 59, 80, 81, 56, 55, 40, 49, 63, 75, 54, 61],
+        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	const dataByYearText = {
-		labels: ['2020', '2021', '2022', '2023'],
-		datasets: [
-			{
-				label: 'Số lần sử dụng theo năm (Văn bản)',
-				data: [500, 600, 550, 700],
-				backgroundColor: 'rgba(255, 99, 132, 0.5)',
-				borderColor: 'rgba(255, 99, 132, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  const dataByYearText = {
+    labels: ['2020', '2021', '2022', '2023'],
+    datasets: [
+      {
+        label: 'Số lần sử dụng theo năm (Văn bản)',
+        data: [500, 600, 550, 700],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	// Dummy data for each time scale (Image data example)
-	const dataByDayImage = {
-		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
-		datasets: [
-			{
-				label: 'Số lần sử dụng theo tuần (Hình ảnh)',
-				data: [9, 12, 4, 6, 10, 2, 5],
-				backgroundColor: 'rgba(54, 162, 235, 0.5)',
-				borderColor: 'rgba(54, 162, 235, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  // Dummy data for each time scale (Image data example)
+  const dataByDayImage = {
+    labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+    datasets: [
+      {
+        label: 'Số lần sử dụng theo tuần (Hình ảnh)',
+        data: [9, 12, 4, 6, 10, 2, 5],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	const dataByMonthImage = {
-		labels: [
-			'Tháng 1',
-			'Tháng 2',
-			'Tháng 3',
-			'Tháng 4',
-			'Tháng 5',
-			'Tháng 6',
-			'Tháng 7',
-			'Tháng 8',
-			'Tháng 9',
-			'Tháng 10',
-			'Tháng 11',
-			'Tháng 12',
-		],
-		datasets: [
-			{
-				label: 'Số lần sử dụng theo tháng (Hình ảnh)',
-				data: [45, 69, 75, 66, 78, 70, 55, 65, 79, 55, 60, 71],
-				backgroundColor: 'rgba(255, 206, 86, 0.5)',
-				borderColor: 'rgba(255, 206, 86, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  const dataByMonthImage = {
+    labels: [
+      'Tháng 1',
+      'Tháng 2',
+      'Tháng 3',
+      'Tháng 4',
+      'Tháng 5',
+      'Tháng 6',
+      'Tháng 7',
+      'Tháng 8',
+      'Tháng 9',
+      'Tháng 10',
+      'Tháng 11',
+      'Tháng 12',
+    ],
+    datasets: [
+      {
+        label: 'Số lần sử dụng theo tháng (Hình ảnh)',
+        data: [45, 69, 75, 66, 78, 70, 55, 65, 79, 55, 60, 71],
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	const dataByYearImage = {
-		labels: ['2020', '2021', '2022', '2023'],
-		datasets: [
-			{
-				label: 'Số lần sử dụng theo năm (Hình ảnh)',
-				data: [400, 550, 520, 610],
-				backgroundColor: 'rgba(75, 192, 192, 0.5)',
-				borderColor: 'rgba(75, 192, 192, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  const dataByYearImage = {
+    labels: ['2020', '2021', '2022', '2023'],
+    datasets: [
+      {
+        label: 'Số lần sử dụng theo năm (Hình ảnh)',
+        data: [400, 550, 520, 610],
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	const dataByDayTLC = {
-		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
-		datasets: [
-			{
-				label: 'Số bản dịch theo tuần (T)',
-				data: [8, 10, 5, 7, 9, 3, 6],
-				backgroundColor: 'rgba(255, 99, 132, 0.5)',
-				borderColor: 'rgba(255, 99, 132, 1)',
-				borderWidth: 1,
-			},
-			{
-				label: 'Số bản dịch theo tuần (L)',
-				data: [6, 12, 4, 8, 10, 5, 7],
-				backgroundColor: 'rgba(54, 162, 235, 0.5)',
-				borderColor: 'rgba(54, 162, 235, 1)',
-				borderWidth: 1,
-			},
-			{
-				label: 'Số bản dịch theo tuần (C)',
-				data: [9, 11, 6, 5, 12, 7, 8],
-				backgroundColor: 'rgba(255, 206, 86, 0.5)',
-				borderColor: 'rgba(255, 206, 86, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  const dataByDayTLC = {
+    labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+    datasets: [
+      {
+        label: 'Số bản dịch theo tuần (T)',
+        data: [8, 10, 5, 7, 9, 3, 6],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Số bản dịch theo tuần (L)',
+        data: [6, 12, 4, 8, 10, 5, 7],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Số bản dịch theo tuần (C)',
+        data: [9, 11, 6, 5, 12, 7, 8],
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	const dataByMonthTLC = {
-		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
-		datasets: [
-			{
-				label: 'Số bản dịch theo tuần (T)',
-				data: [8, 10, 5, 7, 9, 3, 6],
-				backgroundColor: 'rgba(255, 99, 132, 0.5)',
-				borderColor: 'rgba(255, 99, 132, 1)',
-				borderWidth: 1,
-			},
-			{
-				label: 'Số bản dịch theo tuần (L)',
-				data: [6, 12, 4, 8, 10, 5, 7],
-				backgroundColor: 'rgba(54, 162, 235, 0.5)',
-				borderColor: 'rgba(54, 162, 235, 1)',
-				borderWidth: 1,
-			},
-			{
-				label: 'Số bản dịch theo tuần (C)',
-				data: [9, 11, 6, 5, 12, 7, 8],
-				backgroundColor: 'rgba(255, 206, 86, 0.5)',
-				borderColor: 'rgba(255, 206, 86, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  const dataByMonthTLC = {
+    labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+    datasets: [
+      {
+        label: 'Số bản dịch theo tuần (T)',
+        data: [8, 10, 5, 7, 9, 3, 6],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Số bản dịch theo tuần (L)',
+        data: [6, 12, 4, 8, 10, 5, 7],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Số bản dịch theo tuần (C)',
+        data: [9, 11, 6, 5, 12, 7, 8],
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	const dataByYearTLC = {
-		labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
-		datasets: [
-			{
-				label: 'Tiếng Trung',
-				data: [8, 10, 5, 7, 9, 3, 6],
-				backgroundColor: 'rgba(255, 99, 132, 0.5)',
-				borderColor: 'rgba(255, 99, 132, 1)',
-				borderWidth: 1,
-			},
-			{
-				label: 'Tiếng Lào',
-				data: [6, 12, 4, 8, 10, 5, 7],
-				backgroundColor: 'rgba(54, 162, 235, 0.5)',
-				borderColor: 'rgba(54, 162, 235, 1)',
-				borderWidth: 1,
-			},
-			{
-				label: 'Tiếng Khmer',
-				data: [9, 11, 6, 5, 12, 7, 8],
-				backgroundColor: 'rgba(255, 206, 86, 0.5)',
-				borderColor: 'rgba(255, 206, 86, 1)',
-				borderWidth: 1,
-			},
-		],
-	};
+  const dataByYearTLC = {
+    labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
+    datasets: [
+      {
+        label: 'Tiếng Trung',
+        data: [8, 10, 5, 7, 9, 3, 6],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Tiếng Lào',
+        data: [6, 12, 4, 8, 10, 5, 7],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Tiếng Khmer',
+        data: [9, 11, 6, 5, 12, 7, 8],
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-	// Determine which data to show based on the selected time scale and data type
-	const chartData =
+  // Determine which data to show based on the selected time scale and data type
+  const chartData =
     timeScale === 'day'
       ? dataType === 'text'
         ? dataByDayText
@@ -521,7 +534,6 @@ const Statistical: React.FC = () => {
 };
 
 export default Statistical;
-
 
 // import React, { useState } from 'react';
 // import { Bar } from 'react-chartjs-2';
@@ -712,3 +724,4 @@ export default Statistical;
 // };
 //
 // export default Statistical;
+

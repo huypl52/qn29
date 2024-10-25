@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StructureTextarea } from '~/component/Textarea';
 import { ITaskHistoryDetail } from '~/type/task';
 import { EProcessStatus } from '~/type/ocr';
@@ -34,6 +34,10 @@ const TranslateHistoryItem = (props: IItemTask) => {
     ITaskHistoryDetail | undefined
   >(taskDetail);
 
+  useEffect(() => {
+    setTranslationResult(taskDetail);
+  }, [taskDetail]);
+
   return (
     <div className="flex w-full divide-x divide-stone-400 gap-4 py-2">
       {taskDetail.status === EProcessStatus.pending ? (
@@ -46,7 +50,7 @@ const TranslateHistoryItem = (props: IItemTask) => {
           <span>Thất bại</span>
         </div>
       ) : (
-        <div className="w-1/2 pl-2">
+        <div className="w-full pl-2">
           <div>
             <StructureTextarea
               resizable={false}
@@ -82,7 +86,7 @@ const ListTranslationHistory = (props: IResult) => {
     <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-white">
       <div className="w-full h-full p-4 divide-y divide-stone-400">
         {ocrResults.map((r) => {
-          return <TranslateHistoryItem taskDetail={r} />;
+          return <TranslateHistoryItem taskDetail={r} key={r.fileid} />;
         })}
       </div>
     </div>

@@ -50,7 +50,7 @@ const Setting: React.FC = () => {
               className="border rounded px-3 py-2 w-full text-right"
               required
             />
-            <p className='min-w-[3vw] text-center'>MB</p>
+            <p className="min-w-[3vw] text-center">MB</p>
           </label>
         </div>
         <div>

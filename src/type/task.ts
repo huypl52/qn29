@@ -4,8 +4,17 @@ import { DLang } from './vocab';
 export enum ETaskType {
   OCR = 1,
   TRANSLATE = 2,
+  MANUAL_TRANSLATE = 3,
   OCR_TRANSLATE = 4,
+  MANUAL_OCR = 5,
+  MANUAL_OCR_TRANSLATE = 6,
 }
+
+export const LTaskTypeOcr = [ETaskType.OCR, ETaskType.OCR_TRANSLATE];
+export const LTaskTypeTranslate = [
+  ETaskType.TRANSLATE,
+  ETaskType.MANUAL_TRANSLATE,
+];
 
 export interface ITaskHistory {
   // Task history

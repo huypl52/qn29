@@ -26,7 +26,6 @@ const Container: React.FC<{
   const { selectedOcrIds, recentAdded } = useOcrTaskStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-
   const handlePasteFromClipboard = async () => {
     try {
       const clipboardItems = await navigator.clipboard.read();
@@ -96,7 +95,6 @@ const Container: React.FC<{
           >
             <MdClose size={20} />
           </button>
-
         </div>
 
         <div className="flex w-full gap-2 mr-2 flex-row-reverse">
@@ -107,14 +105,14 @@ const Container: React.FC<{
             onChange={toggleNeedTranslate}
           />
           {/* <IoMdSwap size={24} /> */}
-          {needTranslate &&
-          <ColorButton
-            active={targetLang === DLang.vi}
-            onClick={updateTargetLang.bind(null, DLang.vi)}
-          >
-            {DLangMap[DLang.vi]}
-          </ColorButton> }
-
+          {needTranslate && (
+            <ColorButton
+              active={targetLang === DLang.vi}
+              onClick={updateTargetLang.bind(null, DLang.vi)}
+            >
+              {DLangMap[DLang.vi]}
+            </ColorButton>
+          )}
         </div>
       </div>
       {isEmpty && recentAdded ? (

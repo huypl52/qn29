@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { FaTrashAlt }                 from 'react-icons/fa';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FaTrashAlt } from 'react-icons/fa';
 import ItemHistory from '~/component/LeftBar/ItemHistory';
 import Pagination from '~/component/LeftBar/Pagination/Pagination.tsx'; // Import icons
-import { getTaskHistory } from '~/service/task';
+import { getTaskHistory, getTotalTaskHistory } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { ITaskHistory } from '~/type/task';
+import _ from 'lodash';
+
+const take = 20;
 
 const History: React.FC<{
   updateViewHistory: (status: boolean) => void;
@@ -13,33 +16,50 @@ const History: React.FC<{
 
   const [choiseList, setChoiseList] = useState<ITaskHistory[]>([]);
 
+  // const [pageNum, setPageNum] = useState(0);
+  const [totalPage, setTotalPage] = useState(1);
+
   const { type, counter } = useTaskStore();
 
   let taskType = type;
 
+  const handlePageChange = useCallback((num: number) => {
+    // setPageNum(num);
+    updateHistoryData(num);
+  }, []);
+
+  const updateHistoryData = useCallback((page: number) => {
+    const skip = take * (page - 1);
+
+    // console.log({ page, skip, take });
+    getTaskHistory(skip, take, taskType)
+      .then((res) => {
+        const { status, data } = res;
+        if (status === 200) {
+          setTaskHistories([...data]);
+          console.log({ setTaskHistories: data });
+        }
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
+  }, []);
+
   useEffect(() => {
     console.log({ getTaskHistory: taskType });
-    const getTaskRef = setTimeout(
-      () =>
-        getTaskHistory(undefined, undefined, taskType)
-          .then((res) => {
-            const { status, data } = res;
-            if (status === 200) {
-              setTaskHistories([...data]);
-              console.log({ setTaskHistories: data });
-            }
-          })
-          .catch((err) => {
-            console.log({ err });
-          }),
-      2000
-    );
-    return () => clearTimeout(getTaskRef);
+    updateHistoryData(1);
+    getTotalTaskHistory()
+      .then((res) => {
+        const { status, data } = res;
+        console.log({ status, data });
+        if (status !== 200) {
+          setTotalPage(1);
+          return;
+        }
+        setTotalPage(_.ceil(data.total / take));
+      })
+      .catch((err) => console.log({ err }));
   }, [taskType, counter]);
-
-  // useEffect(() => {
-  //   console.log('Data deleted', taskHistories);
-  // }, [taskHistories]);
 
   const handleClickDelete = () => {
     const newHistories = taskHistories.filter(
@@ -49,10 +69,7 @@ const History: React.FC<{
     setChoiseList([]);
   };
 
-  const handleClickDeleteAll = () => {
-    setTaskHistories([]);
-  };
-
+  console.log({ taskType });
   return (
     <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
       <div className="mb-4 flex start ">
@@ -62,7 +79,9 @@ const History: React.FC<{
         >
           →
         </button>
-        <h2 className="text-lg px-2  font-semibold">Các bản dịch đã thực hiện</h2>
+        <h2 className="text-lg px-2  font-semibold">
+          Các bản dịch đã thực hiện
+        </h2>
         {/* <button */}
         {/*   className="text-sm hover:bg-gray-300 w-7 h-7 rounded-[50%]" */}
         {/*   onClick={() => updateViewHistory(false)} */}
@@ -77,16 +96,10 @@ const History: React.FC<{
         >
           <FaTrashAlt className="mr-2" />
         </button>
-        {/* <button */}
-        {/*   className="text-blue-600 text-sm ml-2" */}
-        {/*   onDoubleClick={handleClickDeleteAll} */}
-        {/* > */}
-        {/*   Xoá tất cả */}
-        {/* </button> */}
       </div>
       <div className="h-[75vh] overflow-auto">
         {taskHistories
-          .filter((t) => t.type === taskType)
+          // .filter((t) => t.type === taskType)
           // .slice(0, 2)
           .map((t) => (
             <ItemHistory
@@ -98,7 +111,7 @@ const History: React.FC<{
           ))}
       </div>
       <div className="h-[5vh]">
-        <Pagination totalPages={5} />
+        <Pagination totalPages={totalPage} onPageChange={handlePageChange} />
       </div>
     </div>
   );

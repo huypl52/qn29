@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
+import _ from 'lodash';
 
 interface PaginationProps {
   totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
-function Pagination({ totalPages }: PaginationProps) {
+function Pagination({ totalPages, onPageChange }: PaginationProps) {
   const [currentPage, setCurrentPage] = React.useState(1);
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    let pageInRange = _.min([page, totalPages]);
+    pageInRange = _.max([pageInRange, 1]);
+
+    if (!pageInRange) {
+      pageInRange = 1;
+    }
+
+    setCurrentPage(pageInRange);
+    onPageChange(pageInRange);
   };
 
   return (
@@ -24,7 +34,11 @@ function Pagination({ totalPages }: PaginationProps) {
         <button
           key={page}
           onClick={() => handlePageChange(page)}
-          className={`px-3 py-2 rounded-md ${currentPage === page ? 'bg-blue-500 text-white' : ' hover:bg-gray-400'}`}
+          className={`px-3 py-2 rounded-md ${
+            currentPage === page
+              ? 'bg-blue-500 text-white'
+              : ' hover:bg-gray-400'
+          }`}
         >
           {page}
         </button>
@@ -41,3 +55,4 @@ function Pagination({ totalPages }: PaginationProps) {
 }
 
 export default Pagination;
+

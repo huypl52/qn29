@@ -1,19 +1,19 @@
-import { useAuth } from "./context";
-import { Card, CardContent, CardHeader, CardTitle } from "~/component/Card";
-import { Input } from "~/component/Input";
-import { ColorButton } from "~/component/Button";
-import { Alert, AlertDescription } from "~/component/Alert";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { AuthRoutePath } from "~/routes";
-import { saveUser } from "~/storage/auth";
+import { useAuth } from './context';
+import { Card, CardContent, CardHeader, CardTitle } from '~/component/Card';
+import { Input } from '~/component/Input';
+import { ColorButton } from '~/component/Button';
+import { Alert, AlertDescription } from '~/component/Alert';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { AuthRoutePath } from '~/routes';
+import { saveUser } from '~/storage/auth';
 import loginImage from '../assets/login.jpg';
-import ColorLoginButton from "~/component/Button/ColorLoginButton";
+import ColorLoginButton from '~/component/Button/ColorLoginButton';
 
 const LoginSchema = Yup.object().shape({
-  username: Yup.string().required("Required"),
-  password: Yup.string().required("Required"),
+  username: Yup.string().required('Required'),
+  password: Yup.string().required('Required'),
 });
 
 const LoginForm = () => {
@@ -22,8 +22,8 @@ const LoginForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
@@ -33,12 +33,15 @@ const LoginForm = () => {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full bg-cover bg-center"
-    style={{backgroundImage: `url(${loginImage})`}}
+    <div
+      className="flex items-center justify-center min-h-screen w-full bg-cover bg-center"
+      style={{ backgroundImage: `url(${loginImage})` }}
     >
       <Card className="w-[450px] bg-white rounded-lg shadow-md p-6">
         <CardHeader>
-          <CardTitle className="text-center font-bold text-xl">Đăng nhập hệ thống</CardTitle>
+          <CardTitle className="text-center font-bold text-xl">
+            Đăng nhập hệ thống
+          </CardTitle>
         </CardHeader>
         <CardContent className="">
           <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -48,9 +51,9 @@ const LoginForm = () => {
                 placeholder="Tên đăng nhập"
                 value={formik.values.username}
                 onChange={(e) =>
-                  formik.setFieldValue("username", e.target.value)
+                  formik.setFieldValue('username', e.target.value)
                 }
-                className={formik.errors.username ? "border-red-500" : ""}
+                className={formik.errors.username ? 'border-red-500' : ''}
               />
             </div>
             {/* <div className="h-[5vh]"> */}
@@ -66,9 +69,9 @@ const LoginForm = () => {
                 placeholder="Mật khẩu"
                 value={formik.values.password}
                 onChange={(e) =>
-                  formik.setFieldValue("password", e.target.value)
+                  formik.setFieldValue('password', e.target.value)
                 }
-                className={formik.errors.password ? "border-red-500" : ""}
+                className={formik.errors.password ? 'border-red-500' : ''}
               />
             </div>
             {/* <div className="h-[5vh]"> */}
@@ -90,7 +93,6 @@ const LoginForm = () => {
                 Đăng nhập
               </ColorLoginButton>
             </div>
-
           </form>
         </CardContent>
       </Card>

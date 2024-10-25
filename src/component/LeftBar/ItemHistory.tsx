@@ -4,10 +4,17 @@ import ListOcrHistory from '~/component/LeftBar/OcrHistoryItem';
 import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
-import { ETaskType, ITaskDetail, ITaskHistory } from '~/type/task';
+import {
+  ETaskType,
+  ITaskDetail,
+  ITaskHistory,
+  LTaskTypeOcr,
+  LTaskTypeTranslate,
+} from '~/type/task';
 import ListTranslationHistory from './TranslationHistoryItem';
 import { useTranslateStore } from '~/store/translate';
 import { DLangMap } from '~/type';
+import { formatViDate } from '~/utils/date';
 
 interface IItemHistory {
   taskType: ETaskType;
@@ -34,20 +41,18 @@ const ItemHistory = (props: IItemHistory) => {
     setShowDropdown(false); // Close the dropdown after deleting
   };
 
-
   const toggleFavorite = () => {
     setIsFavorite((prev) => !prev);
     // If checked, add the task to the taskList
     if (!isFavorite) {
       setTaskList((prevList) => [...prevList, taskHistory]);
-    }
-    // If unchecked, remove the task from the taskList
+    } // If unchecked, remove the task from the taskList
     else {
       setTaskList((prevList) =>
         prevList.filter((t) => t.id !== taskHistory.id)
       );
     }
-    console.log(1,taskList)
+    console.log(1, taskList);
   };
   const { updateRecentAdded } = useOcrTaskStore();
   const { putTaskDetails, changeTaskType } = useTaskStore();
@@ -79,7 +84,9 @@ const ItemHistory = (props: IItemHistory) => {
           className="text-md font-semibold align-middle cursor-pointer"
           onClick={handleOpenDetail}
         >
-          {taskType === ETaskType.TRANSLATE ? tranlationTitle : 'Trung → Việt'}
+          {LTaskTypeTranslate.includes(taskType)
+            ? tranlationTitle
+            : 'Trung → Việt'}
         </h3>
         <div className="flex">
           {/* Favorite Star */}
@@ -111,14 +118,15 @@ const ItemHistory = (props: IItemHistory) => {
           )}
         </div>
       </div>
+      <div>{formatViDate(new Date(taskHistory.created_time))}</div>
 
-      {taskHistory.details?.length && taskType !== ETaskType.TRANSLATE ? (
+      {taskHistory.details?.length && LTaskTypeOcr.includes(taskType) ? (
         <ListOcrHistory
           ocrResults={taskHistory.details}
           // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
         />
       ) : null}
-      {taskHistory.details?.length && taskType === ETaskType.TRANSLATE ? (
+      {taskHistory.details?.length && LTaskTypeTranslate.includes(taskType) ? (
         <ListTranslationHistory
           ocrResults={taskHistory.details}
           // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
@@ -129,4 +137,3 @@ const ItemHistory = (props: IItemHistory) => {
 };
 
 export default ItemHistory;
-
