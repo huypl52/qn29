@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RiTranslate2 } from 'react-icons/ri';
+import { LuSettings2 } from "react-icons/lu";
 import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
 import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
@@ -10,15 +11,18 @@ const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    if (darkMode) {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
   };
 
   const toggleDropdown = () => {
@@ -70,7 +74,7 @@ const Header = () => {
             w-9 h-9 mt-1 mr-2 transition-colors duration-100 shado flex justify-center items-center"
             onClick={toggleDropdown}
           >
-            <RiTranslate2 size={24} />
+            <LuSettings2 size={24} />
           </button>
 
           {/* Dropdown */}

@@ -121,15 +121,6 @@ const Container: React.FC<{
         <DragDropArea>
           <div className="flex w-full h-[75vh] min-h-[360px] border border-gray-300 rounded-tl-xl rounded-tr-xl">
             <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-xl">
-              <div className="w-full flex justify-end">
-                <button
-                  className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
-                  title="Clear"
-                  onClick={clearInput}
-                >
-                  <MdClose size={20} />
-                </button>
-              </div>
               <div className="w-full h-full flex flex-col justify-center items-center bg-white ">
                 <img
                   src={drag2dropImg}

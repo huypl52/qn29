@@ -125,12 +125,13 @@ const Item = (props: IItemTask) => {
 
   return (
     <div className="flex w-full divide-x divide-stone-400 gap-4 py-2">
-      <div className="w-1/2 min-w-32 h-1/3 min-h-16 mx-auto">
+      <div className="w-1/2 min-w-32 h-1/3 min-h-16">
         {/* <p className="text-sm font-medium text-gray-600">{f.name}</p> */}
         <img
           src={img}
           // alt={f.name}
-          className="object-contain max-w-full h-full"
+          alt="no load image"
+          className="object-contain w-full h-full"
         />
       </div>
 
@@ -182,7 +183,7 @@ const ListResult = (props: IResult) => {
   const { ocrTaskResults, taskId } = props;
 
   return (
-    <div className="w-full h-[85vh] relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-white overscroll-auto">
+    <div className="w-full h-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-white">
       <div className="w-full h-full p-4 divide-y divide-stone-400">
         {ocrTaskResults.map((r) => {
           return <Item ocrTaskResult={r} taskId={taskId} />;

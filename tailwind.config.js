@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       minHeight: {
-        'screen-minus-4rem': 'calc(100vh - 4rem)',
+        'screen-minus-4rem': 'calc(100vh - 20vh - 12rem)',
       },
       backgroundImage: {
         'login': "url('../assets/login.jpg')",

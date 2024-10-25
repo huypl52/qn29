@@ -14,7 +14,7 @@ export function TabWithContent({ tabs, defaultTabId, onTabChange, onClickHistory
 
   return (
     <div className="w-full h-full mx-auto">
-      <div className="flex gap-2 mt-4 max-w-screen-xxl mx-12 justify-between mr-0">
+      <div className="flex gap-2 mt-4 max-w-screen-xxl mx-12 justify-between mr-0 relative">
         <div className="flex gap-2">
           {tabs.map((tab) => (
             <ColorOptionButton
@@ -25,9 +25,17 @@ export function TabWithContent({ tabs, defaultTabId, onTabChange, onClickHistory
             </ColorOptionButton>
           ))}
         </div>
-        {!showHistory && <button className="text-blue-500" onClick={()=>onClickHistory(true)}>
-          &lt; Xem lịch sử dịch
-        </button>}
+        {!showHistory && (
+          <div className="group absolute right-0 top-1/2 transform -translate-y-1/2 p-2">
+            <button className="flex items-center bg-blue-500 text-white font-semibold px-2 py-1 rounded-lg shadow-lg hover:bg-blue-600 transition"
+                    onClick={()=>onClickHistory(true)}>
+              ←
+              <span className="ml-2 hidden group-hover:inline px-2 py-1">
+                Lịch sử
+              </span>
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-4">
         {tabs.map((tab) => (
