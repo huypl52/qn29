@@ -8,6 +8,18 @@ export interface IOcrResult {
   message: string;
 }
 
+export interface ITranslateOcr {
+  //   status: Trạng thái
+  // 1 là thành công
+  // 0 là thất bại, khi thất bại sẽ kèm thông tin trường error
+  // dest_text: Kết quả dịch nếu thành công (status = 1)
+  // error: Nội dung lỗi đi kèm nếu dịch thất bại (status = 0)
+  status: number;
+  created_time: string;
+  taskid: string;
+  ocrid: string;
+}
+
 export interface IOcrTranslateResult {
   ocred_text: string;
   detected_language: DLang;

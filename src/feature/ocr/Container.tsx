@@ -153,16 +153,6 @@ const Container: React.FC<{
               </div>
             </div>
             <div className="h-full w-[2px]  my-auto"></div>
-            <div className="w-full h-full flex flex-col gap-3 justify-start items-center bg-white rounded-tr-xl">
-              {/* <div className="w-full flex justify-end h-10 mt-1 mr-4"> */}
-              {/*   <TextSwitch */}
-              {/*     onText="Dịch" */}
-              {/*     offText="Dịch" */}
-              {/*     defaultChecked={needTranslate} */}
-              {/*     onChange={toggleNeedTranslate} */}
-              {/*   /> */}
-              {/* </div> */}
-            </div>
           </div>
         </DragDropArea>
       ) : (
