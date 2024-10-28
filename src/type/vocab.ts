@@ -20,8 +20,8 @@ export const DLangMap = {
 // export const DLang: { [k: string]: string } = translations;
 
 export const toastMsg = {
-  success: 'Operation successful',
-  error: 'An error occurred',
-  warning: 'Please be cautious',
-  info: 'Additional information',
+  success: 'Thành công',
+  error: 'Thất bại',
+  warning: 'Cảnh báo',
+  info: 'Thông tin',
 };
