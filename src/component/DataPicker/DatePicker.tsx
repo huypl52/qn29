@@ -15,6 +15,9 @@ const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
                                                              endDate,
                                                              setDateRange,
                                                            }) => {
+
+
+
   return (
       <div className="flex items-center">
         <label htmlFor="dataType" className="mr-1">Chọn khoảng ngày: </label>

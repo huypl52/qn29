@@ -72,10 +72,10 @@ export const getStatisticalTranslateHistory = ({
 
 
 export const getStatisticalOcrHistoryTranslate = ({group=0, from_date, to_date}:StatisticalParam) => {
-  const queryParams2 = new URLSearchParams({
+  const queryParams = new URLSearchParams({
                                             group: group.toString(),
                                             ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
                                             ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
                                           }).toString();
-  return httpGet()(`/reports/ocr/translatecount/group?${queryParams2}`);
+  return httpGet()(`/reports/ocr/translatecount/group?${queryParams}`);
 }
