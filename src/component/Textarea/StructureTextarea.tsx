@@ -16,7 +16,7 @@ const StructureTextarea = (props: IStructureTextarea) => {
           <Header />
         </div>
       ) : null}
-      <BaseTextarea {...args} disabled={disabled} />
+      <BaseTextarea {...args} disabled={disabled} className="h-[72vh]" />
       {Footer ? (
         <div className="p-2 bg-gray-200 rounded-bl-md rounded-br-md">
           <Footer />

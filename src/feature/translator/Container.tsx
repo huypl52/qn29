@@ -25,7 +25,7 @@ const Container: React.FC<{
       <div className="w-full h-full mx-auto">
         <LangBar updateSrc ={updateSrcFromLangBar} />
         <div className="flex gap-2 max-w-screen-xxl mx-8">
-          <SourceTextBox srcText={srcText} onUpdateRequest={updateSrcFromSourceTextBox} />
+          <SourceTextBox />
           <TargetTextBox />
         </div>
         {/* <div className="flex justify-center space-x-12 py-24"> */}
