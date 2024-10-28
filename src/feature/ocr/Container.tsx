@@ -26,7 +26,6 @@ const Container: React.FC<{
   const { selectedOcrIds, recentAdded } = useOcrTaskStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-
   const handlePasteFromClipboard = async () => {
     try {
       const clipboardItems = await navigator.clipboard.read();
@@ -96,7 +95,6 @@ const Container: React.FC<{
           >
             <MdClose size={20} />
           </button>
-
         </div>
 
         <div className="flex w-full gap-2 mr-2 flex-row-reverse items-end">
@@ -133,7 +131,7 @@ const Container: React.FC<{
                 <input
                   ref={fileInputRef}
                   type="file"
-                  multiple={false}
+                  multiple={true}
                   onChange={uploadFile}
                   className="hidden"
                 />
