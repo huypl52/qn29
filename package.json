@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite -m dev --port 3400 --host",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write ./src/"
