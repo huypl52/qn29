@@ -87,17 +87,17 @@ const Container: React.FC<{
             Ảnh tiếng Trung
           </ColorButton>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
-            title="Clear"
-            onClick={clearInput}
-          >
-            <MdClose size={20} />
-          </button>
-        </div>
 
         <div className="flex w-full gap-2 mr-2 flex-row-reverse items-end">
+          <div className="flex items-center ml-4 gap-3">
+            <button
+              className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
+              title="Clear"
+              onClick={clearInput}
+            >
+              <MdClose size={20} />
+            </button>
+          </div>
           <TextSwitch
             onText="Dịch"
             offText="Dịch"
