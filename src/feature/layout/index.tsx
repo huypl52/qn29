@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
-import { RiTranslate2 } from 'react-icons/ri';
-import { LuSettings2 } from "react-icons/lu";
+import { useCallback, useEffect, useState } from 'react';
+import { LuSettings2 } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
 import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
-import TextSwitch from '~/component/Switch';
 import { AuthRoutePath } from '~/routes';
+import { clearUser } from '~/storage/auth';
 
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -33,6 +32,11 @@ const Header = () => {
     toggleDropdown();
     navigate(path); // Navigate to the specified path
   };
+
+  const handleLogout = useCallback(() => {
+    clearUser();
+    navigate(AuthRoutePath.LOGIN);
+  }, []);
 
   return (
     <header className="flex bg-teal-700 dark:bg-white flex-grow px-5 py-2 border-b  border-gray-200 w-full h-[20vh] max-h-16 bg-cover bg-center bg-no-repeat">
@@ -106,7 +110,10 @@ const Header = () => {
                   </button>
                 </li>
                 <li>
-                  <button className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">
+                  <button
+                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
                     Đăng xuất
                   </button>
                 </li>

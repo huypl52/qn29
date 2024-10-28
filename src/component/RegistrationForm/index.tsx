@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { registerUser } from '~/service/user';
+import { toastMsg } from '~/type';
 
 interface RegistrationFormProps {
   onClose: () => void;
@@ -14,6 +17,18 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
     e.preventDefault();
     // Thực hiện xử lý form ở đây
     console.log('Submitted:', { name, username, password, detail });
+
+    registerUser({ username, fullname: name, password, orgid: detail })
+      .then((res) => {
+        const { status, data } = res;
+        if (status !== 200) {
+          throw new Error();
+        }
+        toast.success(toastMsg.success);
+      })
+      .catch((error) => {
+        error?.data ? toast.error(error.data) : toast.error(toastMsg.error);
+      });
   };
 
   return (
@@ -32,7 +47,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Tên người dùng</label>
+            <label className="block text-sm font-medium mb-1">
+              Tên người dùng
+            </label>
             <input
               type="text"
               value={username}
@@ -79,3 +96,4 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
 };
 
 export default RegistrationForm;
+
