@@ -116,9 +116,6 @@ const TextChart = () => {
     setDateRange([null, null]);
   }, [timeScaleTLC]);
 
-
-
-
   return (
   <div className="w-full max-w-4xl mx-auto mt-4">
     <h2 className="text-xl font-semibold mb-4">

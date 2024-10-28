@@ -9,7 +9,6 @@ const Statistical: React.FC = () => {
   return (
     <div className="flex">
       {/* <TreeView /> */}
-
       <OCRChart/>
       <TextChart/>
     </div>
