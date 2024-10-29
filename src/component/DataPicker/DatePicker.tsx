@@ -2,14 +2,21 @@ import { vi }                         from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
 import DatePicker                     from 'react-datepicker';
 
-const DatePickerCustom = () => {
-  const [dateRange, setDateRange] = useState<[Date | undefined, Date | undefined]>([undefined, undefined]);
-  const [startDate, endDate] = dateRange;
+
+type DatePickerCustomProps = {
+  startDate?: Date ;
+  endDate?: Date ;
+  setDateRange?: (dates: [Date | null, Date | null]) => void;
+};
 
 
-  useEffect(() => {
-    console.log(dateRange);
-  },[startDate]);
+const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
+                                                             startDate,
+                                                             endDate,
+                                                             setDateRange,
+                                                           }) => {
+
+
 
   return (
       <div className="flex items-center">
@@ -26,11 +33,6 @@ const DatePickerCustom = () => {
             locale={vi}
             showMonthYearDropdown
         />
-        {/* {startDate && endDate && ( */}
-        {/*   <p className="mt-4 text-black"> */}
-        {/*     Khoảng ngày đã chọn: từ {startDate} đến {endDate} */}
-        {/*   </p> */}
-        {/* )} */}
       </div>
   );
 };

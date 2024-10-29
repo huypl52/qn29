@@ -87,6 +87,7 @@ const SourceTextBox = () => {
         showClear
         text={'Nhập văn bản ...'}
         rows={15}
+        className="h-[72vh]"
       />
     </div>
   );
