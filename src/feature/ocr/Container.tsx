@@ -118,8 +118,8 @@ const Container: React.FC<{
       {isEmpty && recentAdded ? (
         <DragDropArea>
           <div className="flex w-full h-[75vh] min-h-[360px] border border-gray-300 rounded-tl-xl rounded-tr-xl">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-xl">
-              <div className="w-full h-full flex flex-col justify-center items-center bg-white ">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-xl rounded-tr-xl">
+              <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-xl rounded-tr-xl ">
                 <img
                   src={drag2dropImg}
                   alt="drag and drop"

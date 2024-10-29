@@ -58,18 +58,18 @@ const Header = () => {
             />
           </button>
 
-          <div className="ml-2 my-auto text-3xl font-semibold text-white dark:text-black">
+          <div className="ml-2 my-auto text-3xl font-semibold text-white dark:text-gray-700">
             PHẦN MỀM DỊCH NGÔN NGỮ PHỤC VỤ TRINH SÁT, GIÁM SÁT TRÊN KGM
           </div>
         </div>
       </div>
       <div className="flex-grow"></div>
 
-      <div className="flex items-center h-[1.5vw] w-[1.5vw] justify-center">
+      <div className="flex items-center justify-center">
         <div className={darkMode ? 'dark' : ''}>
           <div
             onClick={toggleDarkMode}
-            className="mr-2 h-[1vw] w-[1vw] bg-white dark:bg-[#CFCFB6] text-black dark:text-white cursor-pointer hover:h-[1.5vw] hover:w-[1.5vw] hover:border-blue-500 dark:hover:border-teal-700"
+            className="mr-2 h-[1vw] w-[1vw] bg-white dark:bg-teal-100 text-black dark:text-white cursor-pointer hover:h-[1.5vw] hover:w-[1.5vw] hover:border-blue-500 dark:hover:border-teal-700"
           />
         </div>
         <div className="relative">
@@ -125,19 +125,11 @@ const Header = () => {
     </header>
   );
 };
-
 const Layout = () => {
   return (
     <div className="w-full h-[100vh] flex flex-col">
       <Header></Header>
-      <div
-        className="w-full h-full bg-cover bg-center bg-no-repeat bg-[#CFCFB6]
- dark:bg-white " // style={{
-        //   backgroundImage: "url('/src/assets/background.jpeg')",
-        //   backgroundColor: 'rgba(0, 0, 0, 0.25)',
-        // }}
-        //style={{ backgroundColor: '#CFCFB6' }}
-      >
+      <div className="w-full h-full bg-cover bg-center bg-no-repeat bg-teal-50 dark:bg-white ">
         <Outlet />
       </div>
     </div>

@@ -37,7 +37,7 @@ const LangBar: React.FC<LangBarProps> = ({ updateSrc }) => {
   );
 
   return (
-    <div className="flex h-full justify-between mt-2 gap-2 mx-12">
+    <div className="flex h-full justify-between mt-2 gap-2 mx-12 ">
       <div className="flex w-full gap-2 ">
         <ColorButton
           active={sourceLang === DLang.zh}

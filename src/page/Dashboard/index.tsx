@@ -77,12 +77,8 @@ const Dashboard = () => {
           {/*   History */}
           {/* </div> */}
         </div>
-
       </LangContextProvider>
       {viewHistory && <History updateViewHistory={updateViewHistory} />}
-      {/* {viewHistoryImage && <HistoryImageOcr updateViewHistory={updateViewHistoryImage}/>} */}
-      {/* {viewSaved && <SavedText  updateViewHistory={updateSavedItem}/>} */}
-      {/* {savedImage && <SavedImage updateViewHistory={updateSavedImage}/>} */}
     </div>
   );
 };
