@@ -6,15 +6,6 @@ import './styles.css';
 
 export type ITreeNode = Parameters<typeof flattenTree>[0];
 
-// export type ITreeNode = {
-//   id: string | number;
-//   name: string;
-//   children: string[];
-//   parent: string;
-//   isBranch: boolean;
-//   metadata?: any;
-// };
-
 interface IUnitTree {
   data: ITreeNode;
 }

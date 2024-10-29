@@ -5,9 +5,6 @@ import { useMemo } from 'react';
 import _ from 'lodash';
 
 const insertOrgIntoTree = (o: IOrg, tree: ITreeNode): boolean => {
-  // if(grade === o.grade){
-  //   tree.children?.push(o)
-  // }
   const pId = o.parentid;
   if (!tree?.children?.length) {
     tree.children = [];
