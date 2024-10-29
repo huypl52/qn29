@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom'; // Import the hook for navigatio
 import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
 import { AuthRoutePath } from '~/routes';
+import { getAllOrg } from '~/service/org';
 import { clearUser } from '~/storage/auth';
+import { useOrgStore } from '~/store/org';
+import { useOcrTaskStore } from '~/store/taskOcr';
 
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -49,8 +52,6 @@ const Header = () => {
             className="hover:bg-gray-100 rounded-full w-9 h-9 mr-2
             transition-colors duration-100 flex justify-center items-center"
           >
-            {/* <MdOutlineStorage size={20} /> */}
-
             <img
               src={logoImage}
               alt="logo"
@@ -127,6 +128,17 @@ const Header = () => {
 };
 
 const Layout = () => {
+  const { addOrgs } = useOrgStore();
+  useEffect(() => {
+    getAllOrg().then((res) => {
+      const { data, status } = res;
+      if (status === 200) {
+        addOrgs(data);
+        console.log({ getAllOrg: data });
+      }
+    });
+  }, []);
+
   return (
     <div className="w-full h-[100vh] flex flex-col">
       <Header></Header>
