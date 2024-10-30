@@ -75,6 +75,7 @@ const TargetTextBox = () => {
         loading={loading}
         text={'Bản dịch tiếng Việt'}
         rows={15}
+        className="h-input-box"
       />
     </div>
   );

@@ -1,16 +1,34 @@
-import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
-import React, { useEffect, useState }                                                       from 'react';
-import { Bar }                             from 'react-chartjs-2';
-import DatePickerCustom                    from '~/component/DataPicker/DatePicker.tsx';
-import { getStatisticalTranslateHistory }  from '~/service/task.ts';
-import { DLang, DLangMap }                 from '~/type';
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import React, { useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import DatePickerCustom from '~/component/DataPicker/DatePicker.tsx';
+import { getStatisticalTranslateHistory } from '~/service/task.ts';
+import { DLang, DLangMap } from '~/type';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const TextChart = () => {
   const [timeScaleTLC, setTimeScaleTLC] = useState('day'); // Default to 'day' for second chart
 
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
 
   const [startDate, endDate] = dateRange;
 
@@ -18,8 +36,11 @@ const TextChart = () => {
 
   const today = new Date();
 
-
-  const fetchDataTLC = async (groupvalue = 0, from_date?: Date, to_date?: Date) => {
+  const fetchDataTLC = async (
+    groupvalue = 0,
+    from_date?: Date,
+    to_date?: Date
+  ) => {
     let timeType = 0;
     switch (timeScaleTLC) {
       case 'day':
@@ -36,7 +57,9 @@ const TextChart = () => {
     try {
       const requestParams = {
         group: groupvalue,
-        from_date: from_date ? from_date.toLocaleDateString('en-CA') : undefined,
+        from_date: from_date
+          ? from_date.toLocaleDateString('en-CA')
+          : undefined,
         to_date: to_date ? to_date.toLocaleDateString('en-CA') : undefined,
       };
 
@@ -95,85 +118,103 @@ const TextChart = () => {
       const parsedData = { labels: labels, datasets: langDataset };
       console.log({ langDataset, parsedData, data });
       setChartDataTLC(parsedData);
-
     } catch (error) {
       console.error('An error occurred:', error);
     }
   };
 
-  const oneWeekAgo = (): Date => new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
+  const getWeekRange = () => {
+    const today = new Date();
+
+    // Tính ngày đầu tuần (thứ Hai)
+    const firstDayOfWeek = new Date(today);
+    const day = firstDayOfWeek.getDay();
+    const diffToMonday = day === 0 ? -6 : 1 - day; // Nếu Chủ Nhật, chuyển về thứ Hai tuần trước
+    firstDayOfWeek.setDate(today.getDate() + diffToMonday);
+
+    // Tính ngày cuối tuần (Chủ Nhật)
+    const lastDayOfWeek = new Date(firstDayOfWeek);
+    lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+    console.log(firstDayOfWeek, lastDayOfWeek);
+
+    return { start: firstDayOfWeek, end: lastDayOfWeek };
+  };
 
   useEffect(() => {
-    const rangeStart = timeScaleTLC === 'day' ? oneWeekAgo() : undefined;
-    const rangeEnd = timeScaleTLC === 'day'? today : undefined;
-    //fetchDataTLC(value === 'day' ? 0 : value === 'month' ? 1 : 2, rangeStart, rangeEnd);
-    fetchDataTLC(timeScaleTLC === 'day' ? 0 : timeScaleTLC === 'month' ? 1 : 2, startDate ?  startDate : rangeStart, endDate ? endDate : rangeEnd);
+    const { start: rangeStart, end: rangeEnd } =
+      timeScaleTLC === 'day'
+        ? getWeekRange()
+        : {
+            start: undefined,
+            end: undefined,
+          };
+
+    fetchDataTLC(
+      timeScaleTLC === 'day' ? 0 : timeScaleTLC === 'month' ? 1 : 2,
+      startDate ? startDate : rangeStart,
+      endDate ? endDate : rangeEnd
+    );
     // group: nhóm dữ liệu như nào. 0 ngày trong tuần, 1 tuần trong năm, 2 tháng trong năm. Mặc định không truyền là 0
-
-  }, [dateRange]);
-
-  useEffect(() => {
-    setDateRange([null, null]);
-  }, [timeScaleTLC]);
+  }, [dateRange, timeScaleTLC]);
 
   return (
-  <div className="w-full max-w-4xl mx-auto mt-4">
-    <h2 className="text-xl font-semibold mb-4">
-      Biểu đồ sử dụng dịch văn bản
-    </h2>
-    {/* Radio Buttons for Time Scale Selection */}
-    <div className="flex justify-between mb-4 h-[5vh]">
-      <div className="flex gap-4 items-center">
-        <label>
-          <input
-            type="radio"
-            value="day"
-            checked={timeScaleTLC === 'day'}
-            onChange={() => setTimeScaleTLC('day')}
-            className="mr-2"
+    <div className="w-full max-w-4xl mx-auto mt-4">
+      <h2 className="text-xl font-semibold mb-4">
+        Biểu đồ sử dụng dịch văn bản
+      </h2>
+      {/* Radio Buttons for Time Scale Selection */}
+      <div className="flex justify-between mb-4 h-[5vh]">
+        <div className="flex gap-4 items-center">
+          <label>
+            <input
+              type="radio"
+              value="day"
+              checked={timeScaleTLC === 'day'}
+              onChange={() => setTimeScaleTLC('day')}
+              className="mr-2"
+            />
+            Tuần
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="month"
+              checked={timeScaleTLC === 'month'}
+              onChange={() => setTimeScaleTLC('month')}
+              className="mr-2"
+            />
+            Tháng
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="year"
+              checked={timeScaleTLC === 'year'}
+              onChange={() => setTimeScaleTLC('year')}
+              className="mr-2"
+            />
+            Năm
+          </label>
+        </div>
+        <div className="mr-6">
+          <DatePickerCustom
+            startDate={dateRange[0]}
+            endDate={dateRange[1]}
+            setDateRange={setDateRange}
           />
-          Tuần
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="month"
-            checked={timeScaleTLC === 'month'}
-            onChange={() => setTimeScaleTLC('month')}
-            className="mr-2"
-          />
-          Tháng
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="year"
-            checked={timeScaleTLC === 'year'}
-            onChange={() => setTimeScaleTLC('year')}
-            className="mr-2"
-          />
-          Năm
-        </label>
+        </div>
       </div>
-      <div className="mr-6">
-        <DatePickerCustom
-          startDate={dateRange[0]}
-          endDate={dateRange[1]}
-          setDateRange={setDateRange}
-        />
-      </div>
+      {chartDataTLC ? (
+        <div className="bg-gray-100 p-4 shadow-md rounded-lg">
+          <Bar
+            data={chartDataTLC}
+            options={{ responsive: true, maintainAspectRatio: false }}
+            height={400}
+          />
+        </div>
+      ) : null}
     </div>
-    {chartDataTLC ? (
-      <div className="bg-gray-100 p-4 shadow-md rounded-lg">
-        <Bar
-          data={chartDataTLC}
-          options={{ responsive: true, maintainAspectRatio: false }}
-          height={400}
-        />
-      </div>
-    ) : null}
-  </div>
-  )
+  );
 };
 
 export default TextChart;

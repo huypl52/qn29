@@ -63,7 +63,7 @@ const LoginForm = () => {
             {/*     </Alert> */}
             {/*   )} */}
             {/* </div> */}
-            <div className="mt-4 text-white">
+            <div className="mt-4">
               <Input
                 type="password"
                 placeholder="Mật khẩu"
