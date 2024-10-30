@@ -1,12 +1,54 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import TreeUnit from '~/feature/unit';
 import { registerUser } from '~/service/user';
 import { toastMsg } from '~/type';
 
 interface RegistrationFormProps {
   onClose: () => void;
 }
-
+const folder = {
+  name: '',
+  children: [
+    {
+      name: 'Fruits',
+      children: [
+        { name: 'Avocados' },
+        { name: 'Bananas' },
+        { name: 'Berries' },
+        { name: 'Oranges' },
+        { name: 'Pears' },
+      ],
+    },
+    {
+      name: 'Drinks',
+      children: [
+        {
+          name: 'Hot drinks',
+          children: [
+            {
+              name: 'Non-alcohol',
+              children: [
+                {
+                  name: 'Tea',
+                  children: [
+                    {
+                      name: 'Black Tea',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Vegetables',
+      children: [{ name: 'Beets' }],
+    },
+  ],
+};
 const RegistrationForm: React.FC<RegistrationFormProps> = () => {
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
@@ -69,17 +111,18 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Chi tiết</label>
-            <select
-              value={detail}
-              onChange={(e) => setDetail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              required
-            >
-              <option value="">Chọn đơn vị</option>
-              <option value="T1">T1</option>
-              <option value="T5">T5</option>
-            </select>
+            {/* <label className="text-sm font-medium mb-1">Chi tiết</label> */}
+            {/* <select */}
+            {/*   value={detail} */}
+            {/*   onChange={(e) => setDetail(e.target.value)} */}
+            {/*   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" */}
+            {/*   required */}
+            {/* > */}
+            {/*   <option value="">Chọn đơn vị</option> */}
+            {/*   <option value="T1">T1</option> */}
+            {/*   <option value="T5">T5</option> */}
+            {/* </select> */}
+            <TreeUnit />
           </div>
           <div className="flex justify-end space-x-3">
             <button
@@ -96,4 +139,3 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
 };
 
 export default RegistrationForm;
-

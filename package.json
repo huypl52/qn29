@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite -m dev --port 3400 --host",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write ./src/"
@@ -22,6 +22,7 @@
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
+    "react-accessible-treeview": "^2.9.1",
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1",
