@@ -67,6 +67,12 @@ const Header = () => {
       <div className="flex-grow"></div>
 
       <div className="flex items-center justify-center">
+        <button
+          className="flex items-center px-4 py-2 text-left text-black hover:text-xl"
+          onClick={() => navigate(AuthRoutePath.DASHBOARD)}
+        >
+          <i className="fas fa-home mr-2"></i> {/* Icon for Home */}
+        </button>
         <div className={darkMode ? 'dark' : ''}>
           <div
             onClick={toggleDarkMode}
@@ -84,13 +90,14 @@ const Header = () => {
 
           {/* Dropdown */}
           {dropdownVisible && (
-            <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+            <div className="absolute right-0 mt-2 w-36 dark:bg-white bg-teal-50 border border-gray-200 rounded-lg shadow-lg z-10 ">
               <ul className="py-1">
                 <li>
                   <button
                     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
                     onClick={() => handleNavigation('/statistical')}
                   >
+                    <i className="fas fa-chart-bar mr-2"></i>
                     Thống kê
                   </button>
                 </li>
@@ -99,6 +106,7 @@ const Header = () => {
                     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
                     onClick={() => handleNavigation('/setting')}
                   >
+                    <i className="fas fa-cog mr-2"></i>
                     Cài đặt
                   </button>
                 </li>
@@ -107,6 +115,7 @@ const Header = () => {
                     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
                     onClick={() => handleNavigation('/registration')}
                   >
+                    <i className="fas fa-user-plus mr-2"></i>
                     Đăng ký
                   </button>
                 </li>
@@ -115,6 +124,7 @@ const Header = () => {
                     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
                     onClick={handleLogout}
                   >
+                    <i className="fas fa-sign-out-alt mr-2"></i>
                     Đăng xuất
                   </button>
                 </li>
