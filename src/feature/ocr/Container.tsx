@@ -37,9 +37,12 @@ const Container: React.FC<{
             type: 'image/png',
           });
           updateFiles([file]);
+          console.log('Clipboard item types:', clipboardItem.types);
+
         } else {
           console.log('No image found in clipboard.');
           toast.info('Vui lòng chọn dán đúng định dạng ảnh');
+          console.log('Clipboard item types:', clipboardItem.types);
         }
       }
     } catch (error) {
