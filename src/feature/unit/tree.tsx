@@ -1,16 +1,14 @@
 import { FaCheckSquare, FaMinusSquare, FaSquare } from 'react-icons/fa';
 import { IoMdArrowDropright } from 'react-icons/io';
-import TreeView, { flattenTree } from 'react-accessible-treeview';
+import TreeView, {
+  flattenTree,
+  ITreeViewOnSelectProps,
+} from 'react-accessible-treeview';
 import cx from 'classnames';
 import './styles.css';
+import { ITree } from './type';
 
-export type ITreeNode = Parameters<typeof flattenTree>[0];
-
-interface IUnitTree {
-  data: ITreeNode;
-}
-
-function Tree({ data }: IUnitTree) {
+function Tree({ data, selectedIds, onNodeSelect }: ITree) {
   return (
     <div>
       <div className="checkbox">
@@ -22,6 +20,13 @@ function Tree({ data }: IUnitTree) {
           propagateSelectUpwards
           togglableSelect
           nodeAction="check"
+          selectedIds={selectedIds}
+          onNodeSelect={onNodeSelect}
+          // onSelect={(v) => {
+          //   console.log({
+          //     onSelect: v,
+          //   });
+          // }}
           nodeRenderer={({
             element,
             isBranch,

@@ -3,6 +3,7 @@ import Tree, { ITreeNode } from './tree';
 import { IOrg } from '~/type/org';
 import { useMemo } from 'react';
 import _ from 'lodash';
+import { ITreeUnit } from './type';
 
 const insertOrgIntoTree = (o: IOrg, tree: ITreeNode): boolean => {
   const pId = o.parentid;
@@ -42,13 +43,18 @@ const orgTree2View = (data: IOrg[]): ITreeNode => {
   return tree;
 };
 
-const TreeUnit = () => {
+const TreeUnit = ({ selectedIds, selectable, onNodeSelect }: ITreeUnit) => {
   const { orgs } = useOrgStore();
   const data = useMemo(() => orgTree2View(orgs), [orgs]);
 
   return (
     <div>
-      <Tree data={data} />
+      <Tree
+        data={data}
+        selectedIds={selectedIds}
+        selectable={selectable}
+        onNodeSelect={onNodeSelect}
+      />
     </div>
   );
 };
