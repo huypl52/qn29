@@ -13,7 +13,7 @@ export const getTaskDetails = (taskId: string) => {
 
 export const getImage = (fileId: string) => {
   return httpGet()<ArrayBufferLike>(`/tasks/file/image?=&id=${fileId}`, {
-    responseType: 'arraybuffer',
+    responseType: 'blob',
   });
 };
 // a đang để type filter client chỉ có 2 loạn đơn giản là ocr và dịch thôi
@@ -42,10 +42,13 @@ export const getTotalTaskHistory = () => {
   return httpGet()<{ total: number }>('/tasks/history/summary?');
 };
 
-
 //Statistical
 
-export const getStatisticalOcrHistory = ({group=o, from_date, to_date}:StatisticalParam) => {
+export const getStatisticalOcrHistory = ({
+  group = 0,
+  from_date,
+  to_date,
+}: StatisticalParam) => {
   const queryParams = new URLSearchParams({
     group: group.toString(),
     ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
@@ -70,12 +73,15 @@ export const getStatisticalTranslateHistory = ({
   );
 };
 
-
-export const getStatisticalOcrHistoryTranslate = ({group=0, from_date, to_date}:StatisticalParam) => {
+export const getStatisticalOcrHistoryTranslate = ({
+  group = 0,
+  from_date,
+  to_date,
+}: StatisticalParam) => {
   const queryParams = new URLSearchParams({
-                                            group: group.toString(),
-                                            ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
-                                            ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
-                                          }).toString();
+    group: group.toString(),
+    ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
+    ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
+  }).toString();
   return httpGet()(`/reports/ocr/translatecount/group?${queryParams}`);
-}
+};

@@ -23,7 +23,7 @@ const initialValues: UserFormValues = {
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
-    .matches(/^[a-zA-Z0-9]+$/, 'Tên đăng nhập không được chứa ký tự đặc biệt')
+    .matches(/^[a-zA-Z0-9_]+$/, 'Tên đăng nhập không được chứa ký tự đặc biệt')
     .required('Xin mời nhập tên đăng nhập'),
   password: Yup.string()
     .min(6, 'Mật khẩu yêu cầu tối thiểu 6 ký tự')

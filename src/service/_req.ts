@@ -17,7 +17,6 @@ import { convertToDateType2 } from '~/utils/date';
 const dateTransformer: (data: any) => AxiosRequestTransformer = (data) => {
   if (data instanceof Date) {
     return convertToDateType2(data);
-    // return data.toLocaleDateString();
   }
   if (Array.isArray(data)) {
     return data.map((v) => dateTransformer(v));
@@ -30,67 +29,73 @@ const dateTransformer: (data: any) => AxiosRequestTransformer = (data) => {
   return data;
 };
 
-const instance = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API || '',
-  transformRequest: [
-    dateTransformer,
-    ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
-  ],
-});
+let instance: AxiosInstance | null = null;
+let instance_manual: AxiosInstance | null = null;
+let instanceList: AxiosInstance[] = [];
 
-const instance_manual = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_MANUAL || '',
-  transformRequest: [
-    dateTransformer,
-    ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
-  ],
-});
+export async function initApi() {
+  instance = axios.create({
+    baseURL: import.meta.env.VITE_PUBLIC_API || '',
+    transformRequest: [
+      dateTransformer,
+      ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
+    ],
+  });
 
-const instanceList: AxiosInstance[] = [instance, instance_manual];
+  instance_manual = axios.create({
+    baseURL: import.meta.env.VITE_PUBLIC_API_MANUAL || '',
+    transformRequest: [
+      dateTransformer,
+      ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
+    ],
+  });
 
-instanceList.forEach((ins) => {
-  ins.interceptors.request.use(
-    function (config) {
-      const authorization = getUserToken();
-      const refreshToken = getUserRefreshToken();
+  instanceList = [instance, instance_manual];
 
-      if (authorization && refreshToken) {
-        config.headers.setAuthorization(authorization);
-        config.headers.set('refreshtoken', refreshToken);
+  instanceList.forEach((ins) => {
+    ins.interceptors.request.use(
+      function (config) {
+        const authorization = getUserToken();
+        const refreshToken = getUserRefreshToken();
+
+        if (authorization && refreshToken) {
+          config.headers.setAuthorization(authorization);
+          config.headers.set('refreshtoken', refreshToken);
+        }
+        return config;
+      },
+      function (error) {
+        return Promise.reject(error);
       }
-      return config;
-    },
-    function (error) {
-      return Promise.reject(error);
-    }
-  );
+    );
 
-  ins.interceptors.response.use(
-    function (config) {
-      const headers = config.headers;
-      const authorization = headers.authorization;
-      const refreshtoken = headers.refreshtoken;
+    ins.interceptors.response.use(
+      function (config) {
+        const headers = config.headers;
+        const authorization = headers.authorization;
+        const refreshtoken = headers.refreshtoken;
 
-      // console.log('override token', authorization, refreshtoken)
-      if (authorization && refreshtoken) {
-        saveUserToken(authorization);
-        saveUserRefreshToken(refreshtoken);
+        // console.log('override token', authorization, refreshtoken)
+        if (authorization && refreshtoken) {
+          saveUserToken(authorization);
+          saveUserRefreshToken(refreshtoken);
+        }
+        return config;
+      },
+      function (error) {
+        const { response } = error;
+        if (response && response.status === 401) {
+          clearUser();
+          setTimeout(() => (window.location.href = '/sign-in'), 2000);
+          return;
+        }
+        const { stack, ...error_info } = error;
+        console.log({ intercept_error: error_info });
+        return Promise.reject(response);
       }
-      return config;
-    },
-    function (error) {
-      const { response } = error;
-      if (response && response.status === 401) {
-        clearUser();
-        setTimeout(() => (window.location.href = '/sign-in'), 2000);
-        return;
-      }
-      const { stack, ...error_info } = error;
-      console.log({ intercept_error: error_info });
-      return Promise.reject(response);
-    }
-  );
-});
+    );
+  });
+}
 
 const _httpPost =
   (req: AxiosInstance) =>

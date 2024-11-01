@@ -16,11 +16,11 @@ const validationSchema = Yup.object().shape({
     .required('Vui lòng nhập kích thước ảnh tối thiểu')
     .positive('Phải là số dương'),
   document_max_length: Yup.number()
-    .required('Vui lòng nhập kích thước văn bản')
+    .required('Vui lòng nhập độ dài văn bản tối đa')
     .positive('Phải là số dương')
     .max(100, 'Kích thước chữ không được vượt quá 100'),
   translate_timeout: Yup.number()
-    .required('Vui lòng nhập thời gian chờ')
+    .required('Vui lòng nhập thời gian chờ dịch')
     .min(0, 'Thời gian chờ không được âm')
     .max(3600, 'Thời gian chờ không được vượt quá 3600 giây'),
 });
@@ -59,7 +59,7 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             htmlFor="image_max_size"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Kích thước ảnh tải lên tối đa:
+            Kích thước ảnh tải lên tối đa (MB):
           </label>
           <input
             type="number"
@@ -82,7 +82,7 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             htmlFor="image_min_size"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Kích thước ảnh tải lên tối thiểu:
+            Kích thước ảnh tải lên tối thiểu (MB):
           </label>
           <input
             type="number"
@@ -105,7 +105,7 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             htmlFor="document_max_length"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Kích thước văn bản nhập:
+            Độ dài văn bản nhập:
           </label>
           <input
             type="number"

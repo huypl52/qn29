@@ -118,12 +118,13 @@ const Item = (props: IItemTask) => {
     if (!ocr) return;
     if (ocr.fileid) {
       getImage(ocr.fileid).then((res) => {
-        const { status, data } = res;
+        const { status, data, headers } = res;
         if (status === 200) {
-          const binaryString = String.fromCharCode(...new Uint8Array(data));
-          const base64Image = btoa(binaryString);
-          const imageUrl = `data:image/png;base64,${base64Image}`;
-          setImg(imageUrl);
+          const blob = new Blob([data], {
+            type: headers['content-type'],
+          });
+          const url = URL.createObjectURL(blob);
+          setImg(url);
         }
       });
     }
