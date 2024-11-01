@@ -23,11 +23,13 @@ const initialValues: UserFormValues = {
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
-    .matches(/^[a-zA-Z0-9]+$/, 'Username cannot contain special characters')
-    .required('Username is required'),
+    .matches(/^[a-zA-Z0-9]+$/, 'Tên đăng nhập không được chứa ký tự đặc biệt')
+    .required('Xin mời nhập tên đăng nhập'),
   password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+    .min(6, 'Mật khẩu yêu cầu tối thiểu 6 ký tự')
+    .required('Xin mời nhập mật khẩu'),
+  name: Yup.string().required('Xin mời nhập tên'),
+  orgid: Yup.string().required('Xin một chọn đơn vị'),
 });
 
 interface RegistrationFormProps {
@@ -38,12 +40,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      // Handle form submission here
+    onSubmit: (values, { setSubmitting }) => {
       console.log('Form values:', values);
-      // setTimeout(() => {
-      //   setSubmitting(false);
-      // }, 1000);
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 3000);
 
       const { username, name, password, orgid } = values;
       if (!orgid) {
@@ -51,17 +52,24 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
         return;
       }
 
-      registerUser({ username, fullname: name, password, orgid })
-        .then((res) => {
-          const { status, data } = res;
-          if (status !== 200) {
-            throw new Error();
-          }
-          toast.success(toastMsg.success);
-        })
-        .catch((error) => {
-          error?.data ? toast.error(error.data) : toast.error(toastMsg.error);
-        });
+      setTimeout(
+        () =>
+          registerUser({ username, fullname: name, password, orgid })
+            .then((res) => {
+              const { status, data } = res;
+              if (status !== 200) {
+                throw new Error();
+              }
+              toast.success(toastMsg.success);
+            })
+            .catch((error) => {
+              error?.data
+                ? toast.error(error.data)
+                : toast.error(toastMsg.error);
+            })
+            .finally(() => setSubmitting(false)),
+        2000
+      );
     },
   });
 
@@ -81,6 +89,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
+            {formik.errors.name || null}
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
@@ -95,6 +104,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
+            {formik.errors.username}
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Mật khẩu</label>
@@ -107,6 +117,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
+            {formik.errors.password || null}
           </div>
           <div className="mb-4">
             <TreeUnit
@@ -116,25 +127,20 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
                   isSelected,
                 } = v;
                 if (isSelected) formik.setFieldValue('orgid', id as string);
+                else formik.setFieldValue('orgid', '');
               }}
             />
+            {formik.errors.orgid || null}
           </div>
           <div className="flex justify-end space-x-3">
             <button
               type="submit"
-              // disabled={formik.isSubmitting}
+              disabled={formik.isSubmitting}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
             >
               {formik.isSubmitting ? 'Đang thực hiện' : 'Đăng ký'}
             </button>
           </div>
-          <button
-            type="submit"
-            // disabled={formik.isSubmitting}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            {formik.isSubmitting ? 'Đang thực hiện' : 'Đăng ký'}
-          </button>
         </form>
       </div>
     </div>

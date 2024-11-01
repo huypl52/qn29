@@ -1,139 +1,183 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { ISetting } from '~/type/setting';
+import { getSetting } from '~/service/setting';
 
-const Setting: React.FC = () => {
-  const [maxImageSize, setMaxImageSize] = React.useState('');
-  const [minImageSize, setMinImageSize] = React.useState('');
-  const [textSize, setTextSize] = React.useState('');
-  const [waitingTime, setWaitingTIme] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [showPassword, setShowPassword] = React.useState(false); // Trạng thái hiển thị mật khẩu
+const validationSchema = Yup.object().shape({
+  image_max_size: Yup.number()
+    .required('Vui lòng nhập kích thước ảnh tối đa')
+    .positive('Phải là số dương')
+    .test('max-size', 'Phải lớn hơn kích thước tối thiểu', function (value) {
+      const minSize = Number(this.parent.image_min_size);
+      return !value || !minSize || value > minSize;
+    }),
+  image_min_size: Yup.number()
+    .required('Vui lòng nhập kích thước ảnh tối thiểu')
+    .positive('Phải là số dương'),
+  document_max_length: Yup.number()
+    .required('Vui lòng nhập kích thước văn bản')
+    .positive('Phải là số dương')
+    .max(100, 'Kích thước chữ không được vượt quá 100'),
+  translate_timeout: Yup.number()
+    .required('Vui lòng nhập thời gian chờ')
+    .min(0, 'Thời gian chờ không được âm')
+    .max(3600, 'Thời gian chờ không được vượt quá 3600 giây'),
+});
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Xử lý gửi dữ liệu ở đây
-    console.log({
-      maxImageSize,
-      minImageSize,
-      textSize,
-      password,
-    });
-  };
+interface ISettingForm {
+  value?: ISetting;
+}
 
-  // Hàm kiểm tra và chỉ cho phép nhập số
-  const handleNumberInput = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    const value = e.target.value;
-    // Kiểm tra nếu giá trị là số hoặc rỗng
-    if (/^\d*$/.test(value)) {
-      setter(value);
-    }
-  };
+const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
+  const initialValues: ISetting = value
+    ? value
+    : {
+        image_max_size: 0,
+        image_min_size: 0,
+        document_max_length: 0,
+        translate_timeout: 0,
+      };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: (values) => {
+      console.log('Settings updated:', values);
+    },
+    enableReinitialize: true, // This ensures the form updates if props change
+  });
 
   return (
     <div className="max-w-lg mx-auto bg-gray-50 p-6 rounded-lg shadow-md mt-20">
       <h2 className="text-2xl font-semibold mb-6 text-center">
         Cài đặt thông số
       </h2>
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-2" htmlFor="maxImageSize">
+          <label
+            htmlFor="image_max_size"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Kích thước ảnh tải lên tối đa:
           </label>
-          <label className="flex items-center">
-            <input
-              type="text"
-              value={maxImageSize}
-              onChange={(e) => handleNumberInput(e, setMaxImageSize)}
-              placeholder=""
-              className="border rounded px-3 py-2 w-full text-right"
-              required
-            />
-            <p className="min-w-[3vw] text-center">MB</p>
-          </label>
+          <input
+            type="number"
+            id="image_max_size"
+            name="image_max_size"
+            onChange={formik.handleChange}
+            // onBlur={formik.handleBlur}
+            value={formik.values.image_max_size}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {formik.touched.image_max_size && formik.errors.image_max_size && (
+            <div className="text-red-500 text-sm mt-1">
+              {formik.errors.image_max_size}
+            </div>
+          )}
         </div>
+
         <div>
-          <label className="block mb-2" htmlFor="minImageSize">
+          <label
+            htmlFor="image_min_size"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Kích thước ảnh tải lên tối thiểu:
           </label>
-          <label className="flex items-center">
-            <input
-              type="text"
-              value={minImageSize}
-              onChange={(e) => handleNumberInput(e, setMinImageSize)}
-              placeholder=""
-              className="border rounded px-3 py-2 w-full text-right"
-              required
-            />
-            <p className="min-w-[3vw] text-center">MB</p>
-          </label>
+          <input
+            type="number"
+            id="image_min_size"
+            name="image_min_size"
+            onChange={formik.handleChange}
+            // onBlur={formik.handleBlur}
+            value={formik.values.image_min_size}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {formik.errors.image_min_size && formik.errors.image_min_size && (
+            <div className="text-red-500 text-sm mt-1">
+              {formik.errors.image_min_size}
+            </div>
+          )}
         </div>
+
         <div>
-          <label className="block mb-2" htmlFor="textSize">
+          <label
+            htmlFor="document_max_length"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Kích thước văn bản nhập:
           </label>
-          <label className="flex items-center">
-            <input
-              type="text"
-              value={textSize}
-              onChange={(e) => handleNumberInput(e, setTextSize)}
-              placeholder=""
-              className="border rounded px-3 py-2 w-full text-right"
-              required
-            />
-            <p className="min-w-[3vw] text-center">kí tự</p>
-          </label>
+          <input
+            type="number"
+            id="document_max_length"
+            name="document_max_length"
+            onChange={formik.handleChange}
+            // onBlur={formik.handleBlur}
+            value={formik.values.document_max_length}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {formik.touched.document_max_length &&
+            formik.errors.document_max_length && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.document_max_length}
+              </div>
+            )}
         </div>
+
         <div>
-          <label className="block mb-2" htmlFor="textSize">
+          <label
+            htmlFor="translate_timeout"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Thời gian dịch tối đa:
           </label>
-          <label className="flex items-center">
-            <input
-              type="text"
-              value={waitingTime}
-              onChange={(e) => handleNumberInput(e, setWaitingTIme)}
-              placeholder=""
-              className="border rounded px-3 py-2 w-full text-right"
-              required
-            />
-            <p className="min-w-[3vw] text-center">giây</p>
-          </label>
+          <input
+            type="number"
+            id="translate_timeout"
+            name="translate_timeout"
+            onChange={formik.handleChange}
+            // onBlur={formik.handleBlur}
+            value={formik.values.translate_timeout}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {formik.touched.translate_timeout &&
+            formik.errors.translate_timeout && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.translate_timeout}
+              </div>
+            )}
         </div>
-        {/* <div> */}
-        {/*   <label className="block mb-2" htmlFor="password"> */}
-        {/*     Đổi mật khẩu: */}
-        {/*   </label> */}
-        {/*   <div className="flex items-center"> */}
-        {/*     <input */}
-        {/*       type={showPassword ? 'text' : 'password'} // Thay đổi type dựa trên trạng thái */}
-        {/*       value={password} */}
-        {/*       onChange={(e) => setPassword(e.target.value)} */}
-        {/*       placeholder="Đổi mật khẩu" */}
-        {/*       className="border rounded px-3 py-2 flex-1" */}
-        {/*       required */}
-        {/*     /> */}
-        {/*     <label className="ml-2"> */}
-        {/*       <input */}
-        {/*         type="checkbox" */}
-        {/*         checked={showPassword} */}
-        {/*         onChange={() => setShowPassword(!showPassword)} */}
-        {/*         className="mr-1" */}
-        {/*       /> */}
-        {/*       Xem mật khẩu */}
-        {/*     </label> */}
-        {/*   </div> */}
-        {/* </div> */}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white rounded px-4 py-2 mt-4"
-        >
-          Lưu cài đặt
-        </button>
+
+        <div className="flex space-x-4">
+          <button
+            type="submit"
+            className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Lưu cài đặt
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
+const Setting: React.FC = () => {
+  const [setting, updateSetting] = useState<ISetting>();
+
+  useEffect(() => {
+    getSetting()
+      .then((res) => {
+        const { data, status } = res;
+        if (status === 200) {
+          updateSetting(data);
+          console.log({ settingData: data });
+        }
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
+  }, []);
+
+  return <SettingForm value={setting} />;
+};
 export default Setting;
