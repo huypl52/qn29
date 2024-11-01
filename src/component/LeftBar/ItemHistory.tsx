@@ -8,8 +8,8 @@ import {
   ETaskType,
   ITaskDetail,
   ITaskHistory,
-  LTaskTypeOcr,
-  LTaskTypeTranslate,
+  listTaskTypeOcr,
+  listTaskTypeTranslate,
 } from '~/type/task';
 import ListTranslationHistory from './TranslationHistoryItem';
 import { useTranslateStore } from '~/store/translate';
@@ -84,7 +84,7 @@ const ItemHistory = (props: IItemHistory) => {
           className="text-md font-semibold align-middle cursor-pointer"
           onClick={handleOpenDetail}
         >
-          {LTaskTypeTranslate.includes(taskType)
+          {listTaskTypeTranslate.includes(taskType)
             ? tranlationTitle
             : 'Trung → Việt'}
         </h3>
@@ -120,13 +120,14 @@ const ItemHistory = (props: IItemHistory) => {
       </div>
       <div>{formatViDate(new Date(taskHistory.created_time))}</div>
 
-      {taskHistory.details?.length && LTaskTypeOcr.includes(taskType) ? (
+      {taskHistory.details?.length && listTaskTypeOcr.includes(taskType) ? (
         <ListOcrHistory
           ocrResults={taskHistory.details}
           // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}
         />
       ) : null}
-      {taskHistory.details?.length && LTaskTypeTranslate.includes(taskType) ? (
+      {taskHistory.details?.length &&
+      listTaskTypeTranslate.includes(taskType) ? (
         <ListTranslationHistory
           ocrResults={taskHistory.details}
           // ocrResults={ocrTasks.map((t) => ({ id: t.ocrid || '', result: t }))}

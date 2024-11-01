@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useOcrContext } from '../../feature/ocr/context';
 import { BaseTextarea, StructureTextarea } from '~/component/Textarea';
 import { ITaskDetail, ITaskHistoryDetail } from '~/type/task';
-import { useTaskStore } from '~/store/task';
-import { getOcrDetail } from '~/service/ocr';
 import { EProcessStatus } from '~/type/ocr';
 import { getImage, getTaskDetails } from '~/service/task';
 import { toast } from 'react-toastify';

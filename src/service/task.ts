@@ -3,7 +3,7 @@ import {
   ETaskType,
   ITaskDetail,
   ITaskHistory,
-  LTaskTypeOcr,
+  listTaskTypeOcr,
   StatisticalParam,
 } from '~/type/task';
 
@@ -28,7 +28,7 @@ export const getImage = (fileId: string) => {
 
 export const getTaskHistory = (skip = 0, take = 20, type?: ETaskType) => {
   let taskGroupType = 2;
-  if (LTaskTypeOcr.includes(type)) {
+  if (listTaskTypeOcr.includes(type)) {
     taskGroupType = 1;
   }
 

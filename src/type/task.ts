@@ -10,8 +10,8 @@ export enum ETaskType {
   MANUAL_OCR_TRANSLATE = 6,
 }
 
-export const LTaskTypeOcr = [ETaskType.OCR, ETaskType.OCR_TRANSLATE];
-export const LTaskTypeTranslate = [
+export const listTaskTypeOcr = [ETaskType.OCR, ETaskType.OCR_TRANSLATE];
+export const listTaskTypeTranslate = [
   ETaskType.TRANSLATE,
   ETaskType.MANUAL_TRANSLATE,
 ];
@@ -21,6 +21,7 @@ export interface ITaskHistory {
   id: string;
   created_time: string;
   type?: ETaskType;
+  type_name: string;
   details: ITaskHistoryDetail[];
 }
 
@@ -54,9 +55,9 @@ export interface ITaskDetail {
   translation_id?: string;
 
   // FE insert image by uploading
+  file_name?: string;
   fileid?: string;
 }
-
 
 export interface StatisticalParam {
   group?: number; // Tham số group có thể là số
