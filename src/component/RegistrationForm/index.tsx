@@ -87,9 +87,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
               value={formik.values.name}
               onChange={formik.handleChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              required
             />
-            {formik.errors.name || null}
+
+            {formik.touched.name && formik.errors.name && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.name}
+              </div>
+            )}
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">
@@ -102,9 +106,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
               value={formik.values.username}
               onChange={formik.handleChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              required
             />
-            {formik.errors.username}
+            {formik.touched.username && formik.errors.username && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.username}
+              </div>
+            )}
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Mật khẩu</label>
@@ -115,11 +122,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-              required
             />
-            {formik.errors.password || null}
+            {formik.touched.password && formik.errors.password && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.password}
+              </div>
+            )}
           </div>
           <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Đơn vị</label>
             <TreeUnit
               onNodeSelect={(v) => {
                 const {
@@ -130,7 +141,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = () => {
                 else formik.setFieldValue('orgid', '');
               }}
             />
-            {formik.errors.orgid || null}
+            {formik.touched.orgid && formik.errors.orgid && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.orgid}
+              </div>
+            )}
           </div>
           <div className="flex justify-end space-x-3">
             <button

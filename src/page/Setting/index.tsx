@@ -23,6 +23,9 @@ const validationSchema = Yup.object().shape({
     .required('Vui lòng nhập thời gian chờ dịch')
     .min(0, 'Thời gian chờ không được âm')
     .max(3600, 'Thời gian chờ không được vượt quá 3600 giây'),
+  image_queue_limit: Yup.number()
+    .required('Vui lòng nhập số ảnh tối đa chờ xử lý')
+    .min(0, 'Số ảnh không được âm'),
 });
 
 interface ISettingForm {
@@ -37,6 +40,7 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
         image_min_size: 0,
         document_max_length: 0,
         translate_timeout: 0,
+        image_queue_limit: 10,
       };
 
   const formik = useFormik({
@@ -112,7 +116,6 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             id="document_max_length"
             name="document_max_length"
             onChange={formik.handleChange}
-            // onBlur={formik.handleBlur}
             value={formik.values.document_max_length}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -136,7 +139,6 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             id="translate_timeout"
             name="translate_timeout"
             onChange={formik.handleChange}
-            // onBlur={formik.handleBlur}
             value={formik.values.translate_timeout}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -144,6 +146,29 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             formik.errors.translate_timeout && (
               <div className="text-red-500 text-sm mt-1">
                 {formik.errors.translate_timeout}
+              </div>
+            )}
+        </div>
+
+        <div>
+          <label
+            htmlFor="image_queue_limit"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Số ảnh tối đa chờ xử lý
+          </label>
+          <input
+            type="number"
+            id="image_queue_limit"
+            name="image_queue_limit"
+            onChange={formik.handleChange}
+            value={formik.values.image_queue_limit}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {formik.touched.image_queue_limit &&
+            formik.errors.image_queue_limit && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.image_queue_limit}
               </div>
             )}
         </div>
