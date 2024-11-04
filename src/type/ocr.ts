@@ -43,6 +43,8 @@ export enum EProcessStatus {
   pending = 1,
   success = 2,
   failed = 3,
+
+  timeout = 999,
 }
 
 export interface IOcrDetail {

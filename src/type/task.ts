@@ -45,11 +45,13 @@ export interface ITaskDetail {
   source_text: string;
 
   // with OCR result
+  ocr_status: EProcessStatus;
   ocrid?: string;
   detected_language?: DLang;
   detected_text?: string;
 
   // if translated
+  translation_status: EProcessStatus;
   dest_text?: string;
   dest_language?: DLang;
   translation_id?: string;

@@ -13,8 +13,9 @@ import {
 } from '~/type/task';
 import ListTranslationHistory from './TranslationHistoryItem';
 import { useTranslateStore } from '~/store/translate';
-import { DLangMap } from '~/type';
+import { DLangMap, toastMsg } from '~/type';
 import { formatViDate } from '~/utils/date';
+import { toast } from 'react-toastify';
 
 interface IItemHistory {
   taskType: ETaskType;
@@ -27,6 +28,7 @@ const ItemHistory = (props: IItemHistory) => {
   const [showDropdown, setShowDropdown] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false); // State to track favorite status
 
+  const { selectTaskId } = useTaskStore();
   const { taskHistory, taskList, setTaskList, taskType } = props;
 
   // Toggle the visibility of the dropdown
@@ -66,6 +68,8 @@ const ItemHistory = (props: IItemHistory) => {
         const { status, data } = res;
         if (status !== 200) return;
         putTaskDetails(data);
+        selectTaskId(taskHistory.id);
+        toast.success(toastMsg.success);
       })
       .catch((err) => {
         console.log({ err });

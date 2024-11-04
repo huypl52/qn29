@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useOcrContext } from './context';
 import { StructureTextarea } from '~/component/Textarea';
 import { ITaskDetail, ITaskHistoryDetail } from '~/type/task';
@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { FaRegCopy } from 'react-icons/fa';
 import _ from 'lodash';
 import LoadingText from '~/component/LoadingText';
-
+import { IoTimeOutline } from 'react-icons/io5';
 import { MdSmsFailed } from 'react-icons/md';
 import { useTaskStore } from '~/store/task';
 
@@ -28,6 +28,11 @@ const TextBoxFooter = ({ text }: { text: string }) => {
   );
 };
 
+interface IItemTaskStatus {
+  ocr?: EProcessStatus;
+  translation?: EProcessStatus;
+}
+
 interface IItemTask {
   taskId?: string;
   ocrTaskResult: ITaskDetail;
@@ -38,10 +43,10 @@ const FAILED_TIMEOUT = QUERY_TIMEOUT + 3000;
 
 const Item = (props: IItemTask) => {
   const { taskId, ocrTaskResult } = props;
-  const [taskDetailStatus, setTaskDetailStatus] = useState<EProcessStatus>(
-    // ocrTaskResult ? EProcessStatus.success : EProcessStatus.pending
-    EProcessStatus.pending
-  );
+  const [taskDetailStatus, setTaskDetailStatus] = useState<IItemTaskStatus>({
+    ocr: EProcessStatus.pending,
+    translation: EProcessStatus.pending,
+  });
   const { needTranslate } = useOcrContext();
   const [img, setImg] = useState<string>();
   const [ocrResult, setOcrResult] = useState<ITaskDetail | undefined>(
@@ -50,44 +55,52 @@ const Item = (props: IItemTask) => {
   const { counter } = useTaskStore();
 
   useEffect(() => {
-    setTaskDetailStatus(EProcessStatus.pending);
+    setTaskDetailStatus({
+      ocr: EProcessStatus.pending,
+      translation: EProcessStatus.pending,
+    });
   }, [counter]);
 
-  useEffect(() => {
-    if (taskDetailStatus !== EProcessStatus.pending) {
+  const fetchTaskItem = useCallback(() => {
+    const detailStatus = _.cloneDeep(taskDetailStatus);
+    console.log({ fetchTaskItemStatus: detailStatus });
+    if (
+      detailStatus.ocr !== EProcessStatus.pending &&
+      detailStatus.translation !== EProcessStatus.pending
+    ) {
+      console.log('All fullfilled');
       return;
     }
 
-    const neededFields: (keyof ITaskDetail)[] = ['detected_text'];
-    if (needTranslate) {
-      neededFields.push('dest_text');
-    }
-
-    // console.log({ ocrResult, taskId });
-    if (_.every(neededFields, (k) => _.has(ocrResult, k))) {
-      setTaskDetailStatus(EProcessStatus.success);
+    if (
+      ocrResult?.ocr_status === EProcessStatus.success &&
+      ocrResult.translation_status === EProcessStatus.success
+    ) {
+      console.log('All success');
       return;
     }
 
     if (!taskId) return;
     if (!ocrResult) return;
 
-    // console.log(`start query ${ocrTaskResult}`);
+    console.log(`fetchTaskItem`);
     const intervalRef = setInterval(() => {
       getTaskDetails(taskId).then((res) => {
         const { status, data } = res;
         if (status !== 200) {
           return;
         }
+        console.log({ fetchTask: { taskId, ocrResult } });
         const newOcrTaskResult = data.find((d) => d.ocrid === ocrResult.ocrid);
-        const success = _.every(neededFields, (k) =>
-          _.has(newOcrTaskResult, k)
-        );
-        // console.log({ newOcrTaskResult, success });
-        if (success) {
-          setTaskDetailStatus(EProcessStatus.success);
-          setOcrResult(newOcrTaskResult);
-        }
+        console.log({ newOcrTaskResult });
+        if (!newOcrTaskResult) return;
+
+        detailStatus.ocr = newOcrTaskResult.ocr_status;
+        detailStatus.translation = newOcrTaskResult.translation_status;
+
+        setTaskDetailStatus(detailStatus);
+        setOcrResult(newOcrTaskResult);
+        console.log({ detailStatus });
       });
     }, 1000);
 
@@ -97,9 +110,13 @@ const Item = (props: IItemTask) => {
     );
 
     const failTimeoutRef = setTimeout(() => {
-      if (taskDetailStatus.valueOf() !== EProcessStatus.success.valueOf()) {
-        setTaskDetailStatus(EProcessStatus.failed);
+      if (detailStatus.ocr === EProcessStatus.pending) {
+        detailStatus.ocr = EProcessStatus.failed;
       }
+      if (detailStatus.translation === EProcessStatus.pending) {
+        detailStatus.translation = EProcessStatus.failed;
+      }
+      setTaskDetailStatus(detailStatus);
     }, FAILED_TIMEOUT);
 
     return () => {
@@ -130,29 +147,37 @@ const Item = (props: IItemTask) => {
     }
   }, [ocrResult]);
 
+  useEffect(() => fetchTaskItem(), [fetchTaskItem]);
+  console.log({ ocrResult, taskDetailStatus, ocrTaskResult, taskId });
+
   return (
     <div className="flex w-full divide-x divide-stone-400  bg-gray-100 gap-4 py-2 overflow-y-auto">
       <div className="w-1/2 min-w-32 h-1/3 min-h-16 my-auto">
-        {/* <p className="text-sm font-medium text-gray-600">{f.name}</p> */}
         <img
           src={img}
-          // alt={f.name}
-          alt="no load image"
+          alt="load image loaded"
           className="object-contain max-w-100 max-h-[30vh] mx-auto"
         />
       </div>
 
-      {taskDetailStatus === EProcessStatus.pending ? (
-        <LoadingText />
-      ) : taskDetailStatus === EProcessStatus.failed ? (
-        <div className="w-1/2 h-auto flex flex-col justify-center items-center text-red-800">
-          <div className="border border-red-600 rounded-full p-3 ">
-            <MdSmsFailed size={40} />
+      <div className="w-1/2 pl-2">
+        {taskDetailStatus.ocr === EProcessStatus.pending ? (
+          <LoadingText />
+        ) : taskDetailStatus.ocr === EProcessStatus.failed ? (
+          <div className="w-1/2 h-auto flex flex-col justify-center items-center text-red-800">
+            <div className="border border-red-600 rounded-full p-3 ">
+              <MdSmsFailed size={40} />
+            </div>
+            <span>Thất bại</span>
           </div>
-          <span>Thất bại</span>
-        </div>
-      ) : (
-        <div className="w-1/2 pl-2">
+        ) : taskDetailStatus.ocr === EProcessStatus.timeout ? (
+          <div className="w-1/2 h-auto flex flex-col justify-center items-center text-red-800">
+            <div className="border border-red-600 rounded-full p-3 ">
+              <IoTimeOutline size={40} />
+            </div>
+            <span>Hết hạn</span>
+          </div>
+        ) : (
           <div>
             <StructureTextarea
               resizable={false}
@@ -164,21 +189,37 @@ const Item = (props: IItemTask) => {
               className="h-[29vh]"
             />
           </div>
-          {needTranslate ? (
-            <div className="border-t mt-2">
-              <StructureTextarea
-                resizable={false}
-                footer={() => (
-                  <TextBoxFooter text={ocrResult?.dest_text || ''} />
-                )}
-                disabled
-                value={ocrResult?.dest_text}
-                className="h-[25vh]"
-              />
+        )}
+
+        {!needTranslate ? null : taskDetailStatus.translation ===
+          EProcessStatus.pending ? (
+          <LoadingText />
+        ) : taskDetailStatus.translation === EProcessStatus.failed ? (
+          <div className="w-1/2 h-auto flex flex-col justify-center items-center text-red-800">
+            <div className="border border-red-600 rounded-full p-3 ">
+              <MdSmsFailed size={40} />
             </div>
-          ) : null}
-        </div>
-      )}
+            <span>Thất bại</span>
+          </div>
+        ) : taskDetailStatus.translation === EProcessStatus.timeout ? (
+          <div className="w-1/2 h-auto flex flex-col justify-center items-center text-red-800">
+            <div className="border border-red-600 rounded-full p-3 ">
+              <IoTimeOutline size={40} />
+            </div>
+            <span>Hết hạn</span>
+          </div>
+        ) : (
+          <div className="border-t mt-2">
+            <StructureTextarea
+              resizable={false}
+              footer={() => <TextBoxFooter text={ocrResult?.dest_text || ''} />}
+              disabled
+              value={ocrResult?.dest_text}
+              className="h-[25vh]"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
