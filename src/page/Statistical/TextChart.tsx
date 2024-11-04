@@ -34,8 +34,6 @@ const TextChart = () => {
 
   const [chartDataTLC, setChartDataTLC] = useState();
 
-  const today = new Date();
-
   const fetchDataTLC = async (
     groupvalue = 0,
     from_date?: Date,

@@ -89,7 +89,9 @@ const OCRChart = () => {
     labels: x,
     datasets: [
       {
-        label: `Số lần sử dụng theo ${timeScale === 'day' ? 'ngày' : timeScale === 'month' ? 'tháng' : 'năm'} (${dataType === 'text' ? 'Đã quét' : 'Đã dịch'})`,
+        label: `Số lần sử dụng theo ${
+          timeScale === 'day' ? 'ngày' : timeScale === 'month' ? 'tháng' : 'năm'
+        } (${dataType === 'text' ? 'Đã quét' : 'Đã dịch'})`,
         data: y,
         backgroundColor:
           dataType === 'text'
