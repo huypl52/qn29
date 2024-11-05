@@ -8,7 +8,12 @@ import {
 import { ETimeScale, ICardContext } from './type';
 import { getWeekRange } from './util';
 
-const CardContext = createContext<ICardContext>({});
+const CardContext = createContext<ICardContext>({
+  timeScale: ETimeScale.day,
+  setTimeScale: () => {},
+  dateRange: [null, null],
+  setDateRange: () => {},
+});
 
 const CardContextProvider = ({ children }: PropsWithChildren) => {
   const [selectedDateRange, setDateRange] = useState<(Date | null)[]>([

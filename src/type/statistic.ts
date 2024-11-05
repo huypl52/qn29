@@ -17,3 +17,12 @@ export type IStatTranslateManual = {
   source_language: DLang;
   count: 5;
 }[];
+
+// from_date: từ ngày, sử dụng định dạng yyyy-MM-dd
+// to_date: đến ngày, sử dụng định dạng yyyy-MM-dd
+// period: kỳ tính cho thời gian: 1 tuần này, 2 tháng này, 3 năm nay. Chỉ truyền 1 mình period không kèm from_date, to_date thì mới tính toán ra from_date, to_date theo ngày hiện tại của API
+export interface IStatParam {
+  from_date?: string | Date;
+  to_date?: string | Date;
+  period?: number;
+}

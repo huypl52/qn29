@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { CardContextProvider } from './context';
 
-const Charts = () => {
+const Report = () => {
   return (
     <CardContextProvider>
       <Container />
@@ -9,4 +9,4 @@ const Charts = () => {
   );
 };
 
-export default Charts;
+export default Report;

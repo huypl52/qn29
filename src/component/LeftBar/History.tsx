@@ -53,11 +53,13 @@ const History: React.FC<{
       const skip = take * (page - 1);
 
       if (isSearching) {
+        return;
       }
       getTaskHistory(skip, take, taskType)
         .then((res) => {
           const { status, data } = res;
           if (status === 200) {
+            console.log({ getTaskHistory: data });
             setTaskHistories([...data]);
           }
         })
@@ -90,13 +92,13 @@ const History: React.FC<{
     updatePaging();
   }, [taskType, counter, isSearching]);
 
-  const handleClickDelete = () => {
-    const newHistories = taskHistories.filter(
-      (t) => !choiseList.some((itemA) => t.id === itemA.id)
-    );
-    setTaskHistories(newHistories);
-    setChoiseList([]);
-  };
+  // const handleClickDelete = () => {
+  //   const newHistories = taskHistories.filter(
+  //     (t) => !choiseList.some((itemA) => t.id === itemA.id)
+  //   );
+  //   setTaskHistories(newHistories);
+  //   setChoiseList([]);
+  // };
 
   useEffect(() => {
     if (!isSearching) return;
@@ -104,11 +106,15 @@ const History: React.FC<{
     searchContent(nonEmptyParam).then((res) => {
       const { data, status } = res;
       if (status !== 200) return;
-      console.log({ data, nonEmptyParam });
-      const taskHistories = convertSearchResultsToTaskHistories(data);
-      setTaskHistories(taskHistories);
+      const newTaskHistories = convertSearchResultsToTaskHistories(data);
+      console.log({ data, nonEmptyParam, newTaskHistories });
+      setTaskHistories(newTaskHistories);
+
+      setTotalPage(Math.ceil(newTaskHistories.length / take));
     });
   }, [isSearching, searchParam]);
+
+  console.log({ taskHistories, isSearching });
 
   return (
     <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">

@@ -46,7 +46,7 @@ const Header = () => {
       <div className="flex-none">
         <div
           className="flex flex-grow mt-1 cursor-pointer"
-          onClick={() => navigate(AuthRoutePath.DASHBOARD)}
+          onClick={() => navigate(AuthRoutePath.TRANSLATE)}
         >
           <button
             className="hover:bg-gray-100 rounded-full w-9 h-9 mr-2
@@ -69,7 +69,7 @@ const Header = () => {
       <div className="flex items-center justify-center">
         <button
           className="flex items-center px-4 py-2 text-left text-black hover:text-xl"
-          onClick={() => navigate(AuthRoutePath.DASHBOARD)}
+          onClick={() => navigate(AuthRoutePath.TRANSLATE)}
         >
           <i className="fas fa-home mr-2"></i> {/* Icon for Home */}
         </button>
@@ -101,6 +101,16 @@ const Header = () => {
                     Thống kê
                   </button>
                 </li>
+                <li>
+                  <button
+                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleNavigation(AuthRoutePath.REPORT)}
+                  >
+                    <i className="fas fa-chart-bar mr-2"></i>
+                    Báo cáo
+                  </button>
+                </li>
+
                 <li>
                   <button
                     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
