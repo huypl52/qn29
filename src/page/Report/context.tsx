@@ -25,10 +25,10 @@ const CardContextProvider = ({ children }: PropsWithChildren) => {
   const dateRange = useMemo(() => {
     if (timeScale === ETimeScale.day) {
       const { start, end } = getWeekRange();
-      return [start, end];
+      return [start, end].map((v) => v.toLocaleDateString('en-CA'));
     }
 
-    return selectedDateRange;
+    return selectedDateRange.map((v) => v?.toLocaleDateString('en-CA'));
   }, [timeScale, selectedDateRange]);
 
   return (

@@ -1,7 +1,7 @@
 export interface ICardContext {
   timeScale: ETimeScale;
   setTimeScale: (t: ETimeScale) => void;
-  dateRange: (Date | null)[];
+  dateRange: (Date | undefined)[];
   setDateRange: (date: (Date | null)[]) => void;
 }
 

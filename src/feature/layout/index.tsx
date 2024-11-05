@@ -101,15 +101,15 @@ const Header = () => {
                     Thống kê
                   </button>
                 </li>
-                <li>
-                  <button
-                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                    onClick={() => handleNavigation(AuthRoutePath.REPORT)}
-                  >
-                    <i className="fas fa-chart-bar mr-2"></i>
-                    Báo cáo
-                  </button>
-                </li>
+                {/* <li> */}
+                {/*   <button */}
+                {/*     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100" */}
+                {/*     onClick={() => handleNavigation(AuthRoutePath.REPORT)} */}
+                {/*   > */}
+                {/*     <i className="fas fa-chart-bar mr-2"></i> */}
+                {/*     Báo cáo */}
+                {/*   </button> */}
+                {/* </li> */}
 
                 <li>
                   <button

@@ -1,12 +1,11 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
-interface ICard {
+interface ICard extends PropsWithChildren {
   title: string;
-  value: string;
-  details?: ReactNode;
+  value?: string | number;
 }
 
-export const Card = ({ title, value, details }: ICard) => {
+export const Card = ({ title, value, children }: ICard) => {
   return (
     <div className="p-5 bg-white rounded shadow-sm">
       <div className="text-base text-gray-400 ">{title}</div>
@@ -14,14 +13,21 @@ export const Card = ({ title, value, details }: ICard) => {
       <div className="flex items-center pt-1">
         <div className="text-2xl font-bold text-gray-900 ">{value}</div>
       </div>
-      {details}
+      {children}
     </div>
   );
 };
 
-interface IItemDetail {
+interface ICardItem {
   title: string;
-  value: string;
+  value?: string | number;
 }
 
-export const ItemDetail = ({ title, value }: IItemDetail) => {};
+export const CardItem = ({ title, value }: ICardItem) => {
+  return (
+    <div>
+      <span>{title}</span>
+      <span>{value}</span>
+    </div>
+  );
+};
