@@ -1,5 +1,5 @@
 import { IUserRegister } from '~/type/user';
-import { httpPost } from './_req';
+import { httpGet, httpPost } from './_req';
 
 export const registerUser = (user: IUserRegister) => {
   return httpPost()('/users?', {
@@ -8,4 +8,8 @@ export const registerUser = (user: IUserRegister) => {
     fullname: user.fullname,
     orgid: user.orgid,
   });
+};
+
+export const getUserDetail = (id: string) => {
+  return httpGet()(`/users/${id}`);
 };

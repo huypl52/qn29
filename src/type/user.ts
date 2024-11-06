@@ -1,7 +1,8 @@
 export interface IUser {
+  id: string;
   username: string;
   password: string;
-  role: string;
+  role: ERole;
 }
 
 export interface IUserLogin {
@@ -16,4 +17,12 @@ export interface IUserRegister {
   password: string;
   fullname: string;
   orgid: string;
+
+  // 0: user, 1: admin
+  role: ERole;
+}
+
+export enum ERole {
+  user = 0,
+  admin = 1,
 }

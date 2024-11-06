@@ -5,10 +5,10 @@ interface IRouteWrapper extends PropsWithChildren {
   allowedRoles: string[];
 }
 
-interface IAutContext {
+interface IAuthContext {
   user: IUser | null;
   login: (u: string, p: string) => Promise<boolean>;
   logout: () => void;
 }
 
-export { type IAutContext as IAuthContext, type IRouteWrapper };
+export { type IAuthContext, type IRouteWrapper };
