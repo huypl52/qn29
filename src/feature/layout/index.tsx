@@ -46,7 +46,7 @@ const Header = () => {
       <div className="flex-none">
         <div
           className="flex flex-grow mt-1 cursor-pointer"
-          onClick={() => navigate(AuthRoutePath.TRANSLATE)}
+          onClick={() => navigate(AuthRoutePath.DASHBOARD)}
         >
           <button
             className="hover:bg-gray-100 rounded-full w-9 h-9 mr-2
@@ -69,7 +69,7 @@ const Header = () => {
       <div className="flex items-center justify-center">
         <button
           className="flex items-center px-4 py-2 text-left text-black hover:text-xl"
-          onClick={() => navigate(AuthRoutePath.TRANSLATE)}
+          onClick={() => navigate(AuthRoutePath.DASHBOARD)}
         >
           <i className="fas fa-home mr-2"></i> {/* Icon for Home */}
         </button>

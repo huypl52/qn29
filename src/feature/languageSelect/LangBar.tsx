@@ -3,11 +3,9 @@ import { ColorButton } from '~/component/Button';
 import { DLang, DLangMap } from '~/type';
 import { useTranslateStore } from '~/store/translate';
 
-
 interface LangBarProps {
   updateSrc: (newText: string) => void;
 }
-
 
 const LangBar: React.FC<LangBarProps> = ({ updateSrc }) => {
   const {
@@ -24,7 +22,7 @@ const LangBar: React.FC<LangBarProps> = ({ updateSrc }) => {
     (key: DLang) => {
       setSourceLang(key);
       updateSrcText('');
-      updateTargetText('')
+      updateTargetText('');
     },
     [setSourceLang]
   );
@@ -37,7 +35,7 @@ const LangBar: React.FC<LangBarProps> = ({ updateSrc }) => {
   );
 
   return (
-    <div className="flex h-full justify-between mt-2 gap-2 mx-12 ">
+    <div className="flex justify-between mt-2 gap-2 mx-12 ">
       <div className="flex w-full gap-2 ">
         <ColorButton
           active={sourceLang === DLang.zh}
