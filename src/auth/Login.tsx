@@ -56,13 +56,6 @@ const LoginForm = () => {
                 className={formik.errors.username ? 'border-red-500' : ''}
               />
             </div>
-            {/* <div className="h-[5vh]"> */}
-            {/*   {formik.errors.username && ( */}
-            {/*     <Alert variant="destructive"> */}
-            {/*       <AlertDescription>{formik.errors.username}</AlertDescription> */}
-            {/*     </Alert> */}
-            {/*   )} */}
-            {/* </div> */}
             <div className="mt-4">
               <Input
                 type="password"
@@ -74,13 +67,6 @@ const LoginForm = () => {
                 className={formik.errors.password ? 'border-red-500' : ''}
               />
             </div>
-            {/* <div className="h-[5vh]"> */}
-            {/*   {formik.errors.password && ( */}
-            {/*     <Alert variant="destructive"> */}
-            {/*       <AlertDescription>{formik.errors.password}</AlertDescription> */}
-            {/*     </Alert> */}
-            {/*   )} */}
-            {/* </div> */}
             <div className="flex justify-center">
               <ColorLoginButton
                 type="submit"

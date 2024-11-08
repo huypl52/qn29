@@ -44,9 +44,6 @@ const TreeUser = ({
   const { counter } = useUserTreeStore();
   const { orgs } = useOrgTreeStore();
   const orgIds = useMemo(() => orgs.map((o) => o.id), [orgs]);
-  console.log({ orgs });
-
-  // const [orgIds, setOrgIds] = useState<string[]>([]);
 
   useEffect(() => {
     getUserTree()

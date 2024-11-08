@@ -36,7 +36,10 @@ const TextChart = () => {
 
   const [startDate, endDate] = dateRange;
 
-  const [chartDataTLC, setChartDataTLC] = useState();
+  const [chartDataTLC, setChartDataTLC] = useState({
+    datasets: [],
+    labels: [],
+  });
 
   const userRole = getUserRole();
   const isAdmin = userRole === ERole.admin ? true : false;

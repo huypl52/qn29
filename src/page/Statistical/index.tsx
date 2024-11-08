@@ -9,7 +9,7 @@ import TreeLeftBar from '~/feature/unit/TreeLeftBar';
 const Statistical: React.FC = () => {
   return (
     <TreeLeftBar>
-      <div className="w-9/12">
+      <div className="w-full px-16">
         <Report />
         <div className="flex gap-3">
           <OCRChart />
