@@ -5,6 +5,11 @@ import {
   getStatisticalOcrHistory,
   getStatisticalOcrHistoryTranslate,
 } from '~/service/task.ts';
+import { getUserRole } from '~/storage/auth';
+import { useOrgTreeStore } from '~/store/orgTree';
+import { useUserTreeStore } from '~/store/userTree';
+import { IStatisticalParam } from '~/type/task';
+import { ERole } from '~/type/user';
 
 const OCRChart = () => {
   const [timeScale, setTimeScale] = useState('day'); // Default to 'day'
@@ -18,19 +23,32 @@ const OCRChart = () => {
   const [y, setY] = useState<number[]>([]);
   const today = new Date();
 
+  const { selectedNodeId } = useUserTreeStore();
+  const userRole = getUserRole();
+  const isAdmin = userRole === ERole.admin ? true : false;
+
   const fetchData = async (
     groupvalue = 0,
     from_date?: Date,
     to_date?: Date
   ) => {
     try {
-      const requestParams = {
+      const requestParams: IStatisticalParam = {
         group: groupvalue,
         from_date: from_date
           ? from_date.toLocaleDateString('en-CA')
           : undefined,
         to_date: to_date ? to_date.toLocaleDateString('en-CA') : undefined,
       };
+
+      if (!isAdmin) {
+        requestParams['self'] = 1;
+      } else {
+        if (selectedNodeId) {
+          requestParams['userid'] = selectedNodeId;
+        }
+      }
+      console.log({ ocrChart: requestParams });
 
       const response =
         dataType === 'text'
@@ -52,6 +70,7 @@ const OCRChart = () => {
       console.error('Error fetching data:', error);
     }
   };
+
   const oneWeekAgo = (): Date =>
     new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
 
@@ -83,7 +102,14 @@ const OCRChart = () => {
       startDate ? startDate : rangeStart,
       endDate ? endDate : rangeEnd
     );
-  }, [dateRange[1], dataType, timeScale]);
+  }, [
+    dateRange[1],
+    dateRange[0],
+    dataType,
+    timeScale,
+    isAdmin,
+    selectedNodeId,
+  ]);
 
   const chartData = {
     labels: x,
@@ -111,13 +137,13 @@ const OCRChart = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-4">
+    <div className="w-full max-w-[1/2] mx-auto mt-4">
       <h2 className="text-xl font-semibold mb-4">
         Biểu đồ sử dụng quét và dịch ảnh
       </h2>
       {/* Radio Buttons for Time Scale Selection */}
       <div className="flex items-center	 justify-between h-[5vh]">
-        <div className="flex gap-1 mb-4 items-center">
+        <div className="flex gap-1 mb-4 items-center shrink-0">
           <label>
             <input
               type="radio"
@@ -149,16 +175,16 @@ const OCRChart = () => {
             Năm
           </label>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 shrink-0">
           <DatePickerCustom
             startDate={dateRange[0]}
             endDate={dateRange[1]}
             setDateRange={setDateRange}
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 shrink-0">
           <label htmlFor="dataType" className="mr-1">
-            Chọn kiểu dữ liệu:
+            Dữ liệu:
           </label>
           <select
             id="dataType"

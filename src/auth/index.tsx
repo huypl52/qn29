@@ -108,7 +108,11 @@ const AuthContainer = () => {
                     />,
                     <Route path={AuthRoutePath.REPORT} element={<Report />} />,
                   ].map((r) => {
-                    return <Route element={<Layout />}>{r}</Route>;
+                    return (
+                      <Route element={<Layout />} key={r.key}>
+                        {r}
+                      </Route>
+                    );
                   })}
                 </Routes>
               </ProtectedRoute>

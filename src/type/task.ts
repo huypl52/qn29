@@ -61,8 +61,10 @@ export interface ITaskDetail {
   fileid?: string;
 }
 
-export interface StatisticalParam {
+export interface IStatisticalParam {
   group?: number; // Tham số group có thể là số
   from_date?: string; // Tham số ngày bắt đầu (định dạng YYYY-MM-DD)
   to_date?: string; // Tham số ngày kết thúc (định dạng YYYY-MM-DD)
+  userid?: string;
+  self?: number;
 }

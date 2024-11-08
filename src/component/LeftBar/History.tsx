@@ -150,8 +150,9 @@ const History: React.FC<{
         {taskHistories
           // .filter((t) => t.type === taskType)
           // .slice(0, 2)
-          .map((t) => (
+          .map((t, i) => (
             <ItemHistory
+              key={i}
               taskType={taskType}
               taskHistory={t}
               taskList={choiseList}

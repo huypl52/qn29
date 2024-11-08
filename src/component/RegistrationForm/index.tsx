@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
-import TreeUnit from '~/feature/unit';
+import TreeUnit from '~/feature/unit/TreeUnit';
 import { registerUser } from '~/service/user';
 import { toastMsg } from '~/type';
 

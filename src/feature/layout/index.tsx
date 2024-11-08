@@ -5,12 +5,14 @@ import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
 import { AuthRoutePath } from '~/routes';
 import { getAllOrg } from '~/service/org';
-import { clearUser } from '~/storage/auth';
-import { useOrgStore } from '~/store/org';
+import { clearUser, getUserRole } from '~/storage/auth';
+import { useOrgTreeStore } from '~/store/orgTree';
 import { useOcrTaskStore } from '~/store/taskOcr';
+import { ERole } from '~/type/user';
 
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const userRole = getUserRole();
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
   const [darkMode, setDarkMode] = useState(true);
@@ -101,34 +103,29 @@ const Header = () => {
                     Thống kê
                   </button>
                 </li>
-                {/* <li> */}
-                {/*   <button */}
-                {/*     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100" */}
-                {/*     onClick={() => handleNavigation(AuthRoutePath.REPORT)} */}
-                {/*   > */}
-                {/*     <i className="fas fa-chart-bar mr-2"></i> */}
-                {/*     Báo cáo */}
-                {/*   </button> */}
-                {/* </li> */}
 
-                <li>
-                  <button
-                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                    onClick={() => handleNavigation('/setting')}
-                  >
-                    <i className="fas fa-cog mr-2"></i>
-                    Cài đặt
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                    onClick={() => handleNavigation('/registration')}
-                  >
-                    <i className="fas fa-user-plus mr-2"></i>
-                    Đăng ký
-                  </button>
-                </li>
+                {userRole === ERole.admin && (
+                  <li>
+                    <button
+                      className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                      onClick={() => handleNavigation('/setting')}
+                    >
+                      <i className="fas fa-cog mr-2"></i>
+                      Cài đặt
+                    </button>
+                  </li>
+                )}
+                {userRole === ERole.admin && (
+                  <li>
+                    <button
+                      className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                      onClick={() => handleNavigation('/registration')}
+                    >
+                      <i className="fas fa-user-plus mr-2"></i>
+                      Đăng ký
+                    </button>
+                  </li>
+                )}
                 <li>
                   <button
                     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
@@ -147,7 +144,7 @@ const Header = () => {
   );
 };
 const Layout = () => {
-  const { addOrgs } = useOrgStore();
+  const { addOrgs } = useOrgTreeStore();
   useEffect(() => {
     getAllOrg().then((res) => {
       const { data, status } = res;

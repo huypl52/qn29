@@ -13,3 +13,7 @@ export const registerUser = (user: IUserRegister) => {
 export const getUserDetail = (id: string) => {
   return httpGet()(`/users/${id}`);
 };
+
+export const getUserTree = () => {
+  return httpGet()('orgs/usertree?');
+};

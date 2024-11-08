@@ -1,10 +1,10 @@
 import { httpGet } from './_req';
 import {
   ETaskType,
+  IStatisticalParam,
   ITaskDetail,
   ITaskHistory,
   listTaskTypeOcr,
-  StatisticalParam,
 } from '~/type/task';
 
 export const getTaskDetails = (taskId: string) => {
@@ -43,45 +43,22 @@ export const getTotalTaskHistory = () => {
 };
 
 //Statistical
-
-export const getStatisticalOcrHistory = ({
-  group = 0,
-  from_date,
-  to_date,
-}: StatisticalParam) => {
-  const queryParams = new URLSearchParams({
-    group: group.toString(),
-    ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
-    ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
-  }).toString();
-  return httpGet()(`/reports/ocr/imagecount/group?${queryParams}`);
+// 6 api thống kê a bổ sung 2 tham số: userid và seft=1 như sau
+// - seft=1: Dùng cho tình huống lấy dữ liệu theo tài khoản đăng nhập. Thì tài khoản nào cũng có quyền gọi api này
+// - Tham số userid để lọc theo muốn xem người dùng nào. Có truyền thì lọc, không truyền thì sẽ lấy all user
+// - nếu không truyền seft=1 thì sẽ kiểm tra phải là tài khoản có quyền mới gọi được.
+export const getStatisticalOcrHistory = (params: IStatisticalParam) => {
+  return httpGet()(`/reports/ocr/imagecount/group?`, { params });
 };
 
-export const getStatisticalTranslateHistory = ({
-  group = 0,
-  from_date,
-  to_date,
-}: StatisticalParam) => {
-  const queryParams = new URLSearchParams({
-    group: group.toString(),
-    ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
-    ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
-  }).toString();
-
-  return httpGet()<object[]>(
-    `/reports/translate/manualcount/group?${queryParams}`
-  );
+export const getStatisticalTranslateHistory = (params: IStatisticalParam) => {
+  return httpGet()<object[]>(`/reports/translate/manualcount/group?`, {
+    params,
+  });
 };
 
-export const getStatisticalOcrHistoryTranslate = ({
-  group = 0,
-  from_date,
-  to_date,
-}: StatisticalParam) => {
-  const queryParams = new URLSearchParams({
-    group: group.toString(),
-    ...(from_date && { from_date }), // Chỉ thêm từ khóa từ nếu từ ngày đã được cung cấp
-    ...(to_date && { to_date }), // Chỉ thêm từ khóa đến nếu đến ngày đã được cung cấp
-  }).toString();
-  return httpGet()(`/reports/ocr/translatecount/group?${queryParams}`);
+export const getStatisticalOcrHistoryTranslate = (
+  params: IStatisticalParam
+) => {
+  return httpGet()(`/reports/ocr/translatecount/group?`, { params });
 };

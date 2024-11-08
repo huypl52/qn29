@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import {
   flattenTree,
   ITreeViewOnNodeSelectProps,
@@ -12,6 +13,11 @@ export interface ISelectable {
 
 export interface ITree extends ISelectable {
   data: ITreeNode;
+  disabledIds?: string[];
 }
 
-export interface ITreeUnit extends ISelectable {}
+export interface ITreeUnit extends ISelectable {
+  title?: string;
+}
+
+export interface ITreeLeftBar extends PropsWithChildren {}

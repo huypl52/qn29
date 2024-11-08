@@ -7,8 +7,22 @@ import TreeView, {
 import cx from 'classnames';
 import './styles.css';
 import { ITree } from './type';
+import { useEffect, useState } from 'react';
 
-function Tree({ data, selectedIds, onNodeSelect }: ITree) {
+function Tree({
+  data,
+  selectedIds,
+  onNodeSelect,
+  disabledIds: defaultDisabledIds,
+}: ITree) {
+  const [disabledIds, setDisabledIds] = useState<string[] | undefined>(
+    defaultDisabledIds
+  );
+
+  useEffect(() => {
+    setDisabledIds(defaultDisabledIds);
+  }, [defaultDisabledIds]);
+
   return (
     <div>
       <div className="checkbox">
@@ -27,6 +41,7 @@ function Tree({ data, selectedIds, onNodeSelect }: ITree) {
           //     onSelect: v,
           //   });
           // }}
+          defaultDisabledIds={disabledIds}
           nodeRenderer={({
             element,
             isBranch,
@@ -44,7 +59,15 @@ function Tree({ data, selectedIds, onNodeSelect }: ITree) {
                 className="flex items-center"
                 style={{ marginLeft: 40 * (level - 1) }}
               >
-                {isBranch && <ArrowIcon isOpen={isExpanded} />}
+                {isBranch ? (
+                  <ArrowIcon isOpen={isExpanded} />
+                ) : (
+                  <div className="invisible">
+                    <ArrowIcon isOpen />
+                  </div>
+                )}
+                {/* {isBranch && <ArrowIcon isOpen={isExpanded} />} */}
+                {/* {<ArrowIcon isOpen={isBranch && isExpanded} />} */}
                 <CheckBoxIcon
                   className="checkbox-icon"
                   onClick={(e) => {
@@ -85,6 +108,7 @@ interface ICheckBoxIcon {
   variant: 'all' | 'none' | 'some';
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
+  disabled?: boolean;
 }
 
 const CheckBoxIcon = ({ variant, ...rest }: ICheckBoxIcon) => {

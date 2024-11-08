@@ -7,8 +7,8 @@ interface ICard extends PropsWithChildren {
 
 export const Card = ({ title, value, children }: ICard) => {
   return (
-    <div className="p-5 bg-white rounded shadow-sm">
-      <div className="text-base text-gray-400 ">{title}</div>
+    <div className="p-5 bg-white rounded shadow-lg min-w-96">
+      <div className="text-3xl text-gray-900 ">{title}</div>
 
       <div className="flex items-center pt-1">
         <div className="text-2xl font-bold text-gray-900 ">{value}</div>

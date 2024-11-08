@@ -5,6 +5,7 @@ import DatePickerCustom from '~/component/DataPicker/DatePicker';
 import {
   IStatOcr,
   IStatOcrTranslate,
+  IStatParam,
   IStatTranslateManual,
 } from '~/type/statistic';
 import {
@@ -13,6 +14,9 @@ import {
   getStatTranslateManual,
 } from '~/service/report';
 import { Card, CardItem } from './Card';
+import { useUserTreeStore } from '~/store/userTree';
+import { getUserRole } from '~/storage/auth';
+import { ERole } from '~/type/user';
 
 const OcrStat = () => {
   const { timeScale, dateRange } = useCardContext();
@@ -20,14 +24,27 @@ const OcrStat = () => {
   const [statOcr, setStatOcr] = useState<IStatOcr>();
   const period = timeScaleToPeriod(timeScale);
 
+  const { selectedNodeId } = useUserTreeStore();
+  const userRole = getUserRole();
+  const isAdmin = userRole === ERole.admin ? true : false;
+
   useEffect(() => {
-    getStatOcr({ from_date, to_date, period }).then((res) => {
+    const param: IStatParam = { from_date, to_date, period };
+    if (!isAdmin) {
+      param['self'] = 1;
+    } else {
+      if (selectedNodeId) {
+        param['userid'] = selectedNodeId;
+      }
+    }
+
+    getStatOcr(param).then((res) => {
       const { status, data } = res;
       if (status === 200) {
         setStatOcr(data);
       }
     });
-  }, [period, dateRange]);
+  }, [period, dateRange, selectedNodeId, isAdmin]);
 
   return (
     <Card title="Số ảnh tải lên: " value={statOcr?.ocr_uploaded}>
@@ -50,14 +67,28 @@ const OcrTranslate = () => {
   const [statOcrTranslate, setStatOcrTranslate] = useState<IStatOcrTranslate>();
   const period = timeScaleToPeriod(timeScale);
 
+  const { selectedNodeId } = useUserTreeStore();
+  const userRole = getUserRole();
+  const isAdmin = userRole === ERole.admin ? true : false;
+
   useEffect(() => {
-    getStatOcrTranslate({ from_date, to_date, period }).then((res) => {
+    const param: IStatParam = { from_date, to_date, period };
+
+    if (!isAdmin) {
+      param['self'] = 1;
+    } else {
+      if (selectedNodeId) {
+        param['userid'] = selectedNodeId;
+      }
+    }
+
+    getStatOcrTranslate(param).then((res) => {
       const { status, data } = res;
       if (status === 200) {
         setStatOcrTranslate(data);
       }
     });
-  }, [period, dateRange]);
+  }, [period, dateRange, selectedNodeId, isAdmin]);
 
   return (
     <Card
@@ -145,7 +176,7 @@ const Container = () => {
         )}
       </div>
 
-      <div className="flex justify-center gap-x-9 ">
+      <div className="flex justify-evenly gap-x-9 ">
         <OcrStat />
         <OcrTranslate />
       </div>

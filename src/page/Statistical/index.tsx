@@ -2,18 +2,21 @@ import React, { useEffect, useState } from 'react';
 import OCRChart from '~/page/Statistical/OCRChart..tsx';
 import TextChart from '~/page/Statistical/TextChart.tsx';
 import Report from '../Report';
+import TreeLeftBar from '~/feature/unit/TreeLeftBar';
 
 // Register chart.js modules
 
 const Statistical: React.FC = () => {
   return (
-    <div>
-      <Report />
-      <div className="flex">
-        <OCRChart />
-        <TextChart />
+    <TreeLeftBar>
+      <div className="w-9/12">
+        <Report />
+        <div className="flex gap-3">
+          <OCRChart />
+          <TextChart />
+        </div>
       </div>
-    </div>
+    </TreeLeftBar>
   );
 };
 

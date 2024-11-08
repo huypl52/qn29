@@ -1,4 +1,4 @@
-import { IUserLogin } from '~/type/user';
+import { ERole, IUser, IUserLogin } from '~/type/user';
 
 const LOCAL_USER = 'LOCAL_USER';
 const TOKEN = 'TOKEN';
@@ -16,12 +16,24 @@ export const clearUser = () => {
   }
 };
 
-export const getUser = () => {
+export const getUser = (): IUserLogin | null => {
   try {
     const user = JSON.parse(
       window.localStorage.getItem(LOCAL_USER) || ''
     ) as IUserLogin;
     if (user?.token) return user;
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getUserRole = (): ERole | null => {
+  try {
+    const user = JSON.parse(
+      window.localStorage.getItem(LOCAL_USER) || ''
+    ) as IUserLogin;
+    if (user?.token) return user.role;
     return null;
   } catch (error) {
     return null;

@@ -11,7 +11,11 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import DatePickerCustom from '~/component/DataPicker/DatePicker.tsx';
 import { getStatisticalTranslateHistory } from '~/service/task.ts';
+import { getUserRole } from '~/storage/auth';
+import { useUserTreeStore } from '~/store/userTree';
 import { DLang, DLangMap } from '~/type';
+import { IStatisticalParam } from '~/type/task';
+import { ERole } from '~/type/user';
 
 ChartJS.register(
   CategoryScale,
@@ -34,6 +38,10 @@ const TextChart = () => {
 
   const [chartDataTLC, setChartDataTLC] = useState();
 
+  const userRole = getUserRole();
+  const isAdmin = userRole === ERole.admin ? true : false;
+  const { selectedNodeId } = useUserTreeStore();
+
   const fetchDataTLC = async (
     groupvalue = 0,
     from_date?: Date,
@@ -53,13 +61,22 @@ const TextChart = () => {
     }
 
     try {
-      const requestParams = {
+      const requestParams: IStatisticalParam = {
         group: groupvalue,
         from_date: from_date
           ? from_date.toLocaleDateString('en-CA')
           : undefined,
         to_date: to_date ? to_date.toLocaleDateString('en-CA') : undefined,
       };
+
+      if (!isAdmin) {
+        requestParams['self'] = 1;
+      } else {
+        if (selectedNodeId) {
+          requestParams['userid'] = selectedNodeId;
+        }
+      }
+      console.log({ TextChart: requestParams });
 
       const res = await getStatisticalTranslateHistory(requestParams);
       const { status, data } = res;
@@ -153,10 +170,10 @@ const TextChart = () => {
       endDate ? endDate : rangeEnd
     );
     // group: nhóm dữ liệu như nào. 0 ngày trong tuần, 1 tuần trong năm, 2 tháng trong năm. Mặc định không truyền là 0
-  }, [dateRange, timeScaleTLC]);
+  }, [dateRange, timeScaleTLC, isAdmin, selectedNodeId]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-4">
+    <div className="w-full max-w-[1/2] mx-auto mt-4">
       <h2 className="text-xl font-semibold mb-4">
         Biểu đồ sử dụng dịch văn bản
       </h2>

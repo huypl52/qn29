@@ -10,6 +10,7 @@ export interface IUserLogin {
   refreshToken: string;
   created: string;
   expiredSecond: 604800;
+  role: ERole;
 }
 
 export interface IUserRegister {

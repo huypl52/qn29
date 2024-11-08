@@ -8,10 +8,14 @@ interface IOrgState {
   putOrg: (org: IOrg) => void;
   insertOrg: (org: IOrg) => void;
   deleteOrg: (id: string) => void;
+
+  selectNode: (id: string) => void;
+  selectedNodeId?: string;
 }
 
-export const useOrgStore = create<IOrgState>()(
+export const useOrgTreeStore = create<IOrgState>()(
   immer((set) => ({
+    selectedNodeId: undefined,
     orgs: [],
     addOrgs: (orgs: IOrg[]) =>
       set((state: IOrgState) => {
@@ -31,5 +35,9 @@ export const useOrgStore = create<IOrgState>()(
     deleteOrg: (id: string) => {
       set((state: IOrgState) => [state.orgs.filter((org) => org.id !== id)]);
     },
+    selectNode: (id: string) =>
+      set((state: IOrgState) => {
+        state.selectedNodeId = id;
+      }),
   }))
 );
