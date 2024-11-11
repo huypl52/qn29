@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ISetting } from '~/type/setting';
-import { getSetting } from '~/service/setting';
+import { getSetting, updateSetting } from '~/service/setting';
+import { useSettingStore } from '~/store/setting';
+import { toast } from 'react-toastify';
+import { toastMsg } from '~/type';
 
 const validationSchema = Yup.object().shape({
   image_max_size: Yup.number()
@@ -18,7 +21,7 @@ const validationSchema = Yup.object().shape({
   document_max_length: Yup.number()
     .required('Vui lòng nhập độ dài văn bản tối đa')
     .positive('Phải là số dương')
-    .max(100, 'Kích thước chữ không được vượt quá 100'),
+    .max(10000, 'Kích thước chữ không được vượt quá 100'),
   translate_timeout: Yup.number()
     .required('Vui lòng nhập thời gian chờ dịch')
     .min(0, 'Thời gian chờ không được âm')
@@ -33,6 +36,7 @@ interface ISettingForm {
 }
 
 const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
+  const { saveSetting } = useSettingStore();
   const initialValues: ISetting = value
     ? value
     : {
@@ -47,10 +51,24 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
+      console.log({ values });
+      saveSetting(values);
+      updateSetting(values)
+        .then((res) => {
+          const { status, data } = res;
+          if (status === 200) {
+            toast.success(toastMsg.success);
+          }
+        })
+        .catch((err) => {
+          toast.error(err?.data ? err.data : toastMsg.error);
+        });
       console.log('Settings updated:', values);
     },
     enableReinitialize: true, // This ensures the form updates if props change
   });
+
+  console.log(formik.errors);
 
   return (
     <div className="max-w-lg mx-auto bg-gray-50 p-6 rounded-lg shadow-md mt-20">
@@ -109,7 +127,7 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             htmlFor="document_max_length"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Độ dài văn bản nhập:
+            Độ dài văn bản nhập (Số ký tự):
           </label>
           <input
             type="number"
@@ -132,7 +150,7 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
             htmlFor="translate_timeout"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Thời gian dịch tối đa:
+            Thời gian dịch tối đa (giây):
           </label>
           <input
             type="number"
@@ -187,22 +205,23 @@ const SettingForm: React.FC<ISettingForm> = ({ value }: ISettingForm) => {
 };
 
 const Setting: React.FC = () => {
-  const [setting, updateSetting] = useState<ISetting>();
+  // const [setting, updateSetting] = useState<ISetting>();
+  //
+  // useEffect(() => {
+  //   getSetting()
+  //     .then((res) => {
+  //       const { data, status } = res;
+  //       if (status === 200) {
+  //         updateSetting(data);
+  //         console.log({ settingData: data });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log({ err });
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    getSetting()
-      .then((res) => {
-        const { data, status } = res;
-        if (status === 200) {
-          updateSetting(data);
-          console.log({ settingData: data });
-        }
-      })
-      .catch((err) => {
-        console.log({ err });
-      });
-  }, []);
-
+  const { setting } = useSettingStore();
   return <SettingForm value={setting} />;
 };
 export default Setting;

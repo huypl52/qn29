@@ -6,9 +6,13 @@ import { ITranslation } from '~/type/translate';
 import { toastMsg } from '~/type';
 import { toast } from 'react-toastify';
 import { useTranslateStore } from '~/store/translate';
+import { useSettingStore } from '~/store/setting';
 
 const TextBoxFooter = () => {
-  const { srcText, maxInputLeng } = useTranslateStore();
+  const { srcText } = useTranslateStore();
+  const {
+    setting: { document_max_length: maxInputLeng },
+  } = useSettingStore();
   return (
     <div className="text-gray-400 h-10 flex items-center ">
       {`${srcText?.length || 0}/${maxInputLeng}`}
@@ -16,10 +20,17 @@ const TextBoxFooter = () => {
   );
 };
 
-const TIMEOUT_DURATION = 500;
 const SourceTextBox = () => {
   const { srcText, updateSrcText, setStatus, updateTargetText } =
     useTranslateStore();
+
+  const {
+    setting: { translate_timeout },
+  } = useSettingStore();
+  const timeout = (translate_timeout ? translate_timeout : 0.5) * 1000;
+  const {
+    setting: { document_max_length: maxInputLeng },
+  } = useSettingStore();
 
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
@@ -63,7 +74,7 @@ const SourceTextBox = () => {
         setStatus(EStatus.idle);
         toast.error(toastMsg.error);
       }
-    }, TIMEOUT_DURATION);
+    }, timeout);
 
     setTimeoutId(newTimeoutId);
   };
@@ -88,9 +99,11 @@ const SourceTextBox = () => {
         text={'Nhập văn bản ...'}
         rows={15}
         className="h-input-box"
+        maxLength={maxInputLeng}
       />
     </div>
   );
 };
 
 export default SourceTextBox;
+

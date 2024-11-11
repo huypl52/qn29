@@ -11,6 +11,7 @@ interface IBaseTextarea
   text?: string;
   rows?: number;
   srcText?: string;
+  maxLength?: number;
   onUpdateRequest?: (newText: string) => void;
 }
 

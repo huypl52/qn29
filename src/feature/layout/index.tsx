@@ -5,8 +5,10 @@ import { Outlet } from 'react-router-dom';
 import logoImage from '~/assets/logo.png';
 import { AuthRoutePath } from '~/routes';
 import { getAllOrg } from '~/service/org';
+import { getSetting } from '~/service/setting';
 import { clearUser, getUserRole } from '~/storage/auth';
 import { useOrgTreeStore } from '~/store/orgTree';
+import { useSettingStore } from '~/store/setting';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { ERole } from '~/type/user';
 
@@ -145,6 +147,7 @@ const Header = () => {
 };
 const Layout = () => {
   const { addOrgs } = useOrgTreeStore();
+  const { saveSetting: updateSetting } = useSettingStore();
   useEffect(() => {
     getAllOrg().then((res) => {
       const { data, status } = res;
@@ -153,6 +156,20 @@ const Layout = () => {
         console.log({ getAllOrg: data });
       }
     });
+  }, []);
+
+  useEffect(() => {
+    getSetting()
+      .then((res) => {
+        const { data, status } = res;
+        if (status === 200) {
+          updateSetting(data);
+          console.log({ settingData: data });
+        }
+      })
+      .catch((err) => {
+        console.log({ err });
+      });
   }, []);
 
   return (

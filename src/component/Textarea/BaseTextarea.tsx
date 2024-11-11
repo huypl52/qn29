@@ -12,6 +12,7 @@ const BaseTextarea = ({
   text,
   rows = 5,
   className: customClassname,
+  maxLength,
 }: IBaseTextarea) => {
   let className =
     customClassname +
@@ -44,6 +45,7 @@ const BaseTextarea = ({
         value={loading ? '' : value}
         onChange={handleTextChange}
         disabled={disabled}
+        maxLength={maxLength ? maxLength : 5000}
       ></textarea>
       {showClearButton ? (
         <button
