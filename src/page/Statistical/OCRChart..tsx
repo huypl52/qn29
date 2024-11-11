@@ -48,7 +48,6 @@ const OCRChart = () => {
           requestParams['userid'] = selectedNodeId;
         }
       }
-      console.log({ ocrChart: requestParams });
 
       const response =
         dataType === 'text'

@@ -1,11 +1,13 @@
 import {
   PropsWithChildren,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { useDragDropContext } from "./context";
+import ImageEditor from "~/feature/imageEditor";
 
 interface IDragDropArea
   extends React.HTMLAttributes<HTMLDivElement>, PropsWithChildren {
@@ -18,7 +20,9 @@ export default function DragDropArea({
   onlyShownInDrag = false,
 }: IDragDropArea) {
   const [isDragging, setIsDragging] = useState(false);
-  const { updateFiles: setFiles } = useDragDropContext();
+  const [editing, setEditing] = useState(false);
+  const { updateFiles: setFiles, files } = useDragDropContext();
+  const [recentFile, setRecentFile] = useState<File>();
   const dragCounter = useRef(0);
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -51,8 +55,25 @@ export default function DragDropArea({
 
     const droppedFiles = Array.from(e.dataTransfer.files);
     console.log({ droppedFiles });
-    setFiles(droppedFiles);
+    setEditing(true);
+    if (droppedFiles?.length) {
+      setRecentFile(droppedFiles[0]);
+    }
+    // setFiles(droppedFiles);
   }, []);
+
+  const handleSubmitFile = useCallback((blob: Blob, name: string) => {
+    const file = new File([blob], name, {
+      type: blob.type,
+      lastModified: Date.now(),
+    });
+    setFiles([file]);
+    setEditing(false);
+  }, []);
+
+  useEffect(() => {
+    if (!files?.length) setEditing(false);
+  }, [files]);
 
   const dragDropClassname = useMemo(() => {
     let clsName =
@@ -86,7 +107,9 @@ export default function DragDropArea({
           </div>
         )
         : null}
-      {children}
+      {editing
+        ? <ImageEditor loadedFile={recentFile} onSave={handleSubmitFile} />
+        : children}
     </div>
   );
 }
