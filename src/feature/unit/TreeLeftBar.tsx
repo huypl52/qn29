@@ -1,5 +1,4 @@
 import { useUserTreeStore } from '~/store/userTree';
-import TreeUnit from './TreeUnit';
 import { ITreeLeftBar } from './type';
 import TreeUser from './TreeUser';
 import { getUserRole } from '~/storage/auth';

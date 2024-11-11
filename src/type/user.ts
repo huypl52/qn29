@@ -2,7 +2,11 @@ export interface IUser {
   id: string;
   username: string;
   password: string;
+  fullname?: string;
   role: ERole;
+
+  is_deleted?: boolean;
+  orgid?: string;
 }
 
 export interface IUserLogin {

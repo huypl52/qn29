@@ -1,7 +1,7 @@
-import { IUserRegister } from '~/type/user';
-import { httpGet, httpPost } from './_req';
+import { IUser } from '~/type/user';
+import { httpDel, httpGet, httpPost, httpPut } from './_req';
 
-export const registerUser = (user: IUserRegister) => {
+export const registerUser = (user: IUser) => {
   return httpPost()('/users?', {
     username: user.username,
     password: user.password,
@@ -16,4 +16,12 @@ export const getUserDetail = (id: string) => {
 
 export const getUserTree = () => {
   return httpGet()('orgs/usertree?');
+};
+
+export const putUser = (user: IUser) => {
+  return httpPut()(`users/${user.id}`, user);
+};
+
+export const deleteUser = (id: string) => {
+  return httpDel()(`/users/${id}?`);
 };

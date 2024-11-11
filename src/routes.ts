@@ -8,4 +8,5 @@ export const AuthRoutePath = {
   SETTING: '/setting',
   REGISTRATION: '/registration',
   REPORT: '/report',
+  USER_UPDATE: '/user_update'
 };

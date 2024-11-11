@@ -5,7 +5,6 @@ import {
   Routes,
 } from 'react-router-dom';
 import { Button } from '~/component/Button';
-import RegistrationForm from '~/component/RegistrationForm';
 import { AuthProvider, useAuth } from './context';
 import { IRouteWrapper } from './type';
 import LoginForm from './Login';
@@ -17,6 +16,8 @@ import { getUser } from '~/storage/auth';
 import Statistical from '~/page/Statistical';
 import Setting from '~/page/Setting';
 import Report from '~/page/Report';
+import RegisterPage from '~/page/Register';
+import UserUpdate from '~/page/UserUpdate';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }: IRouteWrapper) => {
@@ -96,11 +97,15 @@ const AuthContainer = () => {
                     />,
                     <Route
                       path={AuthRoutePath.REGISTRATION}
-                      element={<RegistrationForm />}
+                      element={<RegisterPage />}
                     />,
                     <Route
                       path={AuthRoutePath.SETTING}
                       element={<Setting />}
+                    />,
+                    <Route
+                      path={AuthRoutePath.USER_UPDATE}
+                      element={<UserUpdate />}
                     />,
                     <Route
                       path={AuthRoutePath.STATISTICAL}

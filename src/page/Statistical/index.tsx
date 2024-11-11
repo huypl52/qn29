@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import OCRChart from '~/page/Statistical/OCRChart..tsx';
 import TextChart from '~/page/Statistical/TextChart.tsx';
 import Report from '../Report';

@@ -121,10 +121,25 @@ const Header = () => {
                   <li>
                     <button
                       className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                      onClick={() => handleNavigation('/registration')}
+                      onClick={() =>
+                        handleNavigation(AuthRoutePath.REGISTRATION)
+                      }
                     >
                       <i className="fas fa-user-plus mr-2"></i>
                       Đăng ký
+                    </button>
+                  </li>
+                )}
+                {userRole === ERole.admin && (
+                  <li>
+                    <button
+                      className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                      onClick={() =>
+                        handleNavigation(AuthRoutePath.USER_UPDATE)
+                      }
+                    >
+                      <i className="fas fa-user-plus mr-2"></i>
+                      Thiết lập người dùng
                     </button>
                   </li>
                 )}
