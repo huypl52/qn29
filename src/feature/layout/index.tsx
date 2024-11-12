@@ -163,10 +163,12 @@ const Header = () => {
 const Layout = () => {
   const { addOrgs } = useOrgTreeStore();
   const { saveSetting: updateSetting } = useSettingStore();
+
   useEffect(() => {
     getAllOrg().then((res) => {
       const { data, status } = res;
-      if (status === 200) {
+      console.log({ data, status });
+      if (status === 200 && data) {
         addOrgs(data);
         console.log({ getAllOrg: data });
       }
@@ -177,6 +179,7 @@ const Layout = () => {
     getSetting()
       .then((res) => {
         const { data, status } = res;
+        console.log({ data, status });
         if (status === 200) {
           updateSetting(data);
           console.log({ settingData: data });

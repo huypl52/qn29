@@ -1,5 +1,5 @@
 import { IUser } from '~/type/user';
-import { httpDel, httpGet, httpPost, httpPut } from './_req';
+import { httpDel, httpGet, httpPatch, httpPost, httpPut } from './_req';
 
 export const registerUser = (user: IUser) => {
   return httpPost()('/users?', {
@@ -24,4 +24,8 @@ export const putUser = (user: IUser) => {
 
 export const deleteUser = (id: string) => {
   return httpDel()(`/users/${id}?`);
+};
+
+export const restoreUser = (id: string) => {
+  return httpPatch()(`/users/${id}/recovery?`);
 };

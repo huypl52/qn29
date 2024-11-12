@@ -7,7 +7,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { AuthRoutePath } from '~/routes';
-import { saveUser } from '~/storage/auth';
 import loginImage from '../assets/login.jpg';
 import ColorLoginButton from '~/component/Button/ColorLoginButton';
 

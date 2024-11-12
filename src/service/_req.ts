@@ -5,6 +5,8 @@ import axios, {
   AxiosResponse,
 } from 'axios';
 import { isPlainObject } from 'lodash';
+import { toast } from 'react-toastify';
+import { AuthRoutePath } from '~/routes';
 import {
   clearUser,
   getUserRefreshToken,
@@ -58,8 +60,10 @@ export async function initApi() {
         const authorization = getUserToken();
         const refreshToken = getUserRefreshToken();
 
-        if (authorization && refreshToken) {
+        if (authorization) {
           config.headers.setAuthorization(authorization);
+        }
+        if (refreshToken) {
           config.headers.set('refreshtoken', refreshToken);
         }
         return config;
@@ -86,7 +90,8 @@ export async function initApi() {
         const { response } = error;
         if (response && response.status === 401) {
           clearUser();
-          setTimeout(() => (window.location.href = '/sign-in'), 2000);
+          toast.error('Token không hợp lệ');
+          setTimeout(() => (window.location.href = AuthRoutePath.LOGIN), 3000);
           return;
         }
         const { stack, ...error_info } = error;

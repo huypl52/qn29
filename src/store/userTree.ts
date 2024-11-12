@@ -46,6 +46,9 @@ export const useUserTreeStore = create<IUserState>()(
       }),
     increment: () =>
       set((state: IUserState) => {
+        if (state.counter > 9999) {
+          state.counter = 0;
+        }
         state.counter = state.counter + 1;
       }),
   }))

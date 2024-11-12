@@ -11,7 +11,7 @@ export interface IUser {
 
 export interface IUserLogin {
   token: string;
-  refreshToken: string;
+  refresh_token: string;
   created: string;
   expiredSecond: 604800;
   role: ERole;

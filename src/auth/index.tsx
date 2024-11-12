@@ -24,9 +24,10 @@ const ProtectedRoute = ({ children, allowedRoles }: IRouteWrapper) => {
   const user = getUser();
   console.log({ ProtectedRoute: user });
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  // if (!user) {
+  //   console.log({ noUserFound: user });
+  //   return <Navigate to="/login" replace />;
+  // }
 
   // TODO: add user role
   // if (allowedRoles && !allowedRoles.includes(user.role)) {

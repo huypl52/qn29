@@ -24,10 +24,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<(IUser & IUserLogin) | null>(null);
 
   const login = async (username: string, password: string) => {
-    // const foundUser = MOCK_USERS.find(
-    //   (u) => u.username === username && u.password === password,
-    // );
-
     const loginPromise = loginUser(username, password)
       .then((res) => {
         const { data: foundUser, status } = res;
@@ -35,12 +31,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           return Promise.reject('Login failed!');
         }
         saveUser(foundUser);
-        setUser({ ...foundUser, username, password, role: 'admin' });
+        setUser({ ...foundUser, username, password });
         return true;
       })
       .catch((err) => {
-        toast.error(err?.data ? err.data : toastMsg.error);
-        return false;
+        const msg = err?.data ? err.data : toastMsg.error;
+        // toast.error(err?.data ? err.data : toastMsg.error);
+        return Promise.reject(msg);
       });
 
     return toast.promise(

@@ -79,9 +79,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
       ref,
       () => ({
         submit: () => {
-          // console.log('Submit form: ', formik.values);
-          // return formik.submitForm();
-          return formik.handleSubmit();
+          return formik.submitForm();
         },
       })
       // [formik]
@@ -91,7 +89,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
       <div className=" flex items-center justify-center h-full w-full">
         <div className="bg-gray-100 rounded-lg p-6 w-96 shadow-lg relative">
           {Title ? Title : <h2 className="text-2xl font-bold mb-4">Đăng Ký</h2>}
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">
                 Họ và tên
@@ -106,7 +104,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               />
 
-              {formik.touched.fullname && formik.errors.fullname && (
+              {formik.errors.fullname && (
                 <div className="text-red-500 text-sm mt-1">
                   {formik.errors.fullname}
                 </div>
@@ -125,7 +123,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
                 onChange={formik.handleChange}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               />
-              {formik.touched.username && formik.errors.username && (
+              {formik.errors.username && (
                 <div className="text-red-500 text-sm mt-1">
                   {formik.errors.username}
                 </div>
@@ -142,7 +140,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
                 onChange={formik.handleChange}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               />
-              {formik.touched.password && formik.errors.password && (
+              {formik.errors.password && (
                 <div className="text-red-500 text-sm mt-1">
                   {formik.errors.password}
                 </div>
@@ -189,7 +187,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
                   }}
                   selectedIds={formik.values.orgid ? [formik.values.orgid] : []}
                 />
-                {formik.touched.orgid && formik.errors.orgid && (
+                {formik.errors.orgid && (
                   <div className="text-red-500 text-sm mt-1">
                     {formik.errors.orgid}
                   </div>
@@ -201,9 +199,10 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
                 Footer
               ) : (
                 <button
-                  type="submit"
+                  type="button"
                   disabled={formik.isSubmitting}
                   className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  onClick={() => formik.submitForm()}
                 >
                   {formik.isSubmitting ? 'Đang thực hiện' : 'Lưu'}
                 </button>

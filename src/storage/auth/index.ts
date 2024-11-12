@@ -49,7 +49,7 @@ export const getUserToken = () => {
 export const getUserRefreshToken = () => {
   const user = getUser();
   if (!user) return;
-  return user.refreshToken;
+  return user.refresh_token;
 };
 
 export const saveUserToken = (token: string) => {
@@ -59,10 +59,10 @@ export const saveUserToken = (token: string) => {
   saveUser(user);
 };
 
-export const saveUserRefreshToken = (refreshToken: string) => {
+export const saveUserRefreshToken = (refresh_token: string) => {
   const user = getUser();
   if (!user) return;
-  user.refreshToken = refreshToken;
+  user.refresh_token = refresh_token;
   saveUser(user);
 };
 
