@@ -14,10 +14,7 @@ import { MdClose } from 'react-icons/md';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { useTaskStore } from '~/store/task';
 
-const Container: React.FC<{
-  updateViewHistory: (status: boolean) => void;
-  updateSavedText: (status: boolean) => void;
-}> = ({ updateViewHistory, updateSavedText }) => {
+const Container: React.FC<{}> = () => {
   const { isEmpty } = useOcrContext();
   const { files, updateFiles } = useDragDropContext();
   const { needTranslate, toggleNeedTranslate } = useOcrContext();

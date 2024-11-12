@@ -94,6 +94,7 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
       if (needTranslate) {
         targetLang = DLang.vi;
       }
+      if (!ocrFiles.length) return;
       console.log({ ocrFiles, targetLang });
       const ocrResponses = await uploadOcrFiles(true, ocrFiles, targetLang)
         .then((res) => {

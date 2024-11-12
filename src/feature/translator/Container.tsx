@@ -4,9 +4,7 @@ import TargetTextBox from './TargetTextBox';
 import React, { useState } from 'react';
 
 const Container: React.FC<{
-  updateViewHistory: (status: boolean) => void;
-  updateSavedText: (status: boolean) => void;
-}> = ({ updateViewHistory, updateSavedText }) => {
+}> = () => {
   const [srcText, setSrcText] = useState('');
 
   const updateSrcFromLangBar = (newText) => {

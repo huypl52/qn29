@@ -117,7 +117,7 @@ const History: React.FC<{
   console.log({ taskHistories, isSearching });
 
   return (
-    <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg w-[30vw]">
+    <div className="p-4 min-h-screen-minus-4rem bg-white shadow-md rounded-tl-lg rounded-bl-lg ">
       <div className="mb-4 flex start items-center ">
         <button
           className="flex items-center leading-normal text-red-600 font-semibold px-2 py-1  hover:bg-red-300 rounded transition"

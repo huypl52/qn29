@@ -6,26 +6,13 @@ import React from 'react';
 import History from '~/component/LeftBar/History';
 import { useTaskStore } from '~/store/task';
 import { ETaskType } from '~/type/task';
+import ResizableFlex from '~/component/ResizableFlex';
 
 const Dashboard = () => {
   const [viewHistory, setViewHistory] = React.useState(false);
-  const [viewHistoryImage, setViewHistoryImage] = React.useState(false);
-  const [viewSaved, setViewSaved] = React.useState(false);
-  const [savedImage, setSavedImage] = React.useState(false);
 
   const updateViewHistory = (status: boolean) => {
     setViewHistory(status);
-  };
-  const updateViewHistoryImage = (status: boolean) => {
-    setViewHistoryImage(status);
-  };
-
-  const updateSavedItem = (status: boolean) => {
-    setViewSaved(status);
-  };
-
-  const updateSavedImage = (status: boolean) => {
-    setSavedImage(status);
   };
 
   const { changeTaskType } = useTaskStore();
@@ -34,52 +21,46 @@ const Dashboard = () => {
     {
       id: '1',
       label: 'Dịch văn bản',
-      content: (
-        <Translator
-          updateViewHistory={updateViewHistory}
-          updateSavedText={updateSavedItem}
-        />
-      ),
+      content: <Translator />,
     },
     {
       id: '2',
       label: 'Quét và dịch ảnh',
-      content: (
-        <Ocr
-          updateViewHistory={updateViewHistory}
-          updateSavedText={updateSavedImage}
-        />
-      ),
+      content: <Ocr />,
     },
   ];
 
   return (
-    <div className="flex">
-      <LangContextProvider>
-        <div className="flex justify-between w-full">
-          <TabWithContent
-            tabs={tabs}
-            showHistory={viewHistory}
-            onClickHistory={updateViewHistory}
-            onTabChange={(id) => {
-              updateViewHistory(false);
-              switch (id) {
-                case '1':
-                  changeTaskType(ETaskType.TRANSLATE);
-                  break;
-                case '2':
-                  changeTaskType(ETaskType.OCR);
-                  break;
-              }
-            }}
-          />
-          {/* <div> */}
-          {/*   History */}
-          {/* </div> */}
-        </div>
-      </LangContextProvider>
-      {viewHistory && <History updateViewHistory={updateViewHistory} />}
-    </div>
+    <ResizableFlex
+      leftContent={
+        <LangContextProvider>
+          <div className="flex justify-between w-full">
+            <TabWithContent
+              tabs={tabs}
+              showHistory={viewHistory}
+              onClickHistory={updateViewHistory}
+              onTabChange={(id) => {
+                updateViewHistory(false);
+                switch (id) {
+                  case '1':
+                    changeTaskType(ETaskType.TRANSLATE);
+                    break;
+                  case '2':
+                    changeTaskType(ETaskType.OCR);
+                    break;
+                }
+              }}
+            />
+            {/* <div> */}
+            {/*   History */}
+            {/* </div> */}
+          </div>
+        </LangContextProvider>
+      }
+      rightContent={
+        viewHistory && <History updateViewHistory={updateViewHistory} />
+      }
+    />
   );
 };
 
