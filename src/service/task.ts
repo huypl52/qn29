@@ -26,20 +26,28 @@ export const getImage = (fileId: string) => {
 // manualOCR = 5
 // manualOCRTranslate = 6
 
-export const getTaskHistory = (skip = 0, take = 20, type?: ETaskType) => {
+export const getTaskHistory = (
+  skip = 0,
+  take = 20,
+  type?: ETaskType,
+  self: number | undefined = 1
+) => {
   let taskGroupType = 2;
   if (listTaskTypeOcr.includes(type)) {
     taskGroupType = 1;
   }
 
   return httpGet()<ITaskHistory[]>(
-    `/tasks/history?skip=${skip}&take=${take}&type=${taskGroupType}`
+    `/tasks/history?skip=${skip}&take=${take}&type=${taskGroupType}`,
+    { params: { self } }
   );
 };
 
 // TODO: need task type
-export const getTotalTaskHistory = () => {
-  return httpGet()<{ total: number }>('/tasks/history/summary?');
+export const getTotalTaskHistory = (self: number | undefined = 1) => {
+  return httpGet()<{ total: number }>('/tasks/history/summary?', {
+    params: { self },
+  });
 };
 
 //Statistical

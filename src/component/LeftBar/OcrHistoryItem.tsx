@@ -81,7 +81,11 @@ const HistoryItem = (props: IItemTask) => {
             <StructureTextarea
               resizable={false}
               footer={() => (
-                <TextBoxFooter text={ocrResult?.detected_text || ''} />
+                <TextBoxFooter
+                  text={
+                    ocrResult?.detected_text || ocrResult?.source_text || ''
+                  }
+                />
               )}
               disabled
               value={ocrResult?.detected_text}
@@ -92,7 +96,11 @@ const HistoryItem = (props: IItemTask) => {
               <StructureTextarea
                 resizable={false}
                 footer={() => (
-                  <TextBoxFooter text={ocrResult?.dest_text || ''} />
+                  <TextBoxFooter
+                    text={
+                      ocrResult?.detected_text || ocrResult?.source_text || ''
+                    }
+                  />
                 )}
                 disabled
                 value={ocrResult?.dest_text}

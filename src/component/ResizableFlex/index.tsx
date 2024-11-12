@@ -18,13 +18,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 const ResizableFlexContainer: React.FC<Props> = ({
   minRightWidth = 100,
   maxRightWidth = 800,
-  initialRightWidth = 200,
+  initialRightWidth = 480,
   leftContent = 'Left Content',
   rightContent,
   className = '',
 }) => {
   const [rightItemWidth, setRightItemWidth] = useState(
-    rightContent ? initialRightWidth : 0
+    initialRightWidth
+    // rightContent ? initialRightWidth : 0
   );
   const [dragState, setDragState] = useState<DragState>({
     isDragging: false,

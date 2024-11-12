@@ -10,6 +10,7 @@ export interface ISearchParam {
   ocr_text?: string;
   source_text?: string;
   dest_text?: string;
+  self?: number
 }
 
 export interface ISearchResult {

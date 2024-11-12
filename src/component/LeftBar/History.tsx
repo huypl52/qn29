@@ -103,6 +103,7 @@ const History: React.FC<{
   useEffect(() => {
     if (!isSearching) return;
     const nonEmptyParam = _.pickBy(searchParam, (v) => !!v);
+    nonEmptyParam['self'] = 1;
     searchContent(nonEmptyParam).then((res) => {
       const { data, status } = res;
       if (status !== 200) return;

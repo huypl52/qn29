@@ -48,41 +48,6 @@ const OcrContextProvider = ({ children }: { children: React.ReactNode }) => {
     return type === ETaskType.OCR_TRANSLATE;
   }, [type]);
 
-  // useEffect(() => {
-  //   if (type !== ETaskType.OCR_TRANSLATE) return;
-  //
-  //   (() => {
-  //     const ocrIds = taskDetails
-  //       .map((t) => {
-  //         return t.ocrid;
-  //       })
-  //       .filter((i) => i !== undefined);
-  //
-  //     translateOcr(ocrIds)
-  //       .then((res) => {
-  //         const { data, status } = res;
-  //         if (status !== 200) throw new Error('Dịch thất bại');
-  //
-  //         console.log({ data });
-  //         if (!data?.length) throw new Error('Dịch thất bại');
-  //         const taskId = data[0].taskid;
-  //         console.log({ taskId });
-  //         getTaskDetails(taskId).then((res) => {
-  //           const { status, data } = res;
-  //           if (status !== 200) throw new Error('Dịch thất bại');
-  //
-  //           console.log({ getTaskDetails: data });
-  //           putTaskDetails(data);
-  //           incrementCounter();
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.log({ err });
-  //         toast.error(err?.data ? err.data : toastMsg.error);
-  //       });
-  //   })();
-  // }, [type]);
-
   const clearInput = useCallback(() => {
     setTranslations([]);
     updateFiles([]);

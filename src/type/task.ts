@@ -35,6 +35,9 @@ export interface ITaskHistoryDetail {
   file_name: string;
   dest_language: DLang;
   dest_text: string;
+
+  // Translate
+  source_text?: string;
 }
 
 export interface ITaskDetail {

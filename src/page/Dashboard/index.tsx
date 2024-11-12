@@ -58,7 +58,7 @@ const Dashboard = () => {
         </LangContextProvider>
       }
       rightContent={
-        viewHistory && <History updateViewHistory={updateViewHistory} />
+        viewHistory ? <History updateViewHistory={updateViewHistory} /> : null
       }
     />
   );
