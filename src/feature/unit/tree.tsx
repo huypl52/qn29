@@ -56,7 +56,11 @@ function Tree({
             return (
               <div
                 {...getNodeProps({ onClick: handleExpand })}
-                className="flex items-center"
+                className={`flex items-center ${
+                  disabledIds?.includes(element.id as string)
+                    ? 'opacity-70'
+                    : ''
+                }`}
                 style={{ marginLeft: 40 * (level - 1) }}
               >
                 {isBranch ? (

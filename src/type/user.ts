@@ -31,3 +31,9 @@ export enum ERole {
   user = 0,
   admin = 1,
 }
+
+export interface IPasswordUpdateValues {
+  old_password: string;
+  password: string;
+  password_confirmation: string;
+}

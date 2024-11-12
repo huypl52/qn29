@@ -11,7 +11,7 @@ import { getWeekRange } from './util';
 const CardContext = createContext<ICardContext>({
   timeScale: ETimeScale.day,
   setTimeScale: () => {},
-  dateRange: [null, null],
+  dateRange: [undefined ,undefined],
   setDateRange: () => {},
 });
 

@@ -11,6 +11,7 @@ import { useOrgTreeStore } from '~/store/orgTree';
 import { useSettingStore } from '~/store/setting';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { ERole } from '~/type/user';
+import { TbPasswordUser } from 'react-icons/tb';
 
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -94,7 +95,7 @@ const Header = () => {
 
           {/* Dropdown */}
           {dropdownVisible && (
-            <div className="absolute right-0 mt-2 w-36 dark:bg-white bg-teal-50 border border-gray-200 rounded-lg shadow-lg z-10 ">
+            <div className="absolute right-0 mt-2 w-48 dark:bg-white bg-teal-50 border border-gray-200 rounded-lg shadow-lg z-10 ">
               <ul className="py-1">
                 <li>
                   <button
@@ -138,11 +139,20 @@ const Header = () => {
                         handleNavigation(AuthRoutePath.USER_UPDATE)
                       }
                     >
-                      <i className="fas fa-user-plus mr-2"></i>
-                      Thiết lập người dùng
+                      <i className="fa-solid fa-users mr-2"></i>
+                      Thiết lập
                     </button>
                   </li>
                 )}
+                <li>
+                  <button
+                    className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleNavigation(AuthRoutePath.PASSWORD)}
+                  >
+                    <i className="fa-solid fa-lock-open mr-2"></i>
+                    Đổi mật khẩu
+                  </button>
+                </li>
                 <li>
                   <button
                     className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"

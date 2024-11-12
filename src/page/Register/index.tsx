@@ -8,6 +8,7 @@ import { IUser } from '~/type/user';
 const RegisterPage = () => {
   const { increment } = useUserTreeStore();
   const handleSubmit = async (user: Partial<IUser>): Promise<boolean> => {
+    // console.log({ registerUser: user });
     return registerUser(user as IUser)
       .then((res) => {
         const { status, data } = res;

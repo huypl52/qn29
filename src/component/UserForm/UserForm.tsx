@@ -14,6 +14,7 @@ const placeholderValues: IFormUser = {
   orgid: '',
   username: '',
   password: '',
+  role: ERole.user,
 };
 
 const validationSchema = Yup.object().shape({
@@ -57,7 +58,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
       initialValues,
       validationSchema,
       onSubmit: (values, { setSubmitting }) => {
-        console.log('Form values:', values);
+        // console.log('Form values:', values);
         setTimeout(() => {
           setSubmitting(false);
         }, 3000);

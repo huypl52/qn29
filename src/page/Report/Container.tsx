@@ -9,6 +9,7 @@ import {
   IStatTranslateManual,
 } from '~/type/statistic';
 import {
+  exportReport,
   getStatOcr,
   getStatOcrTranslate,
   getStatTranslateManual,
@@ -17,7 +18,9 @@ import { Card, CardItem } from './Card';
 import { useUserTreeStore } from '~/store/userTree';
 import { getUserRole } from '~/storage/auth';
 import { ERole } from '~/type/user';
-
+import { TbFileExport } from 'react-icons/tb';
+import { toast } from 'react-toastify';
+import { toastMsg } from '~/type';
 const OcrStat = () => {
   const { timeScale, dateRange } = useCardContext();
   const [from_date, to_date] = dateRange;
@@ -129,10 +132,27 @@ const OcrTranManualStat = () => {
 const Container = () => {
   const { timeScale, setTimeScale, setDateRange, dateRange } = useCardContext();
 
-  // console.log({ dateRange, statOcr, statStatOcrTran, statStatOcrTranManual });
+  const handleExport = () => {
+    const [from_date, to_date] = dateRange;
+    exportReport(from_date, to_date)
+      .then()
+      .catch((err) => {
+        toast.error(err?.data ? err.data : toastMsg.error);
+      });
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto mt-4">
-      <h2 className="text-xl font-semibold mb-4">Thống kê sử dụng</h2>
+      <div className="flex items-center gap-2 mb-4">
+        <h2 className="text-2xl font-semibold ">Thống kê sử dụng</h2>
+        <button
+          className="hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-gray-500 p-1 flex items-center justify-center"
+          title="Clear"
+          onClick={handleExport}
+        >
+          <TbFileExport title="Xuất báo cáo" size={24} />
+        </button>
+      </div>
       <div className="flex gap-1 mb-4 items-center min-h-10">
         <label>
           <input

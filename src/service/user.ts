@@ -1,13 +1,8 @@
-import { IUser } from '~/type/user';
+import { IPasswordUpdateValues, IUser } from '~/type/user';
 import { httpDel, httpGet, httpPatch, httpPost, httpPut } from './_req';
 
 export const registerUser = (user: IUser) => {
-  return httpPost()('/users?', {
-    username: user.username,
-    password: user.password,
-    fullname: user.fullname,
-    orgid: user.orgid,
-  });
+  return httpPost()('/users?', user);
 };
 
 export const getUserDetail = (id: string) => {
@@ -28,4 +23,8 @@ export const deleteUser = (id: string) => {
 
 export const restoreUser = (id: string) => {
   return httpPatch()(`/users/${id}/recovery?`);
+};
+
+export const updatePassword = (updates: IPasswordUpdateValues) => {
+  return httpPatch()('/accounts/password?', updates);
 };

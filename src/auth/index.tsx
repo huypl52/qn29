@@ -18,6 +18,7 @@ import Setting from '~/page/Setting';
 import Report from '~/page/Report';
 import RegisterPage from '~/page/Register';
 import UserUpdate from '~/page/UserUpdate';
+import PasswordUpdatePage from '~/page/PasswordUpdate';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }: IRouteWrapper) => {
@@ -112,6 +113,11 @@ const AuthContainer = () => {
                       path={AuthRoutePath.STATISTICAL}
                       element={<Statistical />}
                     />,
+                    <Route
+                      path={AuthRoutePath.PASSWORD}
+                      element={<PasswordUpdatePage />}
+                    />,
+
                     <Route path={AuthRoutePath.REPORT} element={<Report />} />,
                   ].map((r) => {
                     return (

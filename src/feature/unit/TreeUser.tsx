@@ -64,7 +64,7 @@ const TreeUser = ({
   }, [counter]);
 
   return (
-    <div className="w-2/12 ml-8 mt-8">
+    <div className="w-2/12 ml-8 mt-8  rounded-l-xl shadow-[10px_0_15px_-3px_rgba(0,0,0,0.1)]">
       {title && <h1 className="text-xl">{title}</h1>}
       <Tree
         data={data}
