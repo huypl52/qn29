@@ -27,17 +27,30 @@ const Container: React.FC<{}> = () => {
     try {
       const clipboardItems = await navigator.clipboard.read();
       for (const clipboardItem of clipboardItems) {
-        if (clipboardItem.types.includes('image/png')) {
-          const blob = await clipboardItem.getType('image/png');
+        const imageTypes = clipboardItem.types?.filter((type) =>
+          type.startsWith('image/')
+        );
 
+        for (const imageType of imageTypes) {
+          console.log({ imageType });
+          const blob = await clipboardItem.getType(imageType);
           const file = new File([blob], 'pasted-image.png', {
             type: 'image/png',
           });
           updateFiles([file]);
-        } else {
-          console.log('No image found in clipboard.');
-          toast.info('Vui lòng chọn dán đúng định dạng ảnh');
         }
+
+        // if (clipboardItem.types.includes('image/png')) {
+        //   const blob = await clipboardItem.getType('image/png');
+        //
+        //   const file = new File([blob], 'pasted-image.png', {
+        //     type: 'image/png',
+        //   });
+        //   updateFiles([file]);
+        // } else {
+        //   console.log('No image found in clipboard.');
+        //   toast.info('Vui lòng chọn dán đúng định dạng ảnh');
+        // }
       }
     } catch (error) {
       toast.info('Vui lòng chọn dán đúng định dạng ảnh');
