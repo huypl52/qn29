@@ -13,6 +13,7 @@ import TextSwitch from '~/component/Switch';
 import { MdClose } from 'react-icons/md';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { useTaskStore } from '~/store/task';
+import { getClipboardImage } from '~/utils/clipboard';
 
 const Container: React.FC<{}> = () => {
   const { isEmpty } = useOcrContext();
@@ -25,33 +26,45 @@ const Container: React.FC<{}> = () => {
 
   const handlePasteFromClipboard = async () => {
     try {
-      const clipboardItems = await navigator.clipboard.read();
-      for (const clipboardItem of clipboardItems) {
-        const imageTypes = clipboardItem.types?.filter((type) =>
-          type.startsWith('image/')
-        );
+      // const clipboardItems = await navigator.clipboard.read();
+      // for (const clipboardItem of clipboardItems) {
+      //   const imageTypes = clipboardItem.types?.filter((type) =>
+      //     type.startsWith('image/')
+      //   );
+      //
+      //   for (const imageType of imageTypes) {
+      //     console.log({ imageType });
+      //     const blob = await clipboardItem.getType(imageType);
+      //     const file = new File([blob], 'pasted-image.png', {
+      //       type: 'image/png',
+      //     });
+      //     updateFiles([file]);
+      //   }
 
-        for (const imageType of imageTypes) {
-          console.log({ imageType });
-          const blob = await clipboardItem.getType(imageType);
-          const file = new File([blob], 'pasted-image.png', {
-            type: 'image/png',
-          });
-          updateFiles([file]);
-        }
-
-        // if (clipboardItem.types.includes('image/png')) {
-        //   const blob = await clipboardItem.getType('image/png');
-        //
-        //   const file = new File([blob], 'pasted-image.png', {
-        //     type: 'image/png',
-        //   });
-        //   updateFiles([file]);
-        // } else {
-        //   console.log('No image found in clipboard.');
-        //   toast.info('Vui lòng chọn dán đúng định dạng ảnh');
-        // }
+      // if (clipboardItem.types.includes('image/png')) {
+      //   const blob = await clipboardItem.getType('image/png');
+      //
+      //   const file = new File([blob], 'pasted-image.png', {
+      //     type: 'image/png',
+      //   });
+      //   updateFiles([file]);
+      // } else {
+      //   console.log('No image found in clipboard.');
+      //   toast.info('Vui lòng chọn dán đúng định dạng ảnh');
+      // }
+      //
+      const blob = await getClipboardImage();
+      console.log({ blob });
+      if (!blob) {
+        toast.info('Vui lòng kiểm tra lại clipboard');
+        return;
       }
+      const file = new File([blob], 'pasted-image.png', {
+        type: 'image/png',
+      });
+      updateFiles([file]);
+
+      // }
     } catch (error) {
       toast.info('Vui lòng chọn dán đúng định dạng ảnh');
     }

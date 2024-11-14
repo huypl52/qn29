@@ -25,7 +25,6 @@ export interface IStatParam {
   from_date?: string | Date;
   to_date?: string | Date;
   period?: number;
-    userid?: string;
+  userid?: string;
   self?: number;
-
 }

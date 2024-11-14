@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import DatePickerCustom from '~/component/DataPicker/DatePicker.tsx';
+import { useCardContext } from '~/page/Report/context';
 import {
   getStatisticalOcrHistory,
   getStatisticalOcrHistoryTranslate,
 } from '~/service/task.ts';
 import { getUserRole } from '~/storage/auth';
-import { useOrgTreeStore } from '~/store/orgTree';
 import { useUserTreeStore } from '~/store/userTree';
 import { IStatisticalParam } from '~/type/task';
 import { ERole } from '~/type/user';
 
 const OCRChart = () => {
-  const [timeScale, setTimeScale] = useState('day'); // Default to 'day'
   const [dataType, setDataType] = useState('text'); // Default to 'text' data
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
+  const { timeScale, setTimeScale, setDateRange, dateRange } = useCardContext();
   const [startDate, endDate] = dateRange;
   const [x, setX] = useState<string[]>([]);
   const [y, setY] = useState<number[]>([]);
@@ -27,48 +22,47 @@ const OCRChart = () => {
   const userRole = getUserRole();
   const isAdmin = userRole === ERole.admin ? true : false;
 
-  const fetchData = async (
-    groupvalue = 0,
-    from_date?: Date,
-    to_date?: Date
-  ) => {
-    try {
-      const requestParams: IStatisticalParam = {
-        group: groupvalue,
-        from_date: from_date
-          ? from_date.toLocaleDateString('en-CA')
-          : undefined,
-        to_date: to_date ? to_date.toLocaleDateString('en-CA') : undefined,
-      };
+  const fetchData = useCallback(
+    async (groupvalue = 0, from_date?: string, to_date?: string) => {
+      try {
+        const requestParams: IStatisticalParam = {
+          group: groupvalue,
+          from_date: from_date
+            ? from_date
+            : undefined,
+          to_date: to_date ? to_date: undefined,
+        };
 
-      if (!isAdmin) {
-        requestParams['self'] = 1;
-      } else {
-        if (selectedNodeId) {
-          requestParams['userid'] = selectedNodeId;
+        if (!isAdmin) {
+          requestParams['self'] = 1;
+        } else {
+          if (selectedNodeId) {
+            requestParams['userid'] = selectedNodeId;
+          }
         }
+
+        const response =
+          dataType === 'text'
+            ? await getStatisticalOcrHistory(requestParams)
+            : await getStatisticalOcrHistoryTranslate(requestParams);
+
+        const nameList = response.data.map((item: any) => item.name);
+        const valueList = response.data.map((item: any) =>
+          dataType === 'text' ? item.ocr_converted : item.ocr_translated
+        );
+
+        setX(nameList);
+        setY(valueList);
+
+        // console.log('Fetched data for:', dataType);
+        // console.log(nameList);
+        // console.log(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-
-      const response =
-        dataType === 'text'
-          ? await getStatisticalOcrHistory(requestParams)
-          : await getStatisticalOcrHistoryTranslate(requestParams);
-
-      const nameList = response.data.map((item: any) => item.name);
-      const valueList = response.data.map((item: any) =>
-        dataType === 'text' ? item.ocr_converted : item.ocr_translated
-      );
-
-      setX(nameList);
-      setY(valueList);
-
-      console.log('Fetched data for:', dataType);
-      console.log(nameList);
-      console.log(response);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+    },
+    [dataType, isAdmin, selectedNodeId]
+  );
 
   const oneWeekAgo = (): Date =>
     new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
@@ -89,25 +83,17 @@ const OCRChart = () => {
   };
 
   useEffect(() => {
-    const { start: rangeStart, end: rangeEnd } =
-      timeScale === 'day'
-        ? getWeekRange()
-        : {
-            start: undefined,
-            end: undefined,
-          };
+    // console.log({startDate, endDate})
     fetchData(
       timeScale === 'day' ? 0 : timeScale === 'month' ? 1 : 2,
-      startDate ? startDate : rangeStart,
-      endDate ? endDate : rangeEnd
+      startDate ,
+      endDate 
     );
   }, [
-    dateRange[1],
-    dateRange[0],
-    dataType,
+    startDate,
+    endDate,
     timeScale,
-    isAdmin,
-    selectedNodeId,
+    fetchData,
   ]);
 
   const chartData = {
@@ -131,17 +117,32 @@ const OCRChart = () => {
     ],
   };
 
-  const handleChangeTime = (value: any) => {
-    setTimeScale(value);
-  };
-
   return (
     <div className="w-full max-w-[1/2] mx-auto mt-4">
-      <h2 className="text-xl font-semibold mb-4">
-        Biểu đồ sử dụng quét và dịch ảnh
-      </h2>
+      <div className="flex justify-between mb-4">
+        <h2 className="text-xl font-semibold ">
+          Biểu đồ sử dụng quét và dịch ảnh
+        </h2>
+        <div className="flex items-center justify-between ">
+          <div className="shrink-0">
+            <label htmlFor="dataType" className="mr-1">
+              Dữ liệu:
+            </label>
+            <select
+              id="dataType"
+              value={dataType}
+              onChange={(e) => setDataType(e.target.value)}
+              className="border rounded px-2"
+            >
+              <option value="text">Đã quét</option>
+              <option value="image">Đã dịch</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       {/* Radio Buttons for Time Scale Selection */}
-      <div className="flex items-center	 justify-between h-[5vh]">
+      {/* <div className="flex items-center	 justify-between h-[5vh]">
         <div className="flex gap-1 mb-4 items-center shrink-0">
           <label>
             <input
@@ -181,23 +182,9 @@ const OCRChart = () => {
             setDateRange={setDateRange}
           />
         </div>
-        <div className="mb-4 shrink-0">
-          <label htmlFor="dataType" className="mr-1">
-            Dữ liệu:
-          </label>
-          <select
-            id="dataType"
-            value={dataType}
-            onChange={(e) => setDataType(e.target.value)}
-            className="border rounded p-1"
-          >
-            <option value="text">Đã quét</option>
-            <option value="image">Đã dịch</option>
-          </select>
-        </div>
-      </div>
+      </div> */}
 
-      <div className="bg-gray-100 p-4 shadow-md rounded-lg mt-4">
+      <div className="bg-gray-100 p-4 shadow-md rounded-lg ">
         <Bar
           data={chartData}
           options={{

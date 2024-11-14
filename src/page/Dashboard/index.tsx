@@ -1,12 +1,12 @@
+import React from 'react';
+import History from '~/component/LeftBar/History';
+import ResizableFlex from '~/component/ResizableFlex';
 import { TabWithContent } from '~/component/Tab/TabWithContent';
 import { LangContextProvider } from '~/feature/languageSelect/context';
 import Ocr from '~/feature/ocr';
 import Translator from '~/feature/translator';
-import React from 'react';
-import History from '~/component/LeftBar/History';
 import { useTaskStore } from '~/store/task';
 import { ETaskType } from '~/type/task';
-import ResizableFlex from '~/component/ResizableFlex';
 
 const Dashboard = () => {
   const [viewHistory, setViewHistory] = React.useState(false);
@@ -51,9 +51,6 @@ const Dashboard = () => {
                 }
               }}
             />
-            {/* <div> */}
-            {/*   History */}
-            {/* </div> */}
           </div>
         </LangContextProvider>
       }

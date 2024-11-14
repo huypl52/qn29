@@ -16,9 +16,9 @@ interface DragState {
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 const ResizableFlexContainer: React.FC<Props> = ({
-  minRightWidth = 100,
-  maxRightWidth = 800,
-  initialRightWidth = 480,
+  minRightWidth = 360,
+  maxRightWidth = 1024,
+  initialRightWidth = 640,
   leftContent = 'Left Content',
   rightContent,
   className = '',

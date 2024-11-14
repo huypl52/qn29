@@ -1,14 +1,16 @@
 import { vi } from 'date-fns/locale';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 
 type DatePickerCustomProps = {
   startDate?: Date;
   endDate?: Date;
   setDateRange?: (dates: [Date | null, Date | null]) => void;
+  readonly?: boolean;
 };
 
 const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
+  readonly,
   startDate,
   endDate,
   setDateRange,
@@ -19,6 +21,7 @@ const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
         Khoảng ngày:
       </label>
       <DatePicker
+        readOnly={readonly}
         selected={startDate}
         onChange={(update: [Date | null, Date | null]) => setDateRange(update)}
         startDate={startDate}
@@ -35,4 +38,3 @@ const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
 };
 
 export default DatePickerCustom;
-

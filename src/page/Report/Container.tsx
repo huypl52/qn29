@@ -1,26 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useCardContext } from './context';
-import { ETimeScale, timeScaleToPeriod } from './type';
+import { TbFileExport } from 'react-icons/tb';
+import { toast } from 'react-toastify';
 import DatePickerCustom from '~/component/DataPicker/DatePicker';
-import {
-  IStatOcr,
-  IStatOcrTranslate,
-  IStatParam,
-  IStatTranslateManual,
-} from '~/type/statistic';
 import {
   exportReport,
   getStatOcr,
   getStatOcrTranslate,
-  getStatTranslateManual,
 } from '~/service/report';
-import { Card, CardItem } from './Card';
-import { useUserTreeStore } from '~/store/userTree';
 import { getUserRole } from '~/storage/auth';
-import { ERole } from '~/type/user';
-import { TbFileExport } from 'react-icons/tb';
-import { toast } from 'react-toastify';
+import { useUserTreeStore } from '~/store/userTree';
 import { toastMsg } from '~/type';
+import { IStatOcr, IStatOcrTranslate, IStatParam } from '~/type/statistic';
+import { ERole } from '~/type/user';
+import { Card, CardItem } from './Card';
+import { useCardContext } from './context';
+import { ETimeScale, timeScaleToPeriod } from './type';
+
 const OcrStat = () => {
   const { timeScale, dateRange } = useCardContext();
   const [from_date, to_date] = dateRange;
@@ -47,7 +42,7 @@ const OcrStat = () => {
         setStatOcr(data);
       }
     });
-  }, [period, dateRange, selectedNodeId, isAdmin]);
+  }, [period, from_date, to_date, selectedNodeId, isAdmin]);
 
   return (
     <Card title="Số ảnh tải lên: " value={statOcr?.ocr_uploaded}>
@@ -57,7 +52,7 @@ const OcrStat = () => {
       ></CardItem>
       <CardItem
         title="Đang chuyển đổi: "
-        value={statOcr?.ocr_converted}
+        value={statOcr?.ocr_converting}
       ></CardItem>
       <CardItem title="Thất bại: " value={statOcr?.ocr_failed}></CardItem>
     </Card>
@@ -91,7 +86,7 @@ const OcrTranslate = () => {
         setStatOcrTranslate(data);
       }
     });
-  }, [period, dateRange, selectedNodeId, isAdmin]);
+  }, [period, from_date, to_date, selectedNodeId, isAdmin]);
 
   return (
     <Card
@@ -108,25 +103,6 @@ const OcrTranslate = () => {
       ></CardItem>
     </Card>
   );
-};
-
-const OcrTranManualStat = () => {
-  const { timeScale, setTimeScale, setDateRange, dateRange } = useCardContext();
-
-  const period = timeScaleToPeriod(timeScale);
-  const [from_date, to_date] = dateRange;
-  const [statOcrTranManual, setStatOcrTranManual] =
-    useState<IStatTranslateManual>();
-  useEffect(() => {
-    getStatTranslateManual({ from_date, to_date, period }).then((res) => {
-      const { status, data } = res;
-      if (status === 200) {
-        setStatOcrTranManual(data);
-      }
-    });
-  }, [timeScale, dateRange]);
-
-  return <div></div>;
 };
 
 const Container = () => {
@@ -185,15 +161,14 @@ const Container = () => {
           Năm
         </label>
 
-        {timeScale !== ETimeScale.day && (
-          <div className="grow flex flex-row-reverse">
-            <DatePickerCustom
-              startDate={dateRange[0] && new Date(dateRange[0])}
-              endDate={dateRange[1] && new Date(dateRange[1])}
-              setDateRange={setDateRange}
-            />
-          </div>
-        )}
+        <div className="grow flex flex-row-reverse">
+          <DatePickerCustom
+            readonly={timeScale === ETimeScale.day}
+            startDate={dateRange[0] && new Date(dateRange[0])}
+            endDate={dateRange[1] && new Date(dateRange[1])}
+            setDateRange={setDateRange}
+          />
+        </div>
       </div>
 
       <div className="flex justify-evenly gap-x-9 ">
@@ -205,3 +180,4 @@ const Container = () => {
 };
 
 export { Container };
+

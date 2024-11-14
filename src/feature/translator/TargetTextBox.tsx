@@ -12,13 +12,17 @@ import {
   ITranslationResult,
 } from '~/type/translate';
 import { toastMsg } from '~/type';
+import { copyToClipboard } from '~/utils/clipboard';
 
 const TargetBoxFooter = () => {
   const { targetText, srcText, srcLang, targetLang } = useTranslateStore();
   const onCopyClick = () => {
     if (!targetText) return;
-    navigator.clipboard.writeText(targetText);
-    toast.success('Text is copied to clipboard');
+    copyToClipboard(targetText)
+      .then(() => {
+        toast.success('Text is copied to clipboard');
+      })
+      .catch((err) => toast.error(err));
   };
 
   const onSaveClick = () => {

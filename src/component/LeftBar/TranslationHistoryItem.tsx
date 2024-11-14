@@ -6,12 +6,16 @@ import { toast } from 'react-toastify';
 import { FaRegCopy } from 'react-icons/fa';
 import LoadingText from '~/component/LoadingText';
 import { MdSmsFailed } from 'react-icons/md';
+import { copyToClipboard } from '~/utils/clipboard';
 
 const TextBoxFooter = ({ text }: { text: string }) => {
   const onCopyClick = () => {
     if (!text) return;
-    navigator.clipboard.writeText(text);
-    toast.success('Text is copied to clipboard');
+    copyToClipboard(text)
+      .then(() => {
+        toast.success('Text is copied to clipboard');
+      })
+      .catch((err) => toast.error(err));
   };
   return (
     <div

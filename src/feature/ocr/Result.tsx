@@ -11,12 +11,16 @@ import LoadingText from '~/component/LoadingText';
 import { IoTimeOutline } from 'react-icons/io5';
 import { MdSmsFailed } from 'react-icons/md';
 import { useTaskStore } from '~/store/task';
+import { copyToClipboard } from '~/utils/clipboard';
 
 const TextBoxFooter = ({ text }: { text: string }) => {
   const onCopyClick = () => {
     if (!text) return;
-    navigator.clipboard.writeText(text);
-    toast.success('Text is copied to clipboard');
+    copyToClipboard(text)
+      .then(() => {
+        toast.success('Text is copied to clipboard');
+      })
+      .catch((err) => toast.error(err));
   };
   return (
     <div

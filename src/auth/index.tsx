@@ -13,7 +13,6 @@ import { AuthRoutePath } from '~/routes';
 import Dashboard from '~/page/Dashboard';
 import Layout from '~/feature/layout';
 import { getUser } from '~/storage/auth';
-import Statistical from '~/page/Statistical';
 import Setting from '~/page/Setting';
 import Report from '~/page/Report';
 import RegisterPage from '~/page/Register';
@@ -111,14 +110,13 @@ const AuthContainer = () => {
                     />,
                     <Route
                       path={AuthRoutePath.STATISTICAL}
-                      element={<Statistical />}
+                      element={<Report />}
                     />,
                     <Route
                       path={AuthRoutePath.PASSWORD}
                       element={<PasswordUpdatePage />}
                     />,
-
-                    <Route path={AuthRoutePath.REPORT} element={<Report />} />,
+                    // <Route path={AuthRoutePath.REPORT} element={<Report />} />,
                   ].map((r) => {
                     return (
                       <Route element={<Layout />} key={r.key}>
