@@ -1,10 +1,9 @@
+import _ from 'lodash';
+import { useEffect, useState } from 'react';
+import { getUserTree } from '~/service/user';
 import { useUserTreeStore } from '~/store/userTree';
 import Tree from './tree';
-import { useEffect, useMemo, useState } from 'react';
-import _ from 'lodash';
-import { ITreeNode, ITreeUnit } from './type';
-import { getUserTree } from '~/service/user';
-import { useOrgTreeStore } from '~/store/orgTree';
+import { ITreeUnit } from './type';
 
 function collectAndTransformData(data: Node[]) {
   const orgIds: string[] = [];
@@ -42,8 +41,8 @@ const TreeUser = ({
 }: ITreeUnit) => {
   const [data, setData] = useState({});
   const { counter } = useUserTreeStore();
-  const { orgs } = useOrgTreeStore();
-  const orgIds = useMemo(() => orgs.map((o) => o.id), [orgs]);
+  // const { orgs } = useOrgTreeStore();
+  // const orgIds = useMemo(() => orgs.map((o) => o.id), [orgs]);
 
   useEffect(() => {
     getUserTree()
@@ -68,7 +67,7 @@ const TreeUser = ({
       {title && <h1 className="text-xl">{title}</h1>}
       <Tree
         data={data}
-        disabledIds={orgIds}
+        // disabledIds={orgIds}
         selectedIds={selectedIds}
         selectable={selectable}
         onNodeSelect={onNodeSelect}

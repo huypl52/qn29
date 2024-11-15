@@ -1,19 +1,21 @@
-import { useUserTreeStore } from '~/store/userTree';
-import { ITreeLeftBar } from './type';
-import TreeUser from './TreeUser';
 import { getUserRole } from '~/storage/auth';
+import { useUserTreeStore } from '~/store/userTree';
 import { ERole } from '~/type/user';
+import TreeUser from './TreeUser';
+import { ITreeLeftBar } from './type';
 
 const TreeLeftBar = ({ children }: ITreeLeftBar) => {
   const { selectNode } = useUserTreeStore();
   const userRole = getUserRole();
-  const isAdmin = userRole === ERole.admin ? true : false;
+  const isUser = userRole === ERole.user ? true : false;
 
   return (
     <div className="flex w-full h-full">
-      {isAdmin && (
+      {!isUser && (
         <TreeUser
-          onNodeSelect={(v) => selectNode(v.element.id as string)}
+          onNodeSelect={(v) =>
+            selectNode(v.isSelected ? (v.element.id as string) : undefined)
+          }
           title="Cây đơn vị"
         />
       )}

@@ -30,6 +30,7 @@ export interface IUserRegister {
 export enum ERole {
   user = 0,
   admin = 1,
+  superAdmin = 2,
 }
 
 export interface IPasswordUpdateValues {

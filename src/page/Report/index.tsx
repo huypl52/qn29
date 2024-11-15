@@ -1,6 +1,6 @@
 import TreeLeftBar from '~/feature/unit/TreeLeftBar';
 import { Container } from './Container';
-import { CardContextProvider } from './context';
+import { ReportContextProvider } from './context';
 import OCRChart from './OCRChart.';
 import TextChart from './TextChart';
 
@@ -9,13 +9,13 @@ const Report = () => {
     <TreeLeftBar>
     <div className="w-full px-16">
 
-    <CardContextProvider>
+    <ReportContextProvider>
       <Container />
       <div className="flex gap-3">
         <OCRChart />
         <TextChart />
       </div>
-    </CardContextProvider>
+    </ReportContextProvider>
     </div>
     </TreeLeftBar>
   );

@@ -13,11 +13,11 @@ import { toastMsg } from '~/type';
 import { IStatOcr, IStatOcrTranslate, IStatParam } from '~/type/statistic';
 import { ERole } from '~/type/user';
 import { Card, CardItem } from './Card';
-import { useCardContext } from './context';
+import { useReportContext } from './context';
 import { ETimeScale, timeScaleToPeriod } from './type';
 
 const OcrStat = () => {
-  const { timeScale, dateRange } = useCardContext();
+  const { timeScale, dateRange } = useReportContext();
   const [from_date, to_date] = dateRange;
   const [statOcr, setStatOcr] = useState<IStatOcr>();
   const period = timeScaleToPeriod(timeScale);
@@ -60,33 +60,18 @@ const OcrStat = () => {
 };
 
 const OcrTranslate = () => {
-  const { timeScale, dateRange } = useCardContext();
-  const [from_date, to_date] = dateRange;
+  const { requestParams } = useReportContext();
   const [statOcrTranslate, setStatOcrTranslate] = useState<IStatOcrTranslate>();
-  const period = timeScaleToPeriod(timeScale);
-
-  const { selectedNodeId } = useUserTreeStore();
-  const userRole = getUserRole();
-  const isAdmin = userRole === ERole.admin ? true : false;
 
   useEffect(() => {
-    const param: IStatParam = { from_date, to_date, period };
-
-    if (!isAdmin) {
-      param['self'] = 1;
-    } else {
-      if (selectedNodeId) {
-        param['userid'] = selectedNodeId;
-      }
-    }
-
-    getStatOcrTranslate(param).then((res) => {
+    if (!requestParams) return;
+    getStatOcrTranslate(requestParams).then((res) => {
       const { status, data } = res;
       if (status === 200) {
         setStatOcrTranslate(data);
       }
     });
-  }, [period, from_date, to_date, selectedNodeId, isAdmin]);
+  }, [requestParams]);
 
   return (
     <Card
@@ -106,10 +91,12 @@ const OcrTranslate = () => {
 };
 
 const Container = () => {
-  const { timeScale, setTimeScale, setDateRange, dateRange } = useCardContext();
+  const { timeScale, setTimeScale, setDateRange, dateRange } =
+    useReportContext();
 
   const handleExport = () => {
     const [from_date, to_date] = dateRange;
+    if (!from_date || !to_date) return;
     exportReport(from_date, to_date)
       .then()
       .catch((err) => {
@@ -118,62 +105,75 @@ const Container = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-4">
-      <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-2xl font-semibold ">Thống kê sử dụng</h2>
-        <button
-          className="hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-gray-500 p-1 flex items-center justify-center"
-          title="Clear"
-          onClick={handleExport}
-        >
-          <TbFileExport title="Xuất báo cáo" size={24} />
-        </button>
-      </div>
-      <div className="flex gap-1 mb-4 items-center min-h-10">
-        <label>
-          <input
-            type="radio"
-            value="day"
-            checked={timeScale === ETimeScale.day}
-            onChange={() => setTimeScale(ETimeScale.day)}
-            className="mr-1"
-          />
-          Tuần
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="month"
-            checked={timeScale === ETimeScale.month}
-            onChange={() => setTimeScale(ETimeScale.month)}
-            className="mr-1"
-          />
-          Tháng
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="year"
-            checked={timeScale === ETimeScale.year}
-            onChange={() => setTimeScale(ETimeScale.year)}
-            className="mr-1"
-          />
-          Năm
-        </label>
+    <div className="w-full ">
+      <div className="w-full max-w-4xl mx-auto mt-4">
+        <div className="flex items-center gap-2 mb-4">
+          <h2 className="text-2xl font-semibold ">Thống kê sử dụng</h2>
+          <button
+            className="hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-gray-500 p-1 flex items-center justify-center"
+            title="Clear"
+            onClick={handleExport}
+          >
+            <TbFileExport title="Xuất báo cáo" size={24} />
+          </button>
+        </div>
+        <div className="flex gap-6 mb-4 items-center min-h-10">
+          <label>
+            <input
+              type="radio"
+              value={undefined}
+              checked={timeScale === undefined}
+              onChange={() => setTimeScale(undefined)}
+              className="mr-1"
+            />
+            Lũy kế
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={ETimeScale.day}
+              checked={timeScale === ETimeScale.day}
+              onChange={() => setTimeScale(ETimeScale.day)}
+              className="mr-1"
+            />
+            Ngày
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={ETimeScale.week}
+              checked={timeScale === ETimeScale.week}
+              onChange={() => setTimeScale(ETimeScale.week)}
+              className="mr-1"
+            />
+            Tuần
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={ETimeScale.month}
+              checked={timeScale === ETimeScale.month}
+              onChange={() => setTimeScale(ETimeScale.month)}
+              className="mr-1"
+            />
+            Tháng
+          </label>
+        </div>
 
-        <div className="grow flex flex-row-reverse">
-          <DatePickerCustom
-            readonly={timeScale === ETimeScale.day}
-            startDate={dateRange[0] && new Date(dateRange[0])}
-            endDate={dateRange[1] && new Date(dateRange[1])}
-            setDateRange={setDateRange}
-          />
+        <div className="flex justify-evenly gap-x-9 ">
+          <OcrStat />
+          <OcrTranslate />
         </div>
       </div>
 
-      <div className="flex justify-evenly gap-x-9 ">
-        <OcrStat />
-        <OcrTranslate />
+      <div className="w-full h-1 border-b border-gray-200 my-16"></div>
+      <div className="grow flex justify-end mt-4">
+        <DatePickerCustom
+          readonly={timeScale === ETimeScale.day}
+          startDate={dateRange[0] && new Date(dateRange[0])}
+          endDate={dateRange[1] && new Date(dateRange[1])}
+          setDateRange={setDateRange}
+        />
       </div>
     </div>
   );

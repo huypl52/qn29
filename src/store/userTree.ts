@@ -9,7 +9,7 @@ interface IUserState {
   insertUser: (user: IUser) => void;
   deleteUser: (id: string) => void;
 
-  selectNode: (id: string) => void;
+  selectNode: (id?: string) => void;
   selectedNodeId?: string;
   counter: number;
   increment: () => void;
@@ -37,10 +37,10 @@ export const useUserTreeStore = create<IUserState>()(
       }),
     deleteUser: (id: string) => {
       set((state: IUserState) => [
-        state.users.filter((user) => user.id !== id),
+        (state.users = state.users.filter((user) => user.id !== id)),
       ]);
     },
-    selectNode: (id: string) =>
+    selectNode: (id?: string) =>
       set((state: IUserState) => {
         state.selectedNodeId = id;
       }),

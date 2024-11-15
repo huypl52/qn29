@@ -1,4 +1,4 @@
-import { ERole, IUser, IUserLogin } from '~/type/user';
+import { ERole, IUserLogin } from '~/type/user';
 
 const LOCAL_USER = 'LOCAL_USER';
 const TOKEN = 'TOKEN';

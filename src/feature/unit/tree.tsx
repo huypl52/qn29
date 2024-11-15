@@ -1,13 +1,12 @@
-import { FaCheckSquare, FaMinusSquare, FaSquare } from 'react-icons/fa';
-import { IoMdArrowDropright } from 'react-icons/io';
+import cx from 'classnames';
+import { useEffect, useState } from 'react';
 import TreeView, {
   flattenTree,
-  ITreeViewOnSelectProps,
 } from 'react-accessible-treeview';
-import cx from 'classnames';
+import { FaCheckSquare, FaMinusSquare, FaSquare } from 'react-icons/fa';
+import { IoMdArrowDropright } from 'react-icons/io';
 import './styles.css';
 import { ITree } from './type';
-import { useEffect, useState } from 'react';
 
 function Tree({
   data,
@@ -37,9 +36,7 @@ function Tree({
           selectedIds={selectedIds}
           onNodeSelect={onNodeSelect}
           // onSelect={(v) => {
-          //   console.log({
-          //     onSelect: v,
-          //   });
+          //   onNodeSelect?.(v);
           // }}
           defaultDisabledIds={disabledIds}
           nodeRenderer={({

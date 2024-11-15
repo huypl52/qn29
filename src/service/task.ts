@@ -1,11 +1,11 @@
-import { httpGet } from './_req';
 import {
   ETaskType,
-  IStatisticalParam,
+  IStatisticalGroupParam,
   ITaskDetail,
   ITaskHistory,
   listTaskTypeOcr,
 } from '~/type/task';
+import { httpGet } from './_req';
 
 export const getTaskDetails = (taskId: string) => {
   return httpGet()<ITaskDetail[]>(`/tasks/${taskId}`);
@@ -55,18 +55,18 @@ export const getTotalTaskHistory = (self: number | undefined = 1) => {
 // - seft=1: Dùng cho tình huống lấy dữ liệu theo tài khoản đăng nhập. Thì tài khoản nào cũng có quyền gọi api này
 // - Tham số userid để lọc theo muốn xem người dùng nào. Có truyền thì lọc, không truyền thì sẽ lấy all user
 // - nếu không truyền seft=1 thì sẽ kiểm tra phải là tài khoản có quyền mới gọi được.
-export const getStatisticalOcrHistory = (params: IStatisticalParam) => {
+export const getStatisticalOcrHistory = (params: IStatisticalGroupParam) => {
   return httpGet()(`/reports/ocr/imagecount/group?`, { params });
 };
 
-export const getStatisticalTranslateHistory = (params: IStatisticalParam) => {
+export const getStatisticalTranslateHistory = (params: IStatisticalGroupParam) => {
   return httpGet()<object[]>(`/reports/translate/manualcount/group?`, {
     params,
   });
 };
 
 export const getStatisticalOcrHistoryTranslate = (
-  params: IStatisticalParam
+  params: IStatisticalGroupParam
 ) => {
   return httpGet()(`/reports/ocr/translatecount/group?`, { params });
 };

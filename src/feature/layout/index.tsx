@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { LuSettings2 } from 'react-icons/lu';
-import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom'; // Import the hook for navigation
 import logoImage from '~/assets/logo.png';
 import { AuthRoutePath } from '~/routes';
 import { getAllOrg } from '~/service/org';
@@ -9,9 +8,7 @@ import { getSetting } from '~/service/setting';
 import { clearUser, getUserRole } from '~/storage/auth';
 import { useOrgTreeStore } from '~/store/orgTree';
 import { useSettingStore } from '~/store/setting';
-import { useOcrTaskStore } from '~/store/taskOcr';
 import { ERole } from '~/type/user';
-import { TbPasswordUser } from 'react-icons/tb';
 
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -107,7 +104,7 @@ const Header = () => {
                   </button>
                 </li>
 
-                {userRole === ERole.admin && (
+                {userRole !== ERole.user && (
                   <li>
                     <button
                       className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
@@ -118,7 +115,7 @@ const Header = () => {
                     </button>
                   </li>
                 )}
-                {userRole === ERole.admin && (
+                {userRole !== ERole.user && (
                   <li>
                     <button
                       className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
@@ -131,7 +128,7 @@ const Header = () => {
                     </button>
                   </li>
                 )}
-                {userRole === ERole.admin && (
+                {userRole !== ERole.user && (
                   <li>
                     <button
                       className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"

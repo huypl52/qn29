@@ -1,10 +1,8 @@
 import {
-  createRef,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
-  useState,
+  useState
 } from 'react';
 import { toast } from 'react-toastify';
 import UserForm from '~/component/UserForm';
@@ -13,8 +11,7 @@ import {
   deleteUser,
   getUserDetail,
   putUser,
-  registerUser,
-  restoreUser,
+  restoreUser
 } from '~/service/user';
 import { useUserTreeStore } from '~/store/userTree';
 import { toastMsg } from '~/type';
@@ -27,6 +24,7 @@ const UserUpdate = () => {
   const ref = useRef(null);
 
   useEffect(() => {
+    console.log('selectedNodeId', selectedNodeId);
     if (!selectedNodeId) return;
     (async () => {
       const _user = await getUserDetail(selectedNodeId).then((res) => {

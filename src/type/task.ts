@@ -64,10 +64,14 @@ export interface ITaskDetail {
   fileid?: string;
 }
 
-export interface IStatisticalParam {
-  group?: number; // Tham số group có thể là số
+export interface IStatisticalTimeParam {
   from_date?: string; // Tham số ngày bắt đầu (định dạng YYYY-MM-DD)
   to_date?: string; // Tham số ngày kết thúc (định dạng YYYY-MM-DD)
   userid?: string;
   self?: number;
+  orgid?: string;
+}
+
+export interface IStatisticalGroupParam extends IStatisticalTimeParam {
+  group?: number; // Tham số group có thể là số, group: nhóm dữ liệu như nào. 0 ngày trong tuần, 1 tuần trong năm, 2 tháng trong năm. Mặc định không truyền là 0
 }
