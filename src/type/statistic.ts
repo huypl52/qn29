@@ -5,6 +5,10 @@ export interface IStatOcr {
   ocr_converted: 302;
   ocr_converting: 1;
   ocr_failed: 2;
+
+  ocr_translated: 0;
+  ocr_translating: 0;
+  ocr_translate_error: 0;
 }
 
 export interface IStatOcrTranslate {
