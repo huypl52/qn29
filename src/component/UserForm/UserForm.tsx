@@ -1,9 +1,10 @@
-import React, { FC, ReactElement, ReactNode, useImperativeHandle } from 'react';
+import React, { ReactNode, useImperativeHandle } from 'react';
 import { toast } from 'react-toastify';
 import TreeUnit from '~/feature/unit/TreeUnit';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { getUserRole } from '~/storage/auth';
 import { ERole, IUser } from '~/type/user';
 
 interface IFormUser extends Partial<IUser> {}
@@ -58,7 +59,7 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
       initialValues,
       validationSchema,
       onSubmit: (values, { setSubmitting }) => {
-        // console.log('Form values:', values);
+        console.log('Form values:', values);
         setTimeout(() => {
           setSubmitting(false);
         }, 3000);
@@ -85,6 +86,8 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
       })
       // [formik]
     );
+
+    const userRole = getUserRole();
 
     return (
       <div className=" flex items-center justify-center h-full w-full">
@@ -160,6 +163,11 @@ const UserForm = React.forwardRef<IFormSubmit, IUserForm>(
                 className="w-full p-2 border rounded"
               >
                 {Object.entries(ERole)
+                  .filter(
+                    ([key, value]) =>
+                      parseInt(value) <=
+                      parseInt(userRole?.valueOf().toString() || '1')
+                  )
                   .filter(([key]) => isNaN(Number(key)))
                   .map(([key, value]) => (
                     <option key={value} value={value}>

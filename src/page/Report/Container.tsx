@@ -54,7 +54,17 @@ const OcrStat = () => {
         title="Đang chuyển đổi: "
         value={statOcr?.ocr_converting}
       ></CardItem>
-      <CardItem title="Thất bại: " value={statOcr?.ocr_failed}></CardItem>
+
+      <CardItem
+        title="Chuyển đổi thất bại: "
+        value={statOcr?.ocr_failed}
+      ></CardItem>
+      <CardItem title="Đã dịch: " value={statOcr?.ocr_translated}></CardItem>
+      <CardItem title="Đang dịch: " value={statOcr?.ocr_translating}></CardItem>
+      <CardItem
+        title="Dịch thất bại: "
+        value={statOcr?.ocr_translate_error}
+      ></CardItem>
     </Card>
   );
 };
