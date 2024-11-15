@@ -7,42 +7,26 @@ import {
   getStatOcr,
   getStatOcrTranslate,
 } from '~/service/report';
-import { getUserRole } from '~/storage/auth';
-import { useUserTreeStore } from '~/store/userTree';
 import { toastMsg } from '~/type';
-import { IStatOcr, IStatOcrTranslate, IStatParam } from '~/type/statistic';
-import { ERole } from '~/type/user';
+import { IStatOcr, IStatOcrTranslate } from '~/type/statistic';
 import { Card, CardItem } from './Card';
 import { useReportContext } from './context';
-import { ETimeScale, timeScaleToPeriod } from './type';
+import { ETimeScale } from './type';
 
 const OcrStat = () => {
-  const { timeScale, dateRange } = useReportContext();
-  const [from_date, to_date] = dateRange;
   const [statOcr, setStatOcr] = useState<IStatOcr>();
-  const period = timeScaleToPeriod(timeScale);
-
-  const { selectedNodeId } = useUserTreeStore();
-  const userRole = getUserRole();
-  const isAdmin = userRole === ERole.admin ? true : false;
+  const { requestParams } = useReportContext();
 
   useEffect(() => {
-    const param: IStatParam = { from_date, to_date, period };
-    if (!isAdmin) {
-      param['self'] = 1;
-    } else {
-      if (selectedNodeId) {
-        param['userid'] = selectedNodeId;
-      }
-    }
+    if (!requestParams) return;
 
-    getStatOcr(param).then((res) => {
+    getStatOcr(requestParams).then((res) => {
       const { status, data } = res;
       if (status === 200) {
         setStatOcr(data);
       }
     });
-  }, [period, from_date, to_date, selectedNodeId, isAdmin]);
+  }, [requestParams]);
 
   return (
     <Card title="Số ảnh tải lên: " value={statOcr?.ocr_uploaded}>
@@ -85,7 +69,7 @@ const OcrTranslate = () => {
 
   return (
     <Card
-      title="Văn bản chuyển đổi từ ảnh: "
+      title="Dịch thủ công: "
       value={statOcrTranslate?.ocr_detected}
     >
       <CardItem

@@ -1,11 +1,11 @@
 import { ISearchParam, ISearchResult } from '~/type/report';
-import { httpGet, httpPut } from './_req';
 import {
   IStatOcr,
   IStatOcrTranslate,
   IStatParam,
   IStatTranslateManual,
 } from '~/type/statistic';
+import { httpGet } from './_req';
 
 export const searchContent = (param: ISearchParam) => {
   return httpGet()<ISearchResult[]>('/reports/search/content?', {
