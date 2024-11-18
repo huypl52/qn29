@@ -95,7 +95,7 @@ const Container = () => {
 
   const handleExport = () => {
     const [from_date, to_date] = dateRange;
-    if (!from_date || !to_date) return;
+    // if (!from_date || !to_date) return;
     exportReport(from_date, to_date)
       .then()
       .catch((err) => {
