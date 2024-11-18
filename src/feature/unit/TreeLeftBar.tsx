@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { getUserRole } from '~/storage/auth';
 import { useUserTreeStore } from '~/store/userTree';
 import { ERole } from '~/type/user';
@@ -8,6 +9,10 @@ const TreeLeftBar = ({ children }: ITreeLeftBar) => {
   const { selectNode } = useUserTreeStore();
   const userRole = getUserRole();
   const isUser = userRole === ERole.user ? true : false;
+
+  useEffect(() => {
+    selectNode(undefined);
+  }, [selectNode]);
 
   return (
     <div className="flex w-full h-full">

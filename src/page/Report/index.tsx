@@ -11,10 +11,10 @@ const Report = () => {
 
     <ReportContextProvider>
       <Container />
-      <div className="flex gap-3">
-        <OCRChart />
-        <TextChart />
-      </div>
+        <div className="flex gap-3">
+          <OCRChart />
+          <TextChart />
+        </div>
     </ReportContextProvider>
     </div>
     </TreeLeftBar>

@@ -65,7 +65,7 @@ const OCRChart = () => {
 
   return (
     <div className="w-full max-w-[1/2] mx-auto mt-4">
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-start gap-16 mb-4">
         <h2 className="text-xl font-semibold ">
           Biểu đồ sử dụng quét và dịch ảnh
         </h2>

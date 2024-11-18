@@ -1,6 +1,6 @@
 export enum DLang {
   cn = 'cn', // = "Tiếng Trung",
-  en = 'en', // = "Tiếng Anh",
+  // en = 'en', // = "Tiếng Anh",
   vi = 'vi', // = "Tiếng Việt",
   zh = 'zh',
   lo = 'lo',
@@ -9,7 +9,7 @@ export enum DLang {
 
 export const DLangMap = {
   cn: 'Tiếng Trung',
-  en: 'Tiếng Anh',
+  // en: 'Tiếng Anh',
   vi: 'Tiếng Việt',
   zh: 'Tiếng Trung',
   lo: 'Lào',

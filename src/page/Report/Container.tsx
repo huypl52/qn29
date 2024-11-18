@@ -5,10 +5,10 @@ import DatePickerCustom from '~/component/DataPicker/DatePicker';
 import {
   exportReport,
   getStatOcr,
-  getStatOcrTranslate,
+  getStatTranslateManual,
 } from '~/service/report';
-import { toastMsg } from '~/type';
-import { IStatOcr, IStatOcrTranslate } from '~/type/statistic';
+import { DLangMap, toastMsg } from '~/type';
+import { IStatOcr, IStatTranslateManual } from '~/type/statistic';
 import { Card, CardItem } from './Card';
 import { useReportContext } from './context';
 import { ETimeScale } from './type';
@@ -55,11 +55,12 @@ const OcrStat = () => {
 
 const OcrTranslate = () => {
   const { requestParams } = useReportContext();
-  const [statOcrTranslate, setStatOcrTranslate] = useState<IStatOcrTranslate>();
+  const [statOcrTranslate, setStatOcrTranslate] =
+    useState<IStatTranslateManual>();
 
   useEffect(() => {
     if (!requestParams) return;
-    getStatOcrTranslate(requestParams).then((res) => {
+    getStatTranslateManual(requestParams).then((res) => {
       const { status, data } = res;
       if (status === 200) {
         setStatOcrTranslate(data);
@@ -67,19 +68,23 @@ const OcrTranslate = () => {
     });
   }, [requestParams]);
 
+  const availableLang = Object.keys(DLangMap);
+
   return (
     <Card
       title="Dịch thủ công: "
-      value={statOcrTranslate?.ocr_detected}
+      value={statOcrTranslate?.reduce(
+        (acc, item) =>
+          availableLang.includes(item.source_language) ? acc + item.count : acc,
+        0
+      )}
     >
-      <CardItem
-        title="Đã dịch: "
-        value={statOcrTranslate?.ocr_translated}
-      ></CardItem>
-      <CardItem
-        title="Chưa dịch: "
-        value={statOcrTranslate?.ocr_untranslated}
-      ></CardItem>
+      {statOcrTranslate?.map((item) => (
+        <CardItem
+          title={`${DLangMap[item.source_language]} đã dịch: `}
+          value={item.count}
+        ></CardItem>
+      ))}
     </Card>
   );
 };
@@ -111,6 +116,21 @@ const Container = () => {
             <TbFileExport title="Xuất báo cáo" size={24} />
           </button>
         </div>
+        <DatePickerCustom
+          readonly={timeScale === ETimeScale.day}
+          startDate={dateRange[0] && new Date(dateRange[0])}
+          endDate={dateRange[1] && new Date(dateRange[1])}
+          setDateRange={setDateRange}
+        />
+
+        <div className="flex justify-evenly gap-x-9 ">
+          <OcrStat />
+          <OcrTranslate />
+        </div>
+      </div>
+
+      <div className="w-full h-1 border-b border-gray-200 my-16"></div>
+      <div className="grow flex justify-center mt-4">
         <div className="flex gap-6 mb-4 items-center min-h-10">
           <label>
             <input
@@ -153,21 +173,6 @@ const Container = () => {
             Tháng
           </label>
         </div>
-
-        <div className="flex justify-evenly gap-x-9 ">
-          <OcrStat />
-          <OcrTranslate />
-        </div>
-      </div>
-
-      <div className="w-full h-1 border-b border-gray-200 my-16"></div>
-      <div className="grow flex justify-end mt-4">
-        <DatePickerCustom
-          readonly={timeScale === ETimeScale.day}
-          startDate={dateRange[0] && new Date(dateRange[0])}
-          endDate={dateRange[1] && new Date(dateRange[1])}
-          setDateRange={setDateRange}
-        />
       </div>
     </div>
   );
