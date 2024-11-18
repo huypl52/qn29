@@ -23,33 +23,6 @@ ChartJS.register(
   Legend
 );
 
-const langDataset = [
-  {
-    lang: DLang.zh,
-    label: DLangMap[DLang.zh],
-    data: [],
-    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    borderColor: 'rgba(255, 99, 132, 1)',
-    borderWidth: 1,
-  },
-  {
-    lang: DLang.lo,
-    label: DLangMap[DLang.lo],
-    data: [],
-    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-    borderColor: 'rgba(54, 162, 235, 1)',
-    borderWidth: 1,
-  },
-  {
-    lang: DLang.km,
-    label: DLangMap[DLang.km],
-    data: [],
-    backgroundColor: 'rgba(255, 206, 86, 0.5)',
-    borderColor: 'rgba(255, 206, 86, 1)',
-    borderWidth: 1,
-  },
-];
-
 const TextChart = () => {
   const { timeScale, dateRange } = useReportContext();
   const [chartDataTLC, setChartDataTLC] = useState({
@@ -68,6 +41,32 @@ const TextChart = () => {
         return;
       }
 
+      const langDataset = [
+        {
+          lang: DLang.zh,
+          label: DLangMap[DLang.zh],
+          data: [],
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1,
+        },
+        {
+          lang: DLang.lo,
+          label: DLangMap[DLang.lo],
+          data: [],
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+        },
+        {
+          lang: DLang.km,
+          label: DLangMap[DLang.km],
+          data: [],
+          backgroundColor: 'rgba(255, 206, 86, 0.5)',
+          borderColor: 'rgba(255, 206, 86, 1)',
+          borderWidth: 1,
+        },
+      ];
       const labels: string[] = [];
 
       data.forEach((resData) => {

@@ -5,14 +5,30 @@ import logoImage from '~/assets/logo.png';
 import { AuthRoutePath } from '~/routes';
 import { getAllOrg } from '~/service/org';
 import { getSetting } from '~/service/setting';
-import { clearUser, getUserRole } from '~/storage/auth';
+import { getUserDetail } from '~/service/user';
+import { clearUser, getUser, getUserRole } from '~/storage/auth';
 import { useOrgTreeStore } from '~/store/orgTree';
 import { useSettingStore } from '~/store/setting';
-import { ERole } from '~/type/user';
+import { ERole, IUser } from '~/type/user';
 
 const Header = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const userRole = getUserRole();
+  const user = getUser();
+  const userId = user?.id;
+  
+  const [logonUser, setLogonUser] = useState<IUser>();
+
+  useEffect(() => {
+    if (!userId) return;
+    getUserDetail(userId).then((res) => {
+      const { data, status } = res;
+      if (status === 200) {
+        setLogonUser(data);
+      }
+    });
+  }, [userId]);
+
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
   const [darkMode, setDarkMode] = useState(true);
@@ -91,8 +107,15 @@ const Header = () => {
           </button>
 
           {/* Dropdown */}
+
           {dropdownVisible && (
             <div className="absolute right-0 mt-2 w-48 dark:bg-white bg-teal-50 border border-gray-200 rounded-lg shadow-lg z-10 ">
+              {logonUser && (
+                <div className="px-4 py-2 border-b border-gray-200">
+                  <div className="font-medium text-gray-700">{logonUser.username}</div>
+                  <div className="text-sm text-gray-600">{logonUser.fullname}</div>
+                </div>
+              )}
               <ul className="py-1">
                 <li>
                   <button

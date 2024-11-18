@@ -10,6 +10,7 @@ export interface IUser {
 }
 
 export interface IUserLogin {
+  id: string;
   token: string;
   refresh_token: string;
   created: string;

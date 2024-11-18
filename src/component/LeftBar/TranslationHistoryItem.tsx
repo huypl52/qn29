@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { StructureTextarea } from '~/component/Textarea';
-import { ITaskHistoryDetail } from '~/type/task';
-import { EProcessStatus } from '~/type/ocr';
-import { toast } from 'react-toastify';
 import { FaRegCopy } from 'react-icons/fa';
-import LoadingText from '~/component/LoadingText';
 import { MdSmsFailed } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import LoadingText from '~/component/LoadingText';
+import { StructureTextarea } from '~/component/Textarea';
+import { EProcessStatus } from '~/type/ocr';
+import { ITaskHistoryDetail } from '~/type/task';
 import { copyToClipboard } from '~/utils/clipboard';
 
 const TextBoxFooter = ({ text }: { text: string }) => {
@@ -54,8 +54,8 @@ const TranslateHistoryItem = (props: IItemTask) => {
           <span>Thất bại</span>
         </div>
       ) : (
-        <div className="w-full pl-2">
-          <div>
+        <div className="w-full flex gap-2 pl-2">
+          <div className="w-1/2">
             <StructureTextarea
               resizable={false}
               footer={() => (
@@ -65,7 +65,7 @@ const TranslateHistoryItem = (props: IItemTask) => {
               value={ocrResult?.source_text}
             />
           </div>
-          <div className="border-t mt-2">
+          <div className="w-1/2 ">
             <StructureTextarea
               resizable={false}
               footer={() => <TextBoxFooter text={ocrResult?.dest_text || ''} />}
