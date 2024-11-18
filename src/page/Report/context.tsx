@@ -11,7 +11,6 @@ import { useUserTreeStore } from '~/store/userTree';
 import { IStatisticalGroupParam } from '~/type/task';
 import { ERole } from '~/type/user';
 import { ETimeScale, IReportContext, timeScaleToPeriod } from './type';
-import { getWeekRange } from './util';
 
 const ReportContext = createContext<IReportContext>({
   timeScale: ETimeScale.day,
@@ -34,13 +33,13 @@ const ReportContextProvider = ({ children }: PropsWithChildren) => {
   const { orgs } = useOrgTreeStore();
 
   const dateRange = useMemo(() => {
-    if (timeScale === ETimeScale.day) {
-      const { start, end } = getWeekRange();
-      return [start, end].map((v) => v.toLocaleDateString('en-CA'));
-    }
+    // if (timeScale === ETimeScale.day) {
+    //   const { start, end } = getWeekRange();
+    //   return [start, end].map((v) => v.toLocaleDateString('en-CA'));
+    // }
 
     return selectedDateRange.map((v) => v?.toLocaleDateString('en-CA'));
-  }, [timeScale, selectedDateRange]);
+  }, [selectedDateRange]);
 
   const orgIds = useMemo(() => {
     return orgs.map((v) => v.id);

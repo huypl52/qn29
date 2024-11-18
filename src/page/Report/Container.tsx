@@ -117,7 +117,7 @@ const Container = () => {
           </button>
         </div>
         <DatePickerCustom
-          readonly={timeScale === ETimeScale.day}
+          // readonly={timeScale === ETimeScale.day}
           startDate={dateRange[0] && new Date(dateRange[0])}
           endDate={dateRange[1] && new Date(dateRange[1])}
           setDateRange={setDateRange}
@@ -132,16 +132,6 @@ const Container = () => {
       <div className="w-full h-1 border-b border-gray-200 my-16"></div>
       <div className="grow flex justify-center mt-4">
         <div className="flex gap-6 mb-4 items-center min-h-10">
-          <label>
-            <input
-              type="radio"
-              value={undefined}
-              checked={timeScale === undefined}
-              onChange={() => setTimeScale(undefined)}
-              className="mr-1"
-            />
-            Lũy kế
-          </label>
           <label>
             <input
               type="radio"
