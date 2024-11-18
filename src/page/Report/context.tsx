@@ -66,15 +66,16 @@ const ReportContextProvider = ({ children }: PropsWithChildren) => {
         } else {
           params['userid'] = selectedNodeId;
         }
-      } else {
-        if (isAdmin) {
-          params['orgid'] = orgs[0]?.id;
-        }
-      }
+      } 
+      // else {
+      //   if (isAdmin) {
+      //     params['orgid'] = orgs[0]?.id;
+      //   }
+      // }
     }
 
     return params;
-  }, [dateRange, orgIds, orgs, selectedNodeId, timeScale, userRole]);
+  }, [dateRange, orgIds, selectedNodeId, timeScale, userRole]);
 
   return (
     <ReportContext.Provider
