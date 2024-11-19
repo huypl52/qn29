@@ -59,10 +59,16 @@ const TranslateHistoryItem = (props: IItemTask) => {
             <StructureTextarea
               resizable={false}
               footer={() => (
-                <TextBoxFooter text={ocrResult?.source_text || ''} />
+                <TextBoxFooter
+                  text={
+                    ocrResult?.detected_text || ocrResult?.source_text || ''
+                  }
+                />
               )}
               disabled
-              value={ocrResult?.source_text}
+              value={
+                    ocrResult?.detected_text || ocrResult?.source_text || ''
+}
             />
           </div>
           <div className="w-1/2 ">

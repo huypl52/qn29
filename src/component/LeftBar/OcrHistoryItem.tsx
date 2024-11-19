@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useOcrContext } from '../../feature/ocr/context';
-import { BaseTextarea, StructureTextarea } from '~/component/Textarea';
-import { ITaskDetail, ITaskHistoryDetail } from '~/type/task';
-import { EProcessStatus } from '~/type/ocr';
-import { getImage, getTaskDetails } from '~/service/task';
-import { toast } from 'react-toastify';
 import { FaRegCopy } from 'react-icons/fa';
-import LoadingText from '~/component/LoadingText';
 import { MdSmsFailed } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import LoadingText from '~/component/LoadingText';
+import { StructureTextarea } from '~/component/Textarea';
+import { getImage } from '~/service/task';
+import { EProcessStatus } from '~/type/ocr';
+import { ITaskHistoryDetail } from '~/type/task';
 import { copyToClipboard } from '~/utils/clipboard';
+import { useOcrContext } from '../../feature/ocr/context';
 
 const TextBoxFooter = ({ text }: { text: string }) => {
   const onCopyClick = () => {
@@ -92,20 +92,14 @@ const HistoryItem = (props: IItemTask) => {
                 />
               )}
               disabled
-              value={ocrResult?.detected_text}
+              value={ocrResult?.detected_text || ocrResult?.source_text || ''}
             />
           </div>
           {needTranslate ? (
             <div className="border-t mt-2">
               <StructureTextarea
                 resizable={false}
-                footer={() => (
-                  <TextBoxFooter
-                    text={
-                      ocrResult?.detected_text || ocrResult?.source_text || ''
-                    }
-                  />
-                )}
+                footer={() => <TextBoxFooter text={ocrResult?.dest_text || ''} />}
                 disabled
                 value={ocrResult?.dest_text}
               />
