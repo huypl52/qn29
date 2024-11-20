@@ -36,8 +36,10 @@ let instance_manual: AxiosInstance | null = null;
 let instanceList: AxiosInstance[] = [];
 
 export async function initApi() {
+  const config = await fetch('/config.json').then((res) => res.json());
+  // console.log({ config });
   instance = axios.create({
-    baseURL: import.meta.env.VITE_PUBLIC_API || '',
+    baseURL: config.VITE_PUBLIC_API || '',
     transformRequest: [
       dateTransformer,
       ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
@@ -45,7 +47,7 @@ export async function initApi() {
   });
 
   instance_manual = axios.create({
-    baseURL: import.meta.env.VITE_PUBLIC_API_MANUAL || '',
+    baseURL: config.VITE_PUBLIC_API_MANUAL || '',
     transformRequest: [
       dateTransformer,
       ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
