@@ -99,7 +99,9 @@ const HistoryItem = (props: IItemTask) => {
             <div className="border-t mt-2">
               <StructureTextarea
                 resizable={false}
-                footer={() => <TextBoxFooter text={ocrResult?.dest_text || ''} />}
+                footer={() => (
+                  <TextBoxFooter text={ocrResult?.dest_text || ''} />
+                )}
                 disabled
                 value={ocrResult?.dest_text}
               />

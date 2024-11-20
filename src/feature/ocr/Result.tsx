@@ -69,7 +69,6 @@ const Item = (props: IItemTask) => {
     setOcrResult(ocrTaskResult);
   }, [ocrTaskResult]);
 
-
   useEffect(() => {
     setTaskDetailStatus({
       ocr: EProcessStatus.pending,
@@ -146,16 +145,20 @@ const Item = (props: IItemTask) => {
     const ocr = ocrResult;
     if (!ocr) return;
     if (ocr.fileid) {
-      getImage(ocr.fileid).then((res) => {
-        const { status, data, headers } = res;
-        if (status === 200) {
-          const blob = new Blob([data], {
-            type: headers['content-type'],
-          });
-          const url = URL.createObjectURL(blob);
-          setImg(url);
-        }
-      });
+      getImage(ocr.fileid)
+        .then((res) => {
+          const { status, data, headers } = res;
+          if (status === 200) {
+            const blob = new Blob([data], {
+              type: headers['content-type'],
+            });
+            const url = URL.createObjectURL(blob);
+            setImg(url);
+          }
+        })
+        .catch(() => {
+          setImg(undefined);
+        });
     }
   }, [ocrResult]);
 
@@ -220,7 +223,7 @@ const Item = (props: IItemTask) => {
             </div>
             <span>Hết hạn</span>
           </div>
-        ) : (
+        ) : ocrResult?.dest_text ? (
           <div className="border-t mt-2">
             <StructureTextarea
               resizable={false}
@@ -230,7 +233,7 @@ const Item = (props: IItemTask) => {
               className="h-[25vh]"
             />
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
