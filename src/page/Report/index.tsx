@@ -7,16 +7,15 @@ import TextChart from './TextChart';
 const Report = () => {
   return (
     <TreeLeftBar>
-    <div className="w-full px-16">
-
-    <ReportContextProvider>
-      <Container />
-        <div className="flex gap-3">
-          <OCRChart />
-          <TextChart />
-        </div>
-    </ReportContextProvider>
-    </div>
+      <div className="w-full px-16">
+        <ReportContextProvider>
+          <Container />
+          <div className="flex gap-3">
+            <OCRChart />
+            <TextChart />
+          </div>
+        </ReportContextProvider>
+      </div>
     </TreeLeftBar>
   );
 };

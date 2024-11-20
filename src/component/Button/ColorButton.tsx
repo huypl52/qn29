@@ -1,6 +1,5 @@
 import Button from './BaseButton';
 import { IColorButton } from './type';
-import { DLang } from '~/type';
 
 const ColorButton = ({
   title,

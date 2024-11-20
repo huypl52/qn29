@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useOcrContext } from './context';
-import { StructureTextarea } from '~/component/Textarea';
-import { ITaskDetail, ITaskHistoryDetail } from '~/type/task';
-import { EProcessStatus } from '~/type/ocr';
-import { getImage, getTaskDetails } from '~/service/task';
-import { toast } from 'react-toastify';
-import { FaRegCopy } from 'react-icons/fa';
 import _ from 'lodash';
-import LoadingText from '~/component/LoadingText';
+import { useCallback, useEffect, useState } from 'react';
+import { FaRegCopy } from 'react-icons/fa';
 import { IoTimeOutline } from 'react-icons/io5';
 import { MdSmsFailed } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import LoadingText from '~/component/LoadingText';
+import { StructureTextarea } from '~/component/Textarea';
+import { getImage, getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
+import { EProcessStatus } from '~/type/ocr';
+import { ITaskDetail } from '~/type/task';
 import { copyToClipboard } from '~/utils/clipboard';
+import { useOcrContext } from './context';
 
 const TextBoxFooter = ({ text }: { text: string }) => {
   const onCopyClick = () => {
@@ -51,12 +51,24 @@ const Item = (props: IItemTask) => {
     ocr: EProcessStatus.pending,
     translation: EProcessStatus.pending,
   });
+  // console.log({ ocrTaskResult });
   const { needTranslate } = useOcrContext();
   const [img, setImg] = useState<string>();
   const [ocrResult, setOcrResult] = useState<ITaskDetail | undefined>(
     ocrTaskResult
   );
   const { counter } = useTaskStore();
+
+  useEffect(() => {
+    const ocrStatus = ocrTaskResult.ocr_status;
+    const translateStatus = ocrTaskResult.translation_status;
+    setTaskDetailStatus({
+      ocr: ocrStatus,
+      translation: translateStatus,
+    });
+    setOcrResult(ocrTaskResult);
+  }, [ocrTaskResult]);
+
 
   useEffect(() => {
     setTaskDetailStatus({
@@ -131,10 +143,6 @@ const Item = (props: IItemTask) => {
   }, [taskId, needTranslate, taskDetailStatus, ocrResult]);
 
   useEffect(() => {
-    setOcrResult(ocrTaskResult);
-  }, [ocrTaskResult]);
-
-  useEffect(() => {
     const ocr = ocrResult;
     if (!ocr) return;
     if (ocr.fileid) {
@@ -159,7 +167,7 @@ const Item = (props: IItemTask) => {
       <div className="w-1/2 min-w-32 h-1/3 min-h-16 my-auto">
         <img
           src={img}
-          alt="load image loaded"
+          alt="Thất bại"
           className="object-contain max-w-100 max-h-[30vh] mx-auto"
         />
       </div>

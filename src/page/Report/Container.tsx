@@ -92,6 +92,7 @@ const OcrTranslate = () => {
 const Container = () => {
   const { timeScale, setTimeScale, setDateRange, dateRange } =
     useReportContext();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleExport = () => {
     const [from_date, to_date] = dateRange;
@@ -104,17 +105,58 @@ const Container = () => {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <div className="w-full max-w-4xl mx-auto mt-4">
-        <div className="flex items-center gap-2 mb-4">
-          <h2 className="text-2xl font-semibold ">Thống kê sử dụng</h2>
-          <button
-            className="hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-gray-500 p-1 flex items-center justify-center"
-            title="Clear"
-            onClick={handleExport}
-          >
-            <TbFileExport title="Xuất báo cáo" size={24} />
-          </button>
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <h2 className="text-2xl font-semibold">Thống kê sử dụng</h2>
+          <div className="flex justify-end items-center gap-2 relative">
+            <button
+              className="hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-gray-500 p-1 flex items-center justify-center"
+              title="Xuất báo cáo"
+              onClick={() => {
+                setShowDropdown(true);
+                handleExport();
+              }}
+            >
+              <TbFileExport size={24} />
+            </button>
+            {showDropdown && (
+              <div className="absolute top-12 right-0 w-24 bg-white shadow-lg rounded-md p-3 z-10">
+                <div className="flex flex-col gap-2">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="exportLang"
+                      className="mr-2"
+                      value="zh"
+                      onChange={() => setShowDropdown(false)}
+                    />
+                    {DLangMap.zh}
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="exportLang"
+                      className="mr-2"
+                      value="lo"
+                      onChange={() => setShowDropdown(false)}
+                    />
+                    {DLangMap.lo}
+                  </label>
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="exportLang"
+                      className="mr-2"
+                      value="km"
+                      onChange={() => setShowDropdown(false)}
+                    />
+                    {DLangMap.km}
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <DatePickerCustom
           // readonly={timeScale === ETimeScale.day}

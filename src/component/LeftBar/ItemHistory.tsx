@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { FaEllipsisV, FaTrashAlt } from 'react-icons/fa'; // Import icons
+import { toast } from 'react-toastify';
 import ListOcrHistory from '~/component/LeftBar/OcrHistoryItem';
 import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
-import {
-  ETaskType,
-  ITaskDetail,
-  ITaskHistory,
-  listTaskTypeOcr,
-  listTaskTypeTranslate,
-} from '~/type/task';
-import ListTranslationHistory from './TranslationHistoryItem';
 import { useTranslateStore } from '~/store/translate';
 import { DLangMap, toastMsg } from '~/type';
+import {
+  ETaskType,
+  ITaskHistory,
+  listTaskTypeOcr,
+  listTaskTypeTranslate
+} from '~/type/task';
 import { formatViDate } from '~/utils/date';
-import { toast } from 'react-toastify';
+import ListTranslationHistory from './TranslationHistoryItem';
 
 interface IItemHistory {
   taskType: ETaskType;
