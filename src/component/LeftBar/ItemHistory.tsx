@@ -5,13 +5,12 @@ import ListOcrHistory from '~/component/LeftBar/OcrHistoryItem';
 import { getTaskDetails } from '~/service/task';
 import { useTaskStore } from '~/store/task';
 import { useOcrTaskStore } from '~/store/taskOcr';
-import { useTranslateStore } from '~/store/translate';
 import { DLangMap, toastMsg } from '~/type';
 import {
   ETaskType,
   ITaskHistory,
   listTaskTypeOcr,
-  listTaskTypeTranslate
+  listTaskTypeTranslate,
 } from '~/type/task';
 import { formatViDate } from '~/utils/date';
 import ListTranslationHistory from './TranslationHistoryItem';
@@ -75,10 +74,20 @@ const ItemHistory = (props: IItemHistory) => {
       });
   }, []);
 
-  const { srcLang, targetLang } = useTranslateStore();
+  // const { srcLang, targetLang } = useTranslateStore();
 
-  const tranlationTitle =
-    `${DLangMap[srcLang]}` + '→' + `${DLangMap[targetLang]}`;
+  // const tranlationTitle =
+  //   `${DLangMap[srcLang]}` + '→' + `${DLangMap[targetLang]}`;
+
+  let tranlationTitle = 'Trung → Việt';
+
+  if (taskHistory.details?.length) {
+    const firstDetail = taskHistory.details[0];
+    tranlationTitle =
+      `${DLangMap[firstDetail.detected_language]}` +
+      '→' +
+      `${DLangMap[firstDetail.dest_language]}`;
+  }
 
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-4">
@@ -87,9 +96,10 @@ const ItemHistory = (props: IItemHistory) => {
           className="text-md font-semibold align-middle cursor-pointer"
           onClick={handleOpenDetail}
         >
-          {listTaskTypeTranslate.includes(taskType)
+          {/* {listTaskTypeTranslate.includes(taskType)
             ? tranlationTitle
-            : 'Trung → Việt'}
+            : 'Trung → Việt'} */}
+            {tranlationTitle}
         </h3>
         <div className="flex">
           {/* Favorite Star */}
