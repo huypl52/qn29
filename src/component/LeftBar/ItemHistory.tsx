@@ -84,7 +84,7 @@ const ItemHistory = (props: IItemHistory) => {
   if (taskHistory.details?.length) {
     const firstDetail = taskHistory.details[0];
     tranlationTitle =
-      `${DLangMap[firstDetail.detected_language]}` +
+      `${DLangMap[firstDetail.source_language || firstDetail.detected_language]}` +
       '→' +
       `${DLangMap[firstDetail.dest_language]}`;
   }
