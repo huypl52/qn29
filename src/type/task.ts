@@ -28,6 +28,7 @@ export interface ITaskHistory {
 export interface ITaskHistoryDetail {
   status: EProcessStatus;
   detected_language: DLang;
+  source_language: DLang;
   detected_text: string;
 
   // OCR

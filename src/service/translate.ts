@@ -15,7 +15,7 @@ const defaultTranslateConf: ITranslation = {
 };
 
 export const translate = ({ source_text }: ITranslation) => {
-  return httpPost(0)<ITranslationResult>('/proxy/translate?', {
+  return httpPost(1)<ITranslationResult>('/translate', {
     ...defaultTranslateConf,
     source_text,
   });
