@@ -165,12 +165,12 @@ const Container: React.FC<{}> = () => {
                 >
                   Tải tệp lên
                 </ColorOptionButton>
-                <ColorOptionButton
+                {/* <ColorOptionButton
                   className="w-48 mt-1"
                   onClick={handlePasteFromClipboard}
                 >
                   Dán ảnh từ clipboard
-                </ColorOptionButton>
+                </ColorOptionButton> */}
               </div>
             </div>
             <div className="h-full w-[2px]  my-auto"></div>
