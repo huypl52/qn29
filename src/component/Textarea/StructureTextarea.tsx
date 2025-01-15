@@ -1,8 +1,14 @@
-import BaseTextarea from './BaseTextarea';
+import { useTranslateStore }  from '~/store/translate.ts';
+import BaseTextarea           from './BaseTextarea';
 import { IStructureTextarea } from './type';
 
+
 const StructureTextarea = (props: IStructureTextarea) => {
+
+
   const { header: Header, footer: Footer, disabled, ...args } = props;
+
+
 
   let className =
     '"overflow-hidden rounded-lg border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"';

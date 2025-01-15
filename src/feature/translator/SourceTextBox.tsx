@@ -23,7 +23,6 @@ const TextBoxFooter = () => {
 const SourceTextBox = () => {
   const { srcText, updateSrcText, setStatus, updateTargetText } =
     useTranslateStore();
-
   const {
     setting: { translate_timeout },
   } = useSettingStore();
