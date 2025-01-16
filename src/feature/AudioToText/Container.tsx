@@ -1,80 +1,59 @@
-import { ColorButton } from '~/component/Button';
-import { useOcrContext } from './context';
-import drag2dropImg from '~/assets/drag_and_drop.png';
-import DragDropArea from '~/component/Drag&Drop';
-import { useDragDropContext } from '~/component/Drag&Drop/context';
-import { toast } from 'react-toastify';
-import React, { useCallback, useRef } from 'react';
-import ListResult from './Result';
-import ColorOptionButton from '~/component/Button/ColorOptionButton.tsx';
-import { DLang, DLangMap } from '~/type';
+
+import { ColorButton }                from '~/component/Button';
+import { useOcrContext }              from './context';
+import drag2dropImg                   from '~/assets/drag_and_drop.png';
+import DragDropArea                   from '~/component/Drag&Drop';
+import { useDragDropContext }         from '~/component/Drag&Drop/context';
+import { toast }                      from 'react-toastify';
+import React, { useCallback, useRef, useState } from 'react';
+import ListResult                     from './Result';
+import ColorOptionButton              from '~/component/Button/ColorOptionButton.tsx';
+import { DLang, DLangMap }            from '~/type';
 import { useLangContext } from '~/feature/languageSelect/context.tsx';
 import TextSwitch from '~/component/Switch';
 import { MdClose } from 'react-icons/md';
 import { useOcrTaskStore } from '~/store/taskOcr';
 import { useTaskStore } from '~/store/task';
 import { getClipboardImage } from '~/utils/clipboard';
+import uploadFileAudio from '~/service/audio.ts'
+
+
 
 const Container: React.FC<{}> = () => {
   const { isEmpty } = useOcrContext();
-  const { files, updateFiles } = useDragDropContext();
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null); // State lưu tệp
+  const [textResult, setTextResult] = useState<string>(''); // Đảm bảo setTextResult là hàm từ useState
   const { needTranslate, toggleNeedTranslate } = useOcrContext();
   const { clearInput } = useOcrContext();
 
   const { selectedOcrIds, recentAdded } = useOcrTaskStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handlePasteFromClipboard = async () => {
+  const uploadFile: React.ChangeEventHandler<HTMLInputElement> =  async (e) => {
     try {
-      // const clipboardItems = await navigator.clipboard.read();
-      // for (const clipboardItem of clipboardItems) {
-      //   const imageTypes = clipboardItem.types?.filter((type) =>
-      //     type.startsWith('image/')
-      //   );
-      //
-      //   for (const imageType of imageTypes) {
-      //     console.log({ imageType });
-      //     const blob = await clipboardItem.getType(imageType);
-      //     const file = new File([blob], 'pasted-image.png', {
-      //       type: 'image/png',
-      //     });
-      //     updateFiles([file]);
-      //   }
+      // Lấy danh sách các tệp từ sự kiện
+      const files = Array.from(e.target.files || []);
+      console.log({ files });
 
-      // if (clipboardItem.types.includes('image/png')) {
-      //   const blob = await clipboardItem.getType('image/png');
-      //
-      //   const file = new File([blob], 'pasted-image.png', {
-      //     type: 'image/png',
-      //   });
-      //   updateFiles([file]);
-      // } else {
-      //   console.log('No image found in clipboard.');
-      //   toast.info('Vui lòng chọn dán đúng định dạng ảnh');
-      // }
-      //
-      const blob = await getClipboardImage();
-      console.log({ blob });
-      if (!blob) {
-        toast.info('Vui lòng kiểm tra lại clipboard');
-        return;
+      // Cập nhật danh sách tệp nếu cần
+      if (files && files.length > 0) {
+        setUploadedFile(files[0]); // Lưu tệp vào state khi người dùng chọn
+      };
+
+      // Gọi API để upload tệp
+      if (files.length > 0) {
+        const response =  await uploadFileAudio(files[0]); // Giả sử bạn chỉ gửi 1 file
+        console.log('API Response:', textResult);
+        const data = response.data.voice_command_text;
+        setTextResult(data);
+        // Xử lý kết quả trả về từ API nếu cần
       }
-      const file = new File([blob], 'pasted-image.png', {
-        type: 'image/png',
-      });
-      updateFiles([file]);
-
-      // }
-    } catch (error) {
-      toast.info('Vui lòng chọn dán đúng định dạng ảnh');
+    } catch (e: any) {
+      console.error('Error uploading file:', e);
+      // Xử lý lỗi nếu có
     }
   };
 
-  const uploadFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const files = Array.from(e.target.files || []);
-    console.log({ files });
-    updateFiles(files);
-  };
 
   const {
     updateSourceLang: setSourceLang,
@@ -97,7 +76,6 @@ const Container: React.FC<{}> = () => {
     [setTargetLang]
   );
 
-  const { taskDetails, selectedTaskId } = useTaskStore();
 
   return (
     <div className="w-full h-full px-8">
@@ -138,7 +116,7 @@ const Container: React.FC<{}> = () => {
           )}
         </div>
       </div>
-      {isEmpty && recentAdded ? (
+      {uploadedFile === null ? (
         <DragDropArea>
           <div className="flex w-full h-[75vh] min-h-[360px] border border-gray-300 rounded-tl-xl rounded-tr-xl">
             <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-tl-xl rounded-tr-xl">
@@ -154,7 +132,6 @@ const Container: React.FC<{}> = () => {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  multiple={true}
                   onChange={uploadFile}
                   className="hidden"
                 />
@@ -178,8 +155,8 @@ const Container: React.FC<{}> = () => {
         </DragDropArea>
       ) : (
         <ListResult
-          ocrTaskResults={taskDetails}
-          taskId={selectedTaskId || ''}
+          fileUploaded={uploadedFile}
+          text = {textResult}
         />
       )}
     </div>

@@ -33,7 +33,9 @@ const dateTransformer: (data: any) => AxiosRequestTransformer = (data) => {
 
 let instance: AxiosInstance | null = null;
 let instance_manual: AxiosInstance | null = null;
+let instance_audio: AxiosInstance | null = null;
 let instanceList: AxiosInstance[] = [];
+
 
 export async function initApi() {
   const config = await fetch('/config.json').then((res) => res.json());
@@ -54,7 +56,15 @@ export async function initApi() {
     ],
   });
 
-  instanceList = [instance, instance_manual];
+  instance_audio = axios.create({
+    baseURL: config.VITE_PUBLIC_API_AUDIO || '',
+    transformRequest: [
+      dateTransformer,
+      ...(axios.defaults.transformRequest as AxiosRequestTransformer[]),
+    ],
+                                });
+
+  instanceList = [instance, instance_manual, instance_audio];
 
   instanceList.forEach((ins) => {
     ins.interceptors.request.use(
