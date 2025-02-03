@@ -20,11 +20,16 @@ import uploadFileAudio from '~/service/audio.ts'
 
 
 const Container: React.FC<{}> = () => {
+
   const { isEmpty } = useOcrContext();
   const [uploadedFile, setUploadedFile] = useState<File | null>(null); // State lưu tệp
   const [textResult, setTextResult] = useState<string>(''); // Đảm bảo setTextResult là hàm từ useState
   const { needTranslate, toggleNeedTranslate } = useOcrContext();
+
   const { clearInput } = useOcrContext();
+  const handleClearInput = () => {
+    setUploadedFile(null);
+  }
 
   const { selectedOcrIds, recentAdded } = useOcrTaskStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -94,17 +99,17 @@ const Container: React.FC<{}> = () => {
             <button
               className=" hover:bg-gray-300 rounded-full w-10 h-10 mt-1 transition-colors duration-100 text-red-500 p-1 flex items-center justify-center"
               title="Clear"
-              onClick={clearInput}
+              onClick={handleClearInput}
             >
               <MdClose size={20} />
             </button>
           </div>
-          <TextSwitch
-            onText="Dịch"
-            offText="Dịch"
-            defaultChecked={needTranslate}
-            onChange={toggleNeedTranslate}
-          />
+          {/* <TextSwitch */}
+          {/*   onText="Dịch" */}
+          {/*   offText="Dịch" */}
+          {/*   defaultChecked={needTranslate} */}
+          {/*   onChange={toggleNeedTranslate} */}
+          {/* /> */}
           {/* <IoMdSwap size={24} /> */}
           {needTranslate && (
             <ColorButton

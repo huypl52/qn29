@@ -3,6 +3,7 @@ import { FaRegCopy } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 import { StructureTextarea } from '~/component/Textarea';
+import { useOcrContext }     from '~/feature/AudioToText/context.tsx';
 
 import { copyToClipboard } from '~/utils/clipboard';
 
@@ -41,6 +42,9 @@ const FAILED_TIMEOUT = QUERY_TIMEOUT + 3000;
 
 const Item = (props: IItemTask) => {
   const { fileUploaded, text } = props;
+  const { clearInput } = useOcrContext(); // Lấy hàm clearInput từ context
+
+
   return (
     <div className="flex w-full divide-x divide-stone-400  bg-gray-100 gap-4 py-2 overflow-y-auto">
       <div className="w-1/2 min-w-32 h-1/3 min-h-16 my-auto">
@@ -80,6 +84,7 @@ interface IResult {
 
 const ListResult = (props: IResult) => {
   const { fileUploaded, text } = props;
+
   return (
     <div className="w-full relative border border-gray-200 p-1 divide-y divide-stone-200 rounded-lg bg-gray-100 overflow-y-auto h-[75vh]">
       <div className="w-full p-4 divide-y divide-stone-400 h-full">
