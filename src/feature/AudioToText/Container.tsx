@@ -32,12 +32,14 @@ const Container: React.FC<{}> = () => {
   }
 
   const { selectedOcrIds, recentAdded } = useOcrTaskStore();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadFile: React.ChangeEventHandler<HTMLInputElement> =  async (e) => {
     try {
       // Lấy danh sách các tệp từ sự kiện
       const files = Array.from(e.target.files || []);
+      setTextResult('Đang xử lý...');
       console.log({ files });
 
       // Cập nhật danh sách tệp nếu cần
@@ -55,6 +57,7 @@ const Container: React.FC<{}> = () => {
       }
     } catch (e: any) {
       console.error('Error uploading file:', e);
+      setTextResult('Lỗi xử lý tệp!!!');
       // Xử lý lỗi nếu có
     }
   };
@@ -163,7 +166,8 @@ const Container: React.FC<{}> = () => {
           fileUploaded={uploadedFile}
           text = {textResult}
         />
-      )}
+      )
+      }
     </div>
   );
 };

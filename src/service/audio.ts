@@ -9,11 +9,10 @@ const uploadAudioFile = async (file: File) => {
   formData.append('file', file);
 
   return axios.post(`${baseUrl}/voice_to_text/`, formData, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-    timeout: 5000, // Thời gian chờ 5 giây (tùy chỉnh)
+    headers: { 'Content-Type': 'multipart/form-data' },
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
+    timeout: 100000, // Thời gian chờ 5 giây (tùy chỉnh)
   });
 };
 
